@@ -39,3 +39,5 @@ out/
 # Spring configuration files
 /application.yml
 /application.properties
+
+*.yml
