@@ -1,8 +1,8 @@
 package org.durcit.be.security.service;
 
 import lombok.RequiredArgsConstructor;
-import org.durcit.be.security.dao.MemberRepository;
-import org.durcit.be.security.dao.VerificationTokenRepository;
+import org.durcit.be.security.repository.MemberRepository;
+import org.durcit.be.security.repository.VerificationTokenRepository;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.domian.VerificationToken;
 import org.durcit.be.security.dto.KeyPair;

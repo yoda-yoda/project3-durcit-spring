@@ -17,12 +17,11 @@ public class Post {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Setter
     private Member member;
 
-    @Setter
     private String title;
 
-    @Setter
     private String content;
 
     @Setter
@@ -40,6 +39,11 @@ public class Post {
         this.title = title;
         this.content = content;
         this.views = views;
+    }
+
+    public void updatePost(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
 }

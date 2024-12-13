@@ -1,17 +1,17 @@
 package org.durcit.be.post.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.durcit.be.post.dto.PostRegisterRequest;
 import org.durcit.be.post.dto.PostResponse;
+import org.durcit.be.post.dto.PostUpdateRequest;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -21,13 +21,31 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<?> getPosts() {
+    public ResponseEntity<ResponseData<List<PostResponse>>> getPosts() {
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postService.getAllPosts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPost(@PathVariable Long id) {
+    public ResponseEntity<ResponseData<PostResponse>> getPost(@PathVariable Long id) {
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postService.getPostById(id));
+    }
+
+    @PostMapping("/members")
+    public ResponseEntity<ResponseData<PostResponse>> createPost(@RequestBody PostRegisterRequest postRegisterRequest) {
+        PostResponse postResponse = postService.createPost(postRegisterRequest);
+        return ResponseData.toResponseEntity(ResponseCode.CREATE_POST_SUCCESS, postResponse);
+    }
+
+    @PutMapping("/members/{postId}")
+    public ResponseEntity<ResponseData> updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
+        postService.updatePost(postId, postUpdateRequest);
+        return ResponseData.toResponseEntity(ResponseCode.UPDATE_POST_SUCCESS);
+    }
+
+    @DeleteMapping("/members/{postId}")
+    public ResponseEntity<ResponseData> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ResponseData.toResponseEntity(ResponseCode.DELETE_POST_SUCCESS);
     }
 
 
