@@ -10,4 +10,11 @@ public class ExceptionMessage {
     public static final String INVALID_USERNAME_PASSWORD_ERROR = "이메일 또는 비밀번호가 잘못되었습니다.";
     public static final String EMAIL_NOT_VERIFIED_ERROR = "이메일이 인증되지 않은 회원입니다.";
 
+    // 지금 내가 추가한것
+    public static final String OPTIONAL_EMPTY_POSTS_TAG_FIND_BY_ID_ERROR =
+            "findById로 찾아온 PostsTag의 Optional 객체가 비어있습니다.";
+
+
+
+
 }
