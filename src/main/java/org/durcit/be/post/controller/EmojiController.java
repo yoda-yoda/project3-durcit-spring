@@ -7,18 +7,22 @@ import org.durcit.be.post.service.EmojiService;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/members/emojis")
 public class EmojiController {
 
     private final EmojiService emojiService;
 
-    @PostMapping
-    public ResponseEntity<ResponseData<EmojiResponse>> toggleEmoji(@RequestBody EmojiRequest emojiRequest) {
-        return ResponseData.toResponseEntity(ResponseCode.TOGGLE_EMOJI_SUCCESS, emojiService.toggleEmoji(emojiRequest));
+    @MessageMapping("/addEmoji")
+    @SendTo("/topic/emojiUpdate")
+    public EmojiResponse handleEmoji(@Payload EmojiRequest request) {
+        return emojiService.toggleEmoji(request);
     }
 
 
