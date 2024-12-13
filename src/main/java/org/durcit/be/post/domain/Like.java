@@ -1,10 +1,7 @@
 package org.durcit.be.post.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.durcit.be.security.domian.Member;
 
 import java.time.LocalDateTime;
@@ -31,7 +28,8 @@ public class Like {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Like(Member member, Post post) {
+    public Like(Long id, Member member, Post post) {
+        this.id = id;
         this.member = member;
         this.post = post;
     }
