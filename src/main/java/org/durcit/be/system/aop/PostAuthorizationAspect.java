@@ -36,10 +36,9 @@ public class PostAuthorizationAspect {
         Long currentMemberId = Long.valueOf(authentication.getName());
         if (requireAuthorization.roles().length > 0) {
             boolean hasRole = memberService.hasRole(currentMemberId, requireAuthorization.roles());
-            if (!hasRole) {
-                throw new UnauthorizedAccessException(UNAUTHORIZED_ACCESS_ERROR);
+            if (hasRole) {
+                return;
             }
-            return;
         }
 
         String parameterName = requireAuthorization.parameter();
