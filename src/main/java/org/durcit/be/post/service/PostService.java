@@ -15,5 +15,6 @@ public interface PostService {
     public PostResponse createPost(PostRegisterRequest postRegisterRequest);
     public void updatePost(Long postId, PostUpdateRequest postUpdateRequest);
     public void deletePost(Long postId);
+    public PostResponse getPostWithViewIncrement(Long postId);
 
 }
