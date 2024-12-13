@@ -50,6 +50,8 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));
     }
 
+    // aop
+    // post 수정 삭제 어드민은 다가능, 나머지는 자기가 작성한 게시물 이어야 가능
 
     @Transactional
     @RequireCurrentMemberId

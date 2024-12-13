@@ -50,7 +50,7 @@ public class MemberService extends DefaultOAuth2UserService {
 
 
     public boolean isPresentById(Long id) {
-        return findById(id).isPresent();
+        return findById(id).filter(Member::isVerified).isPresent();
     }
 
 

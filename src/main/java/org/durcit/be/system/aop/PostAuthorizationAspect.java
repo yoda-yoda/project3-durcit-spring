@@ -1,6 +1,7 @@
 package org.durcit.be.system.aop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -21,6 +22,7 @@ import static org.durcit.be.system.exception.ExceptionMessage.UNAUTHORIZED_ACCES
 @Aspect
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class PostAuthorizationAspect {
 
     private final MemberService memberService;
@@ -28,6 +30,9 @@ public class PostAuthorizationAspect {
 
     @Before(value = "@annotation(requireAuthorization)", argNames = "requireAuthorization,joinPoint")
     public void authorize(PostRequireAuthorization requireAuthorization, JoinPoint joinPoint) {
+
+        log.info("PostAuthorizationAspect");
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new InvalidUserException(INVALID_USER_ERROR);

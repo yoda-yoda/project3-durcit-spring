@@ -14,15 +14,17 @@ public class PostResponse {
     private String title;
     private String content;
     private String author;
+    private Long views;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @Builder
-    public PostResponse(Long id, String title, String content, String author, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PostResponse(Long id, String title, String content, String author, Long views, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
+        this.views = views;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -33,6 +35,7 @@ public class PostResponse {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .author(post.getMember().getUsername())
+                .views(post.getViews())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .build();

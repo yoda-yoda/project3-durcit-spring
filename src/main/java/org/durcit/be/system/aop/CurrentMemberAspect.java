@@ -1,6 +1,7 @@
 package org.durcit.be.system.aop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.durcit.be.security.service.MemberService;
@@ -14,6 +15,7 @@ import static org.durcit.be.system.exception.ExceptionMessage.MEMBER_NOT_FOUND_E
 @Aspect
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CurrentMemberAspect {
 
     private final MemberService memberService;
