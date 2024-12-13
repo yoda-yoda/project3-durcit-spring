@@ -38,6 +38,9 @@ public enum ResponseCode {
     DELETE_POST_SUCCESS(Status.NO_CONTENT, PostMessage.DELETE_POST_SUCCESS),
 
     TOGGLE_EMOJI_SUCCESS(Status.NO_CONTENT, PostMessage.TOGGLE_EMOJI_SUCCESS),
+
+    GET_POST_LIKES_SUCCESS(Status.OK, PostMessage.GET_POST_LIKES_SUCCESS),
+    TOGGLE_LIKE_SUCCESS(Status.OK, PostMessage.TOGGLE_LIKE_SUCCESS),
     ;
 
     private int httpStatus;
