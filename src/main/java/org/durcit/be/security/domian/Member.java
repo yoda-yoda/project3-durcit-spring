@@ -38,7 +38,8 @@ public class Member {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Member(String username, String provider, String email, String nickname, String password, boolean isVerified) {
+    public Member(Long id, String username, String provider, String email, String nickname, String password, boolean isVerified) {
+        this.id = id;
         this.username = username;
         this.provider = provider;
         this.email = email;
