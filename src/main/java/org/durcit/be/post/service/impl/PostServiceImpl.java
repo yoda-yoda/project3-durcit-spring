@@ -79,12 +79,10 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     public PostResponse getPostWithViewIncrement(Long postId) {
-        postRepository.incrementViews(postId);
-
         Post post = postRepository.findById(postId)
                 .filter(p -> !p.isDeleted())
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));
-
+        postRepository.incrementViews(postId);
         return PostResponse.fromEntity(post);
     }
 

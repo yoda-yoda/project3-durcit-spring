@@ -14,6 +14,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "posts_id")
+    @Setter
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,11 +35,13 @@ public class Post {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @Builder
-    public Post(Member member, String title, String content, Long views) {
+    public Post(Long id, Member member, String title, String content, Long views) {
+        this.id = id;
         this.member = member;
         this.title = title;
         this.content = content;
         this.views = views;
+
     }
 
     public void updatePost(String title, String content) {

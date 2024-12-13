@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -242,6 +243,49 @@ class PostServiceImplTest {
     }
 
 
+    @Test
+    @DisplayName("게시물 조회 시 조회수 증가 테스트")
+    void shouldIncrementViewsAndReturnPost() {
+        // given
+        Member member = Member.builder()
+                .id(1L)
+                .build();
+        Long postId = 1L;
+        Post post = Post.builder()
+                .id(postId)
+                .title("Post 1")
+                .content("Post content 1")
+                .member(member)
+                .views(2L)
+                .build();
 
+        when(postRepository.findById(postId)).thenReturn(Optional.of(post));
 
+        // when
+        doAnswer(invocation -> {
+            post.setViews(post.getViews() + 1);
+            return null;
+        }).when(postRepository).incrementViews(postId);
+        PostResponse response = postService.getPostWithViewIncrement(postId);
+
+        // then
+        verify(postRepository, times(1)).incrementViews(postId);
+        assertThat(response.getViews()).isEqualTo(3L);
+        assertThat(response.getTitle()).isEqualTo("Post 1");
+        assertThat(response.getContent()).isEqualTo("Post content 1");
+    }
+
+    @Test
+    @DisplayName("없는 게시물 조회 시 예외 발생 테스트")
+    void shouldThrowExceptionWhenPostNotFound() {
+        // given
+        Long postId = 1L;
+        when(postRepository.findById(postId)).thenReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> postService.getPostWithViewIncrement(postId))
+                .isInstanceOf(PostNotFoundException.class);
+
+        verify(postRepository, never()).incrementViews(postId);
+    }
 }
