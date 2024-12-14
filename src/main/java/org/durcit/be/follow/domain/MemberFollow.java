@@ -16,11 +16,11 @@ public class MemberFollow {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "follower_id")
     private Member follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "followee_id")
     private Member followee;
 
     @Enumerated(EnumType.STRING)

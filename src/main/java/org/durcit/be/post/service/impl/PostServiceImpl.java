@@ -1,11 +1,14 @@
 package org.durcit.be.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.durcit.be.follow.dto.MemberFollowResponse;
+import org.durcit.be.follow.service.MemberFollowService;
 import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.dto.PostRegisterRequest;
 import org.durcit.be.post.dto.PostResponse;
 import org.durcit.be.post.dto.PostUpdateRequest;
 import org.durcit.be.post.repository.PostRepository;
+import org.durcit.be.post.service.PostNotificationService;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
@@ -28,6 +31,8 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final MemberService memberService;
+    private final MemberFollowService memberFollowService;
+    private final PostNotificationService postNotificationService;
 
     public List<PostResponse> getAllPosts() {
         return postRepository.findAll()
@@ -56,7 +61,12 @@ public class PostServiceImpl implements PostService {
         Member member = memberService.getById(SecurityUtil.getCurrentMemberId());
         Post post = PostRegisterRequest.toEntity(postRegisterRequest);
         post.setMember(member);
-        return PostResponse.fromEntity(postRepository.save(post));
+        PostResponse postResponse = PostResponse.fromEntity(postRepository.save(post));
+
+        List<MemberFollowResponse> followers = memberFollowService.getFollowers(member.getId());
+        postNotificationService.notifyFollowers(postResponse, followers);
+
+        return postResponse;
     }
 
     @Transactional
