@@ -22,4 +22,5 @@ public class ExceptionMessage {
     // upload
     public static final String S3_UPLOAD_ERROR = "S3 스토리지 업로드 중 문제가 발생하였습니다.";
     public static final String IMAGE_NOT_FOUND_ERROR = "해당 이미지를 찾을 수 없습니다.";
+    public static final String FILE_SIZE_EXCEED_MAXIMUM_LIMIT_ERROR = "파일 용량 제한을 벗어났습니다.";
 }

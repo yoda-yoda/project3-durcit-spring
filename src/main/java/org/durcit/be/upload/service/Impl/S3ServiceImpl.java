@@ -8,6 +8,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.post.service.PostService;
+import org.durcit.be.system.exception.upload.FileSizeExccedsMaximumLimitException;
 import org.durcit.be.system.exception.upload.ImageNotFoundException;
 import org.durcit.be.system.exception.upload.S3UploadException;
 import org.durcit.be.upload.domain.Images;
@@ -27,8 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static org.durcit.be.system.exception.ExceptionMessage.IMAGE_NOT_FOUND_ERROR;
-import static org.durcit.be.system.exception.ExceptionMessage.S3_UPLOAD_ERROR;
+import static org.durcit.be.system.exception.ExceptionMessage.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -45,6 +45,9 @@ public class S3ServiceImpl implements UploadService {
 
     @Value("${custom.s3.presigned-url.expiration-time}")
     private int presignedUrlExpirationMinutes;
+
+    @Value("${custom.s3.max-file-size}")
+    private long maxFileSize;
 
     @PostConstruct
     public void init() {
@@ -82,6 +85,7 @@ public class S3ServiceImpl implements UploadService {
         if (files != null && !files.isEmpty()) {
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
+                    validateFileSize(file);
                     try {
                         String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
 
@@ -107,6 +111,12 @@ public class S3ServiceImpl implements UploadService {
                     }
                 }
             }
+        }
+    }
+
+    private void validateFileSize(MultipartFile file) {
+        if (file.getSize() > maxFileSize) {
+            throw new FileSizeExccedsMaximumLimitException(FILE_SIZE_EXCEED_MAXIMUM_LIMIT_ERROR);
         }
     }
 
