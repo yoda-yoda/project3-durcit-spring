@@ -1,7 +1,10 @@
 package org.durcit.be.upload.service.Impl;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.post.service.PostService;
@@ -18,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URL;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,8 +40,16 @@ public class S3ServiceImpl implements UploadService {
     private final PostService postService;
     private final ImagesRepository imagesRepository;
 
-    @Value("${custom.s3.bucket-name}")
+    @Value("${custom.s3.bucket-name:burcit}")
     private String bucketName;
+
+    @Value("${custom.s3.presigned-url.expiration-time}")
+    private int presignedUrlExpirationMinutes;
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Bucket Name: " + bucketName);
+    }
 
     @Override
     @Transactional
@@ -77,7 +91,7 @@ public class S3ServiceImpl implements UploadService {
 
                         amazonS3.putObject(bucketName, uniqueFileName, file.getInputStream(), metadata);
 
-                        String s3Url = amazonS3.getUrl(bucketName, uniqueFileName).toString();
+                        String s3Url = generatePresignedUrl(bucketName, uniqueFileName);
 
                         Images image = Images.builder()
                                 .post(postService.getById(postId))
@@ -94,6 +108,15 @@ public class S3ServiceImpl implements UploadService {
                 }
             }
         }
+    }
+
+    private String generatePresignedUrl(String bucketName, String fileName) {
+        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, fileName)
+                .withMethod(HttpMethod.GET)
+                .withExpiration(Date.from(Instant.now().plusSeconds(presignedUrlExpirationMinutes * 60L)));
+
+        URL presignedUrl = amazonS3.generatePresignedUrl(request);
+        return presignedUrl.toString();
     }
 
     private String extractFileKeyFromUrl(String s3Url) {
