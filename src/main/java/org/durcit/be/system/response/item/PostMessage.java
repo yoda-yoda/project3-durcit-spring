@@ -14,4 +14,6 @@ public class PostMessage {
 
     public static final String GET_POST_LIKES_SUCCESS = "SUCCESS - 게시글 좋아요 수 조회 성공";
     public static final String TOGGLE_LIKE_SUCCESS = "SUCCESS - 좋아요 상태 변경 성공";
+
+    public static final String UPLOAD_FILES_SUCCESS = "SUCCESS - 파일 업로드 성공";
 }

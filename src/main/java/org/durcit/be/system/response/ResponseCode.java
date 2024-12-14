@@ -41,6 +41,9 @@ public enum ResponseCode {
 
     GET_POST_LIKES_SUCCESS(Status.OK, PostMessage.GET_POST_LIKES_SUCCESS),
     TOGGLE_LIKE_SUCCESS(Status.OK, PostMessage.TOGGLE_LIKE_SUCCESS),
+
+    // upload
+    UPLOAD_FILES_SUCCESS(Status.CREATED, PostMessage.UPLOAD_FILES_SUCCESS),
     ;
 
     private int httpStatus;

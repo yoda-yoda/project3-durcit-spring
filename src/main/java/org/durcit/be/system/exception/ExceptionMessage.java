@@ -18,4 +18,7 @@ public class ExceptionMessage {
 
     // post
     public static final String POST_NOT_FOUND_ERROR = "해당하는 포스트를 찾을 수 없습니다.";
+
+    // upload
+    public static final String S3_UPLOAD_ERROR = "S3 스토리지 업로드 중 문제가 발생하였습니다.";
 }

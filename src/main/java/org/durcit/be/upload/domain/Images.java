@@ -1,10 +1,11 @@
-package org.durcit.be.s3.domain;
+package org.durcit.be.upload.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.durcit.be.security.domian.Member;
+import org.durcit.be.post.domain.Post;
 
 import java.time.LocalDateTime;
 
@@ -24,10 +25,16 @@ public class Images {
 
     private String url;
 
+    private String originalFilename;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-
+    @Builder
+    public Images(Post post, String url) {
+        this.post = post;
+        this.url = url;
+    }
 
     @PrePersist
     protected void onCreate() {
