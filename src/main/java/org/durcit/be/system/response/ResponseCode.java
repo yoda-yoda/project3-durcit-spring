@@ -2,6 +2,7 @@ package org.durcit.be.system.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.durcit.be.system.response.item.FollowMessage;
 import org.durcit.be.system.response.item.Message;
 import org.durcit.be.system.response.item.PostMessage;
 import org.durcit.be.system.response.item.Status;
@@ -45,6 +46,11 @@ public enum ResponseCode {
     // upload
     UPLOAD_FILES_SUCCESS(Status.CREATED, PostMessage.UPLOAD_FILES_SUCCESS),
     UPDATE_FILES_SUCCESS(Status.NO_CONTENT, PostMessage.UPDATE_FILES_SUCCESS),
+
+    // member follow
+    TOGGLE_MEMBER_FOLLOW_SUCCESS(Status.NO_CONTENT, FollowMessage.TOGGLE_MEMBER_FOLLOW_SUCCESS),
+    GET_MEMBER_FOLLOWER_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWER_SUCCESS),
+    GET_MEMBER_FOLLOWEE_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWEE_SUCCESS),
     ;
 
     private int httpStatus;
