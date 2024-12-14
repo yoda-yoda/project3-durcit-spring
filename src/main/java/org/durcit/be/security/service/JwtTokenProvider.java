@@ -8,7 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.security.config.JwtConfiguration;
-import org.durcit.be.security.dao.TokenRepository;
+import org.durcit.be.security.repository.TokenRepository;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.domian.RefreshToken;
 import org.durcit.be.security.dto.KeyPair;

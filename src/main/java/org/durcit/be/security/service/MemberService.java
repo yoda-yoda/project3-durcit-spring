@@ -1,15 +1,10 @@
 package org.durcit.be.security.service;
 
 import lombok.RequiredArgsConstructor;
-import org.durcit.be.security.dao.MemberRepository;
-import org.durcit.be.security.dao.VerificationTokenRepository;
+import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.security.domian.Member;
-import org.durcit.be.security.domian.VerificationToken;
 import org.durcit.be.security.dto.MemberDetails;
-import org.durcit.be.security.dto.RegisterRequest;
-import org.durcit.be.system.exception.auth.DuplicateEmailException;
-import org.durcit.be.system.exception.auth.NotValidTokenException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.durcit.be.system.exception.auth.MemberNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -19,10 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 
-import static org.durcit.be.system.exception.ExceptionMessage.DUPLICATE_EMAIL_ERROR;
-import static org.durcit.be.system.exception.ExceptionMessage.NOT_VALID_TOKEN_ERROR;
+import static org.durcit.be.system.exception.ExceptionMessage.MEMBER_NOT_FOUND_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +30,29 @@ public class MemberService extends DefaultOAuth2UserService {
 
 
     public Member getById(Long id) {
-        return findById(id).orElseThrow(
-                () -> new NoSuchElementException("Member not found")
-        );
+        return findById(id).stream()
+                .filter(Member::isVerified)
+                .findFirst().orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
     }
+
+    public boolean hasRole(Long memberId, String[] roles) {
+        return memberRepository.findById(memberId)
+                .filter(Member::isVerified)
+                .map(member -> {
+                    for (String role : roles) {
+                        if (member.getRole().equals(role)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }).orElse(false);
+    }
+
+
+    public boolean isPresentById(Long id) {
+        return findById(id).filter(Member::isVerified).isPresent();
+    }
+
 
     public MemberDetails loadMemberDetails(Long id) {
         return MemberDetails.from(getById(id));

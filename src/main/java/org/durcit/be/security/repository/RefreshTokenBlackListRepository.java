@@ -1,4 +1,4 @@
-package org.durcit.be.security.dao;
+package org.durcit.be.security.repository;
 
 
 import org.durcit.be.security.domian.RefreshToken;
