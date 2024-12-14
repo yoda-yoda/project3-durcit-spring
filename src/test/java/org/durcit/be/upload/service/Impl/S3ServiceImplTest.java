@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import jakarta.annotation.PostConstruct;
 import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.service.PostService;
+import org.durcit.be.system.exception.upload.FileSizeExccedsMaximumLimitException;
 import org.durcit.be.system.exception.upload.ImageNotFoundException;
 import org.durcit.be.upload.domain.Images;
 import org.durcit.be.upload.dto.UploadRequest;
@@ -225,6 +226,26 @@ class S3ServiceImplTest {
         assertThat(savedImages.size()).isEqualTo(2);
         assertThat(savedImages.get(0).getUrl()).contains("image1.png");
         assertThat(savedImages.get(1).getUrl()).contains("image2.png");
+    }
+
+    @Test
+    @DisplayName("업로드 파일 크기가 제한을 초과하면 예외 발생")
+    void upload_shouldThrowExceptionIfFileSizeExceedsLimit() {
+        // given
+        MockMultipartFile oversizedFile = new MockMultipartFile(
+                "file",
+                "large-image.png",
+                "image/png",
+                new byte[(int) (10485760 + 1)] // 제한 크기 + 1 바이트
+        );
+
+        UploadRequest request = UploadRequest.builder()
+                .postId(1L)
+                .files(List.of(oversizedFile))
+                .build();
+
+        // when & then
+        assertThrows(FileSizeExccedsMaximumLimitException.class, () -> s3Service.upload(request));
     }
 
 }
