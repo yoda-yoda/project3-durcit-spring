@@ -44,6 +44,7 @@ public enum ResponseCode {
 
     // upload
     UPLOAD_FILES_SUCCESS(Status.CREATED, PostMessage.UPLOAD_FILES_SUCCESS),
+    UPDATE_FILES_SUCCESS(Status.NO_CONTENT, PostMessage.UPDATE_FILES_SUCCESS),
     ;
 
     private int httpStatus;

@@ -31,9 +31,10 @@ public class Images {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Images(Post post, String url) {
+    public Images(Post post, String url, String originalFilename) {
         this.post = post;
         this.url = url;
+        this.originalFilename = originalFilename;
     }
 
     @PrePersist
