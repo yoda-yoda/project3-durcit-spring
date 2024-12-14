@@ -27,7 +27,7 @@ public class ApiLoggingAspect {
     @Around("execution(* org.durcit.be..*Controller.*(..))")
     public Object logApiRequest(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        Long memberId = SecurityUtil.getCurrentMemberIdOrNull();
+        String memberId = SecurityUtil.getCurrentMemberIdOrNull();
         String endpoint = request.getRequestURI();
         String method = request.getMethod();
         String controller = joinPoint.getTarget().getClass().getSimpleName();
@@ -51,7 +51,7 @@ public class ApiLoggingAspect {
         }
 
         Log log = Log.builder()
-                .memberId(memberId == null ? null : memberId.toString())
+                .memberId(memberId)
                 .method(method)
                 .endpoint(endpoint)
                 .controller(controller)

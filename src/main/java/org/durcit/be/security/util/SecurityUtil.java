@@ -17,8 +17,8 @@ public class SecurityUtil {
         return Long.parseLong(authentication.getName());
     }
 
-    public static Long getCurrentMemberIdOrNull() {
+    public static String getCurrentMemberIdOrNull() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication == null ? null : Long.parseLong(authentication.getName());
+        return authentication == null ? null : authentication.getName();
     }
 }
