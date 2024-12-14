@@ -31,7 +31,8 @@ public class Images {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Images(Post post, String url, String originalFilename) {
+    public Images(Long id, Post post, String url, String originalFilename) {
+        this.id = id;
         this.post = post;
         this.url = url;
         this.originalFilename = originalFilename;
