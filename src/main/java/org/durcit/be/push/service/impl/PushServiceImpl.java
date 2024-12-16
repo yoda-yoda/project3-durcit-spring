@@ -20,6 +20,7 @@ public class PushServiceImpl implements PushService {
 
     private final PushRepository pushRepository;
 
+    @Transactional
     public void createPush(Push push) {
         pushRepository.save(push);
     }
