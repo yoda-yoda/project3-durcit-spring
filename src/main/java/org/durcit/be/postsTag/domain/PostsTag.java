@@ -28,22 +28,23 @@ public class PostsTag {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne // Posts는 지금 임의로 만든 클래스.
+    @ManyToOne // 현재 Posts는 포스트태그 엔티티를 만들기위해서 임의로 만든 클래스임.
     private Posts posts;
+
+
 
     // 빌더패턴
     @Builder
-    public PostsTag(String contents, boolean deleted, Posts posts) {
+    public PostsTag(String contents, Posts posts) {
         this.contents = contents;
-        this.deleted = deleted;
-        this.posts = posts;
+        this.deleted = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.deleted = false;
+        this.posts = posts;
     }
 
 
-    // Dto에 @Valid 하기.
+
 
 
 

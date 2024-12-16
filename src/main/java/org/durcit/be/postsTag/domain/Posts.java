@@ -24,9 +24,12 @@ public class Posts {
 
     private String title;
     private String content;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private Long views;
+
+    private boolean deleted = false;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "posts")
     private List<PostsTag> postsTagList;

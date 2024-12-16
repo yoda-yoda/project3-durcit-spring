@@ -3,6 +3,7 @@ package org.durcit.be.system.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.durcit.be.system.response.item.Message;
+import org.durcit.be.system.response.item.PostsTagMessage;
 import org.durcit.be.system.response.item.Status;
 
 @Getter
@@ -29,7 +30,17 @@ public enum ResponseCode {
     LOGIN_FAIL(Status.BAD_REQUEST, Message.LOGIN_FAIL),
     TOKEN_EXPIRED(Status.UNAUTHORIZED, Message.TOKEN_EXPIRED),
     TOKEN_ERROR(Status.UNAUTHORIZED, Message.TOKEN_ERROR),
+
+
+
+    // PostsTag // 따라만들어봄
+    GET_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.GET_POSTS_TAG_SUCCESS),
+    CREATE_POSTS_TAG_SUCCESS(Status.CREATED, PostsTagMessage.CREATE_POSTS_TAG_SUCCESS),
+    UPDATE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.UPDATE_POSTS_TAG_SUCCESS),
+    DELETE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.DELETE_POSTS_TAG_SUCCESS),
     ;
+
+
 
     private int httpStatus;
     private String message;
