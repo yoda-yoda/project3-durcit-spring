@@ -51,6 +51,9 @@ public enum ResponseCode {
     TOGGLE_MEMBER_FOLLOW_SUCCESS(Status.NO_CONTENT, FollowMessage.TOGGLE_MEMBER_FOLLOW_SUCCESS),
     GET_MEMBER_FOLLOWER_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWER_SUCCESS),
     GET_MEMBER_FOLLOWEE_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWEE_SUCCESS),
+
+    // push
+    GET_PUSHS_SUCCESS(Status.OK, PostMessage.GET_PUSHS_SUCCESS),
     ;
 
     private int httpStatus;

@@ -17,4 +17,6 @@ public class PostMessage {
 
     public static final String UPLOAD_FILES_SUCCESS = "SUCCESS - 파일 업로드 성공";
     public static final String UPDATE_FILES_SUCCESS = "SUCCESS - 파일 수정 성공";
+
+    public static final String GET_PUSHS_SUCCESS = "SUCCESS - 푸시 알람 조회 성공";
 }
