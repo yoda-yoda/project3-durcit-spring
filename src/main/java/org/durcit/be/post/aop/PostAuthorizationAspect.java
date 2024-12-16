@@ -1,4 +1,4 @@
-package org.durcit.be.system.aop;
+package org.durcit.be.post.aop;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.security.service.MemberService;
-import org.durcit.be.system.aop.annotations.PostRequireAuthorization;
+import org.durcit.be.post.aop.annotations.PostRequireAuthorization;
 import org.durcit.be.system.exception.auth.InvalidUserException;
 import org.durcit.be.system.exception.auth.UnauthorizedAccessException;
 import org.springframework.security.core.Authentication;

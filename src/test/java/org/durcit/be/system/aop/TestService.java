@@ -1,7 +1,7 @@
 package org.durcit.be.system.aop;
 
-import org.durcit.be.system.aop.annotations.PostRequireAuthorization;
-import org.durcit.be.system.aop.annotations.RequireCurrentMemberId;
+import org.durcit.be.post.aop.annotations.PostRequireAuthorization;
+import org.durcit.be.post.aop.annotations.RequireCurrentMemberId;
 import org.springframework.stereotype.Service;
 
 @Service

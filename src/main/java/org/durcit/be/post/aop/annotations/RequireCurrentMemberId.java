@@ -1,4 +1,4 @@
-package org.durcit.be.system.aop.annotations;
+package org.durcit.be.post.aop.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -9,11 +9,13 @@ import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.domian.RefreshToken;
 import org.durcit.be.security.domian.RefreshTokenBlackList;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class RefreshTokenRepositoryAdapter implements TokenRepository {
 
     private final RefreshTokenRepository refreshTokenRepository;

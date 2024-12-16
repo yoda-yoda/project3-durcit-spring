@@ -1,4 +1,4 @@
-package org.durcit.be.system.aop;
+package org.durcit.be.post.aop;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.durcit.be.security.service.MemberService;
 import org.durcit.be.security.util.SecurityUtil;
-import org.durcit.be.system.aop.annotations.RequireCurrentMemberId;
+import org.durcit.be.post.aop.annotations.RequireCurrentMemberId;
 import org.durcit.be.system.exception.auth.MemberNotFoundException;
 import org.springframework.stereotype.Component;
 
