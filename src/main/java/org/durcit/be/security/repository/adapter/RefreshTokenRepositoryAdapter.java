@@ -1,10 +1,10 @@
-package org.durcit.be.security.dao.adapter;
+package org.durcit.be.security.repository.adapter;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.durcit.be.security.dao.RefreshTokenBlackListRepository;
-import org.durcit.be.security.dao.RefreshTokenRepository;
-import org.durcit.be.security.dao.TokenRepository;
+import org.durcit.be.security.repository.RefreshTokenBlackListRepository;
+import org.durcit.be.security.repository.RefreshTokenRepository;
+import org.durcit.be.security.repository.TokenRepository;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.domian.RefreshToken;
 import org.durcit.be.security.domian.RefreshTokenBlackList;
