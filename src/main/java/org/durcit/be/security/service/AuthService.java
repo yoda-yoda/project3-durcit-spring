@@ -1,6 +1,8 @@
 package org.durcit.be.security.service;
 
 import lombok.RequiredArgsConstructor;
+import org.durcit.be.security.domian.RefreshToken;
+import org.durcit.be.security.dto.RefreshTokenRequest;
 import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.security.repository.VerificationTokenRepository;
 import org.durcit.be.security.domian.Member;
@@ -8,6 +10,8 @@ import org.durcit.be.security.domian.VerificationToken;
 import org.durcit.be.security.dto.KeyPair;
 import org.durcit.be.security.dto.LoginRequest;
 import org.durcit.be.security.dto.RegisterRequest;
+import org.durcit.be.security.repository.adapter.RefreshTokenRepositoryAdapter;
+import org.durcit.be.security.util.SecurityUtil;
 import org.durcit.be.system.exception.auth.DuplicateEmailException;
 import org.durcit.be.system.exception.auth.EmailNotVerifiedException;
 import org.durcit.be.system.exception.auth.InvalidUsernamePasswordException;
@@ -30,6 +34,7 @@ public class AuthService {
     private final EmailService emailService;
     private final VerificationTokenRepository tokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepositoryAdapter refreshTokenRepository;
 
     @Transactional
     public void register(RegisterRequest request) {
@@ -88,4 +93,14 @@ public class AuthService {
         return jwtTokenProvider.generateKeyPair(member);
     }
 
+    public void addRefreshTokenToBlacklist(RefreshTokenRequest refreshToken) {
+        RefreshToken token = new RefreshToken(
+                refreshToken.getRefreshToken(), memberRepository.getReferenceById(SecurityUtil.getCurrentMemberId())
+        );
+        if (refreshTokenRepository.isBannedRefToken(token)){
+            refreshTokenRepository.appendBlackList(token);
+            return;
+        }
+        throw new NotValidTokenException(NOT_VALID_TOKEN_ERROR);
+    }
 }

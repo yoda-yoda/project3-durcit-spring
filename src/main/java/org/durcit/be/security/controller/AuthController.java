@@ -1,8 +1,10 @@
 package org.durcit.be.security.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.security.dto.KeyPair;
 import org.durcit.be.security.dto.LoginRequest;
+import org.durcit.be.security.dto.RefreshTokenRequest;
 import org.durcit.be.security.service.AuthService;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +25,12 @@ public class AuthController {
         KeyPair keyPair = authService.login(loginRequest);
         return ResponseEntity.ok(keyPair);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody @Valid RefreshTokenRequest refreshTokenRequest) {
+        authService.addRefreshTokenToBlacklist(refreshTokenRequest);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
