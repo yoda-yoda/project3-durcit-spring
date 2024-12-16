@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.durcit.be.security.dto.KeyPair;
 import org.durcit.be.security.dto.LoginRequest;
 import org.durcit.be.security.service.AuthService;
+import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,4 +23,5 @@ public class AuthController {
         KeyPair keyPair = authService.login(loginRequest);
         return ResponseEntity.ok(keyPair);
     }
+
 }

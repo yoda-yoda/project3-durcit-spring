@@ -5,6 +5,7 @@ import lombok.*;
 import org.durcit.be.security.domian.Member;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

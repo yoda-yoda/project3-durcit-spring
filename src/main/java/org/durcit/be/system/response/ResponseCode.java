@@ -15,6 +15,8 @@ public enum ResponseCode {
     NOT_FOUND_USER(Status.NOT_FOUND, Message.NOT_FOUND_USER),
     DUPLICATE_USER(Status.BAD_REQUEST, Message.DUPLICATE_USER),
 
+    VERIFY_EMAIL_SUCCESS(Status.NO_CONTENT, Message.VERIFY_EMAIL_SUCCESS),
+
     // 기타 성공 응답
     READ_IS_LOGIN(Status.OK, Message.READ_IS_LOGIN),
     LOGIN_SUCCESS(Status.OK, Message.LOGIN_SUCCESS),
