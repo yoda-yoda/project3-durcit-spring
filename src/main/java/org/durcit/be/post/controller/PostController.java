@@ -1,5 +1,6 @@
 package org.durcit.be.post.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.post.dto.*;
 import org.durcit.be.post.service.PostService;
@@ -26,11 +27,9 @@ public class PostController {
     }
 
     @GetMapping("/pages")
-    public ResponseEntity<ResponseData<Page<PostCardResponse>>> getPostsByPage(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
-    ) {
-        Page<PostCardResponse> postsByPage = postService.getPostsByPage(PageRequest.of(page, size));
+    public ResponseEntity<ResponseData<Page<PostCardResponse>>> getPostsByPage(@Valid PostPageRequest postPageRequest) {
+        PageRequest pageRequest = PageRequest.of(postPageRequest.getPage(), postPageRequest.getSize());
+        Page<PostCardResponse> postsByPage = postService.getPostsByPage(pageRequest, postPageRequest.getCategory());
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postsByPage);
     }
 

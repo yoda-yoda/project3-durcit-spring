@@ -19,6 +19,6 @@ public interface PostService {
     public void updatePost(Long postId, PostUpdateRequest postUpdateRequest);
     public void deletePost(Long postId);
     public PostResponse getPostWithViewIncrement(Long postId);
-    public Page<PostCardResponse> getPostsByPage(Pageable pageable);
+    public Page<PostCardResponse> getPostsByPage(Pageable pageable, String category);
 
 }

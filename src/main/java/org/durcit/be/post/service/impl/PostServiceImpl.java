@@ -18,7 +18,9 @@ import org.durcit.be.post.aop.annotations.PostRequireAuthorization;
 import org.durcit.be.post.aop.annotations.RequireCurrentMemberId;
 import org.durcit.be.system.exception.post.PostNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,9 +60,19 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));
     }
 
-    public Page<PostCardResponse> getPostsByPage(Pageable pageable) {
-        return postRepository.findAll(pageable)
+    public Page<PostCardResponse> getPostsByPage(Pageable pageable, String category) {
+        Sort sort = getSortByCategory(category);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        return postRepository.findAll(sortedPageable)
                 .map(PostCardResponse::fromEntity);
+    }
+
+    private Sort getSortByCategory(String category) {
+        return switch (category.toLowerCase()) {
+            case "best" -> Sort.by(Sort.Order.desc("views")); // 조회수 많은 순
+            case "hot" -> Sort.by(Sort.Order.desc("likeCount"), Sort.Order.desc("commentCount")); // 좋아요 + 댓글 많은 순
+            default -> Sort.by(Sort.Order.desc("createdAt")); // 신규글 순
+        };
     }
 
     @Transactional
