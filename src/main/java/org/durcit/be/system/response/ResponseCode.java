@@ -11,6 +11,7 @@ import org.durcit.be.system.response.item.Status;
 @AllArgsConstructor
 public enum ResponseCode {
 
+    GET_USER_PROFILE_SUCCESS(Status.OK, Message.READ_USER),
     CREATED_USER(Status.CREATED, Message.CREATED_USER),
     NOT_FOUND_USER(Status.NOT_FOUND, Message.NOT_FOUND_USER),
     DUPLICATE_USER(Status.BAD_REQUEST, Message.DUPLICATE_USER),
