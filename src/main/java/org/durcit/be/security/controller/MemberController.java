@@ -24,8 +24,8 @@ public class MemberController {
     private final AuthService authService;
     private final MemberRegisterFacadeService memberRegisterFacadeService;
 
-    @PostMapping("/register")
-    public ResponseEntity<ResponseData> memberRegister(@Valid @RequestBody MemberRegisterCombinedRequest request) {
+    @PostMapping(path = "/register", consumes = {"multipart/form-data"})
+    public ResponseEntity<ResponseData> memberRegister(@Valid @ModelAttribute MemberRegisterCombinedRequest request) {
         memberRegisterFacadeService.registerMemberWithProfileImage(request);
         return ResponseData.toResponseEntity(ResponseCode.CREATED_USER);
     }

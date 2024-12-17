@@ -23,6 +23,7 @@ public class Images {
     @JoinColumn(name = "posts_id")
     private Post post;
 
+    @Column(columnDefinition = "TEXT")
     private String url;
 
     private String originalFilename;

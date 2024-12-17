@@ -33,6 +33,7 @@ public class Member {
     private boolean isVerified;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     private String profileImage;
 
     private LocalDateTime signedAt;

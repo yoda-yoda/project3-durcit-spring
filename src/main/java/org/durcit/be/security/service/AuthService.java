@@ -43,12 +43,16 @@ public class AuthService {
             throw new DuplicateEmailException(DUPLICATE_EMAIL_ERROR);
         }
 
+        if (profileImageUrl == null) {
+            profileImageUrl = ProfileImageUtil.generateRandomProfileImage(request.getEmail());
+        }
+
         Member member = Member.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname().isBlank() ? generateUniqueNickname() : request.getNickname())
                 .isVerified(false)
-                .profileImage(profileImageUrl.isBlank() ? ProfileImageUtil.generateRandomProfileImage(request.getEmail()) : profileImageUrl)
+                .profileImage(profileImageUrl)
                 .build();
 
         memberRepository.save(member);
