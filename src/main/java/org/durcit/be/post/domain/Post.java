@@ -30,7 +30,7 @@ public class Post {
     private Long views;
 
     @Setter
-    private boolean deleted = false;
+    private boolean deleted;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
