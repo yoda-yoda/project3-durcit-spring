@@ -1,12 +1,12 @@
 package org.durcit.be.post.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.durcit.be.post.dto.PostRegisterRequest;
-import org.durcit.be.post.dto.PostResponse;
-import org.durcit.be.post.dto.PostUpdateRequest;
+import org.durcit.be.post.dto.*;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +23,15 @@ public class PostController {
     @GetMapping
     public ResponseEntity<ResponseData<List<PostResponse>>> getPosts() {
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postService.getAllPosts());
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<ResponseData<Page<PostCardResponse>>> getPostsByPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        Page<PostCardResponse> postsByPage = postService.getPostsByPage(PageRequest.of(page, size));
+        return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postsByPage);
     }
 
     @PostMapping("/members")

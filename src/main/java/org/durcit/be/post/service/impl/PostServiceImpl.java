@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.durcit.be.follow.dto.MemberFollowResponse;
 import org.durcit.be.follow.service.MemberFollowService;
 import org.durcit.be.post.domain.Post;
+import org.durcit.be.post.dto.PostCardResponse;
 import org.durcit.be.post.dto.PostRegisterRequest;
 import org.durcit.be.post.dto.PostResponse;
 import org.durcit.be.post.dto.PostUpdateRequest;
@@ -16,6 +17,8 @@ import org.durcit.be.security.util.SecurityUtil;
 import org.durcit.be.post.aop.annotations.PostRequireAuthorization;
 import org.durcit.be.post.aop.annotations.RequireCurrentMemberId;
 import org.durcit.be.system.exception.post.PostNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +56,11 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(postId)
                 .filter(post -> !post.isDeleted())
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));
+    }
+
+    public Page<PostCardResponse> getPostsByPage(Pageable pageable) {
+        return postRepository.findAll(pageable)
+                .map(PostCardResponse::fromEntity);
     }
 
     @Transactional

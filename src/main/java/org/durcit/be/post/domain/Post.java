@@ -32,6 +32,11 @@ public class Post {
     @Setter
     private boolean deleted;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Like> likes;
+
+    private String postThumbnail;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
