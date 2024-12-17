@@ -3,6 +3,8 @@ package org.durcit.be.security.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.durcit.be.facade.dto.MemberRegisterCombinedRequest;
+import org.durcit.be.facade.service.MemberRegisterFacadeService;
 import org.durcit.be.security.dto.RegisterRequest;
 import org.durcit.be.security.dto.TokenRequest;
 import org.durcit.be.security.service.AuthService;
@@ -20,10 +22,11 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final AuthService authService;
+    private final MemberRegisterFacadeService memberRegisterFacadeService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseData> memberRegister(@Valid @RequestBody RegisterRequest request) {
-        authService.register(request, null);
+    public ResponseEntity<ResponseData> memberRegister(@Valid @RequestBody MemberRegisterCombinedRequest request) {
+        memberRegisterFacadeService.registerMemberWithProfileImage(request);
         return ResponseData.toResponseEntity(ResponseCode.CREATED_USER);
     }
 

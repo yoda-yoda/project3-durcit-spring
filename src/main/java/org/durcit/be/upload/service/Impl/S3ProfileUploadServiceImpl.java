@@ -60,7 +60,7 @@ public class S3ProfileUploadServiceImpl implements ProfileUploadService {
 
             return generatePresignedUrl(bucketName, PROFILE_IMAGE_FOLDER + uniqueFileName);
 
-        } catch (IOException e) {
+        } catch (IOException | RuntimeException e) {
             log.error("Failed to upload profile image", e);
             throw new S3UploadException(S3_UPLOAD_ERROR);
         }
