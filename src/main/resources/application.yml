@@ -1,16 +1,26 @@
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    template:
+      exchange: postExchange
   mail:
     host: smtp.gmail.com
-    port: 587
+    port: 465
     username: durcit4@gmail.com
-    password: ehsaxcskzwjitzxq
-    # ztgxissjeaoecyfg
+    password: gssghdohyuurxmfc
     properties:
       mail:
         smtp:
+          ssl:
+            enable: true
           auth: true
           starttls:
             enable: true
+    protocol: smtp
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/durcit
@@ -68,7 +78,22 @@ spring:
             scope:
               - profile_nickname
 
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAR7HWYAB2MV5IGNMY
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 custom:
+  s3:
+    max-file-size: 10485760 #10MB
+    presigned-url:
+      expiration-time: 30
+    bucket-name: burcit
   email:
     verification-url: http://localhost:8080/auth/verify?token=
   jwt:

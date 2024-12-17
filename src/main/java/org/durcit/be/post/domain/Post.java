@@ -2,9 +2,12 @@ package org.durcit.be.post.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.durcit.be.postsTag.domain.PostsTag;
 import org.durcit.be.security.domian.Member;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +36,9 @@ public class Post {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "post") //    유빈님것과 merge 후 postsTag와의 연관관계때문에 새로 추가함.
+    private List<PostsTag> postsTagList;
 
     @Builder
     public Post(Long id, Member member, String title, String content, Long views) {
