@@ -3,6 +3,7 @@ package org.durcit.be.post.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.durcit.be.security.domian.Member;
+import org.durcit.be.upload.domain.Images;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +36,9 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Like> likes;
 
-    private String postThumbnail;
+    @Setter
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Images> images;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

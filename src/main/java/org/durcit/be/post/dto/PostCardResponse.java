@@ -48,8 +48,8 @@ public class PostCardResponse {
                 .author(post.getMember().getUsername())
                 .views(post.getViews())
                 .likeCount((long) post.getLikes().size())
-                .hasImage(post.getPostThumbnail() != null)
-                .postThumbnail(post.getPostThumbnail())
+                .hasImage(!post.getImages().isEmpty())
+                .postThumbnail(post.getImages().getFirst().getUrl())
                 .createdAt(TimeAgoUtil.formatElapsedTime(post.getUpdatedAt()))
                 .build();
     }

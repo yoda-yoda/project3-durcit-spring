@@ -49,11 +49,6 @@ public class S3ServiceImpl implements UploadService {
     @Value("${custom.s3.max-file-size}")
     private long maxFileSize;
 
-    @PostConstruct
-    public void init() {
-        System.out.println("Bucket Name: " + bucketName);
-    }
-
     @Override
     @Transactional
     public void upload(UploadRequest request) {
@@ -81,7 +76,8 @@ public class S3ServiceImpl implements UploadService {
         uploadFiles(request.getPostId(), request.getNewFiles());
     }
 
-    private void uploadFiles(Long postId, List<MultipartFile> files) {
+    @Transactional
+    protected void uploadFiles(Long postId, List<MultipartFile> files) {
         if (files != null && !files.isEmpty()) {
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
