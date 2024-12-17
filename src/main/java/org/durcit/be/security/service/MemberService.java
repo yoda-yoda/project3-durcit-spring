@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.util.ProfileImageUtil;
 import org.durcit.be.system.exception.auth.MemberNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -75,6 +76,7 @@ public class MemberService extends DefaultOAuth2UserService {
                             .username(memberDetails.getName())
                             .nickname(generateUniqueNickname())
                             .isVerified(true)
+                            .profileImage(ProfileImageUtil.generateRandomProfileImage(memberDetails.getName()))
                             .build();
                     return memberRepository.save(savedMember);
                 }

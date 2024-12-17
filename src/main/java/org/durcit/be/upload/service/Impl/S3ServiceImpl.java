@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.durcit.be.system.exception.ExceptionMessage.*;
+import static org.durcit.be.upload.util.UploadUtil.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -45,9 +46,6 @@ public class S3ServiceImpl implements UploadService {
 
     @Value("${custom.s3.presigned-url.expiration-time}")
     private int presignedUrlExpirationMinutes;
-
-    @Value("${custom.s3.max-file-size}")
-    private long maxFileSize;
 
     @Override
     @Transactional
@@ -110,12 +108,6 @@ public class S3ServiceImpl implements UploadService {
         }
     }
 
-    private void validateFileSize(MultipartFile file) {
-        if (file.getSize() > maxFileSize) {
-            throw new FileSizeExccedsMaximumLimitException(FILE_SIZE_EXCEED_MAXIMUM_LIMIT_ERROR);
-        }
-    }
-
     private String generatePresignedUrl(String bucketName, String fileName) {
         GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, fileName)
                 .withMethod(HttpMethod.GET)
@@ -125,11 +117,4 @@ public class S3ServiceImpl implements UploadService {
         return presignedUrl.toString();
     }
 
-    private String extractFileKeyFromUrl(String s3Url) {
-        return s3Url.substring(s3Url.lastIndexOf("/") + 1);
-    }
-
-    private String generateUniqueFileName(String originalFilename) {
-        return UUID.randomUUID().toString() + "_" + originalFilename;
-    }
 }

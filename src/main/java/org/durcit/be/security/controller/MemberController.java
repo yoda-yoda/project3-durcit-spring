@@ -23,7 +23,7 @@ public class MemberController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseData> memberRegister(@Valid @RequestBody RegisterRequest request) {
-        authService.register(request);
+        authService.register(request, null);
         return ResponseData.toResponseEntity(ResponseCode.CREATED_USER);
     }
 

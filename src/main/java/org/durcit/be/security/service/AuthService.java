@@ -11,6 +11,7 @@ import org.durcit.be.security.dto.KeyPair;
 import org.durcit.be.security.dto.LoginRequest;
 import org.durcit.be.security.dto.RegisterRequest;
 import org.durcit.be.security.repository.adapter.RefreshTokenRepositoryAdapter;
+import org.durcit.be.security.util.ProfileImageUtil;
 import org.durcit.be.security.util.SecurityUtil;
 import org.durcit.be.system.exception.auth.DuplicateEmailException;
 import org.durcit.be.system.exception.auth.EmailNotVerifiedException;
@@ -37,7 +38,7 @@ public class AuthService {
     private final RefreshTokenRepositoryAdapter refreshTokenRepository;
 
     @Transactional
-    public void register(RegisterRequest request) {
+    public void register(RegisterRequest request, String profileImageUrl) {
         if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new DuplicateEmailException(DUPLICATE_EMAIL_ERROR);
         }
@@ -47,6 +48,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname().isBlank() ? generateUniqueNickname() : request.getNickname())
                 .isVerified(false)
+                .profileImage(profileImageUrl.isBlank() ? ProfileImageUtil.generateRandomProfileImage(request.getEmail()) : profileImageUrl)
                 .build();
 
         memberRepository.save(member);
