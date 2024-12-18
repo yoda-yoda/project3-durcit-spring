@@ -11,6 +11,7 @@ import org.durcit.be.postsTag.dto.PostsTagResponse;
 import org.durcit.be.postsTag.repository.PostsTagRepository;
 import org.durcit.be.system.exception.tag.OptionalEmptyPostsTagFindByIdException;
 import org.hibernate.dialect.TiDBDialect;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -340,7 +341,7 @@ class PostsTagServiceTest {
 
     @Transactional
     @Test
-    @DisplayName("getPostsTagListByPostId 메서드 (Post pk를 기준으로 Post 엔티티를 조회하고, 해당 엔티티 내부의 연관관계인 PostsTagList를 뽑아서 반환하는 메서드) 작동 테스트")
+    @DisplayName("getPostsTagListByPostId 메서드 (Post pk를 기준으로 Post 엔티티를 조회하고, 해당 엔티티 내부의 연관관계인 PostsTagList를 뽑아서 소프트 딜리트든 아니든 반환하는 메서드) 작동 테스트")
     void getPostsTagListByPostId_method_test() throws Exception {
         // given
 
@@ -411,6 +412,88 @@ class PostsTagServiceTest {
         //  트랜젝션이 한번 끝나야 Post 필드의 태그리스트가 자동 주입되기때문인듯하다.
 
     }
+
+
+    @Test
+    @DisplayName("getNoneDeletedPostsTagListByPostId 메서드 테스트")
+    void getNoneDeletedPostsTagListByPostId_method_test() throws Exception {
+        // given
+
+//        Post post1 = Post.builder()
+//                .content("내용1")
+//                .views(1L)
+//                .title("제목1")
+//                .build();
+//
+//        Post post2 = Post.builder()
+//                .content("내용2")
+//                .views(1L)
+//                .title("제목2")
+//                .build();
+//
+//        Post post3 = Post.builder()
+//                .content("내용3")
+//                .views(1L)
+//                .title("제목3")
+//                .build();
+//
+//        postRepository.save(post1);
+//        postRepository.save(post2);
+//        postRepository.save(post3);
+//
+//        PostsTag tag1 = PostsTag.builder()
+//                .contents("1바람의나라")
+//                .post(post2)
+//                .build();
+//
+//        PostsTag tag2 = PostsTag.builder()
+//                .contents("2메이플스토리")
+//                .post(post2)
+//                .build();
+//
+//        PostsTag tag3 = PostsTag.builder()
+//                .contents("3메이플스토리")
+//                .post(post1)
+//                .build();
+//
+//        postsTagRepository.save(tag1);
+//        postsTagRepository.save(tag2);
+//        postsTagRepository.save(tag3);
+
+//        List<PostsTag> list1 = postsTagService.getNoneDeletedPostsTagListByPostId(2L);
+//
+//        for (PostsTag postsTag : list1) {
+//            log.info("postsTag.getContents() = {}", postsTag.getContents());
+//        }
+//
+//        postsTagService.deleteOnePostsTagByPostsTagId(2L);
+
+    	  // when
+//        List<PostsTag> list2 = postsTagService.getNoneDeletedPostsTagListByPostId(2L);
+//
+//        log.info("list2.get(0).getContents() = {}", list2.get(0).getContents());
+//        log.info("list2.get(0).getId() = {}", list2.get(0).getId());
+//
+//        // then
+//        assertThat(list2.size()).isEqualTo(1);
+//        log.info("============================");
+//        log.info("list2.size() = {}", list2.size());
+//          // 결과: ok
+        
+        
+        
+        //지우기
+      //  postsTagService.deleteOnePostsTagByPostsTagId(1L);
+
+
+
+
+
+    }
+
+
+
+
 
     @Test
     @DisplayName("getPostsTagResponseListByPostId 메서드 (위 메서드처럼 PostsTagList 를 뽑되, 거기서 한번더 Response로 변환하여 반환해주는 메서드) 작동 테스트")
@@ -753,23 +836,26 @@ class PostsTagServiceTest {
 //        postsTagRepository.save(tag9);
 //        postsTagRepository.save(tag10);
 
-        List<PostsTagRegisterRequest> list = new ArrayList<>();
-        PostsTagRegisterRequest request1 = new PostsTagRegisterRequest();
-        PostsTagRegisterRequest request2 = new PostsTagRegisterRequest();
-        PostsTagRegisterRequest request3 = new PostsTagRegisterRequest();
 
-        request1.setContents("어둠의전설");
-        request2.setContents("바람의나라");
-        request3.setContents("메이플스토리");
+        // =================
 
-        list.add(request1);
-        list.add(request2);
-        list.add(request3);
-
-        // when
-
-    	  // then
-      //  postsTagService.updatePostsTag(list, 6L);
+//        List<PostsTagRegisterRequest> list = new ArrayList<>();
+//        PostsTagRegisterRequest request1 = new PostsTagRegisterRequest();
+//        PostsTagRegisterRequest request2 = new PostsTagRegisterRequest();
+//        PostsTagRegisterRequest request3 = new PostsTagRegisterRequest();
+//
+//        request1.setContents("어둠의전설");
+//        request2.setContents("바람의나라");
+//        request3.setContents("메이플스토리");
+//
+//        list.add(request1);
+//        list.add(request2);
+//        list.add(request3);
+//
+//        // when
+//
+//    	  // then
+//        postsTagService.updatePostsTag(list, 6L);
 
 
         // 결과는 ok. 디비에서 직접 확인해봤다.
@@ -896,7 +982,131 @@ class PostsTagServiceTest {
         // 결과ok.
 
     }
-    
+
+
+    @Test
+    @DisplayName("deletePostsTagsByPostId 메서드 테스트")
+    void deletePostsTagsByPostId_method_test() throws Exception {
+         // given
+//        Post post1 = Post.builder()
+//                .content("내용1")
+//                .views(1L)
+//                .title("제목1")
+//                .build();
+//
+//        Post post2 = Post.builder()
+//                .content("내용2")
+//                .views(1L)
+//                .title("제목2")
+//                .build();
+//
+//
+//        Post post3 = Post.builder()
+//                .content("내용3")
+//                .views(1L)
+//                .title("제목3")
+//                .build();
+//
+//
+//        postRepository.save(post1);
+//        postRepository.save(post2);
+//        postRepository.save(post3);
+//
+//        PostsTag tag1 = PostsTag.builder()
+//                .contents("1바람의나라")
+//                .post(post2)
+//                .build();
+//
+//        PostsTag tag2 = PostsTag.builder()
+//                .contents("2메이플스토리")
+//                .post(post2)
+//                .build();
+//
+//        PostsTag tag3 = PostsTag.builder()
+//                .contents("3메이플스토리")
+//                .post(post1)
+//                .build();
+//
+//        postsTagRepository.save(tag1);
+//        postsTagRepository.save(tag2);
+//        postsTagRepository.save(tag3);
+
+
+//    	  // when
+//
+//        List<PostsTag> list = postsTagService.getPostsTagListByPostId(2L);
+//        assertThat(list.size()).isEqualTo(2);
+//        log.info("list.size() = {}", list.size());
+//
+//        for (PostsTag postsTag : list) {
+//            assertThat(postsTag.isDeleted()).isEqualTo(false);
+//            log.info("postsTag.isDeleted() = {}", postsTag.isDeleted());
+//        }
+//
+//
+//    	  // then
+//        postsTagService.deletePostsTagsByPostId(2L);
+//
+//        List<PostsTag> list2 = postsTagService.getPostsTagListByPostId(2L);
+//        log.info("list.size() = {}", list.size()); //2
+//        for (PostsTag postsTag : list2) {
+//            assertThat(postsTag.isDeleted()).isEqualTo(true);
+//            log.info("postsTag.isDeleted() = {}", postsTag.isDeleted());
+//        }
+              // 결과 ok.
+
+
+
+    }
+
+
+
+
+
+
+    @Test
+    @DisplayName("하나의 테스트 메서드안에서 Post안의 TagList를 확인하면 자꾸 null이 뜨는것때문에 귀찮아서, 그냥 ddl 오토로 테이블만 만든 테스트 메서드")
+    void confirm_tagList_test_method() throws Exception {
+
+        Post post1 = Post.builder()
+                .content("내용1")
+                .views(1L)
+                .title("제목1")
+                .build();
+
+        Post post2 = Post.builder()
+                .content("내용2")
+                .views(1L)
+                .title("제목2")
+                .build();
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+
+        PostsTag tag1 = PostsTag.builder()
+                .contents("1바람의나라")
+                .post(post2)
+                .build();
+
+        PostsTag tag2 = PostsTag.builder()
+                .contents("2메이플스토리")
+                .post(post2)
+                .build();
+
+        PostsTag tag3 = PostsTag.builder()
+                .contents("3메이플스토리")
+                .post(post1)
+                .build();
+
+        postsTagRepository.save(tag1);
+        postsTagRepository.save(tag2);
+        postsTagRepository.save(tag3);
+
+    }
+
+
+
 
 
      @Test

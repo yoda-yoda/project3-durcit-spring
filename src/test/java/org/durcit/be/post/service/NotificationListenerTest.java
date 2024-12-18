@@ -30,6 +30,8 @@ class NotificationListenerTest {
     @Test
     @DisplayName("RabbitMQ 메시지 수신 -> WebSocket 메시지 전송")
     void handleNotification_shouldSendMessageToWebSocket() {
+
+
         // given
         NotificationMessage message = NotificationMessage.builder()
                 .followerId(1L)

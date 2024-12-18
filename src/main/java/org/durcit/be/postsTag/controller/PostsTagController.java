@@ -1,24 +1,16 @@
 package org.durcit.be.postsTag.controller;
 
-import com.amazonaws.Response;
 import lombok.RequiredArgsConstructor;
-import org.durcit.be.post.domain.Post;
-import org.durcit.be.post.dto.PostResponse;
-import org.durcit.be.post.repository.PostRepository;
-import org.durcit.be.post.service.PostService;
 import org.durcit.be.postsTag.dto.PostsTagRegisterRequest;
 import org.durcit.be.postsTag.dto.PostsTagResponse;
-import org.durcit.be.postsTag.repository.PostsTagRepository;
 
 import org.durcit.be.postsTag.service.PostsTagService;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/{postId}") // URL을 {postId}로 한 이유는 몇번 게시물인지를 알아야하고, 그러려면 URL로 가져와야한다고 생각했기때문이다.
@@ -50,10 +42,6 @@ public class PostsTagController {
         return ResponseData.toResponseEntity(ResponseCode.CREATE_POSTS_TAG_SUCCESS, postsTagResponseList);
     }
 
-    // post 할때 내려주자..
-    // 만약 안 내려주는 판단을 했더라도 리액트에서 한번 더 요청 get으로 보내면 된다
-    // 생성 했을때 내려주는게 좋겠다
-    // 그럼 이경우에도 get처럼
 
     @PutMapping("/posts-tag/members/put")
     public ResponseEntity<ResponseData<List<PostsTagResponse>>> putPostsTag(List<PostsTagRegisterRequest> postsTagRegisterRequestList, @PathVariable Long postId) {
@@ -62,8 +50,15 @@ public class PostsTagController {
     }
 
 
-    @DeleteMapping("/posts-tag/members/delete")
-    public ResponseEntity<ResponseData> deletePostsTag(List<Long> postsTagIdList) {
+    @DeleteMapping("/posts-tag/members/deleteByPostId")
+    public ResponseEntity<ResponseData> deletePostsTagsByPostId(@PathVariable Long postId) {
+        postsTagService.deletePostsTagsByPostId(postId);
+        return ResponseData.toResponseEntity(ResponseCode.DELETE_POSTS_TAG_SUCCESS);
+    }
+
+
+    @DeleteMapping("/posts-tag/members/deleteByPostsTagIdList")
+    public ResponseEntity<ResponseData> deletePostsTagsByPostsTagId(List<Long> postsTagIdList) {
         postsTagService.deletePostsTagsByPostsTagId(postsTagIdList);
         return ResponseData.toResponseEntity(ResponseCode.DELETE_POSTS_TAG_SUCCESS);
     }
