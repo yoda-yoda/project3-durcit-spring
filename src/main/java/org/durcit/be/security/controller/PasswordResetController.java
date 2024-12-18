@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/members")
+@RequestMapping("/api/members/passwords")
 public class PasswordResetController {
 
     private final PasswordResetService passwordResetService;
@@ -33,9 +33,9 @@ public class PasswordResetController {
     }
 
     @PostMapping("/change")
-    public ResponseEntity<String> changePassword(@RequestBody PasswordResetRequest request) {
+    public ResponseEntity<ResponseData> changePassword(@RequestBody PasswordResetRequest request) {
         passwordResetService.changePassword(request);
-        return ResponseEntity.ok("Password successfully changed.");
+        return ResponseData.toResponseEntity(ResponseCode.PASSWORD_RESET_SUCCESS);
     }
 
 }
