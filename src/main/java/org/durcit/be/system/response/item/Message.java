@@ -19,6 +19,7 @@ public class Message {
     public static final String TOKEN_ERROR = "ERROR - 잘못된 JWT 토큰 에러";
 
     public static final String CREATED_USER = "SUCCESS - 회원 가입 성공";
+    public static final String SEND_EMAIL_SUCCESS = "SUCCESS - 이메일 전송 성공";
     public static final String VERIFY_EMAIL_SUCCESS = "SUCCESS - 이메일 인증 성공";
     public static final String VERIFY_EMAIL_FAIL = "SUCCESS - 이메일 인증 실패";
 
