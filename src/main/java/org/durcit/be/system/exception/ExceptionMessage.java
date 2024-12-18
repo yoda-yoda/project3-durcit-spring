@@ -11,6 +11,13 @@ public class ExceptionMessage {
     public static final String INVALID_USERNAME_PASSWORD_ERROR = "이메일 또는 비밀번호가 잘못되었습니다.";
     public static final String EMAIL_NOT_VERIFIED_ERROR = "이메일이 인증되지 않은 회원입니다.";
 
+    // 지금 내가 추가한것
+    public static final String OPTIONAL_EMPTY_POSTS_TAG_FIND_BY_ID_ERROR =
+            "findById로 찾아온 PostsTag의 Optional 객체가 비어있습니다.";
+
+
+
+
     public static final String MEMBER_NOT_FOUND_ERROR = "멤버를 찾을 수 없습니다.";
     public static final String INVALID_USER_ERROR = "유효하지 않은 멤버입니다.";
     public static final String UNAUTHORIZED_ACCESS_ERROR = "유효하지 않은 접근입니다. 해당 멤버에게는 권한이 없습니다.";
