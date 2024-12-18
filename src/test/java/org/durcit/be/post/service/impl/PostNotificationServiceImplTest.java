@@ -4,6 +4,7 @@ import org.durcit.be.follow.dto.MemberFollowResponse;
 import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.dto.NotificationMessage;
 import org.durcit.be.post.dto.PostResponse;
+import org.durcit.be.push.service.PushService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ class PostNotificationServiceImplTest {
 
     @Mock
     private RabbitTemplate rabbitTemplate;
+
+    @Mock
+    private PushService pushService;
 
     @InjectMocks
     private PostNotificationServiceImpl postNotificationService;
