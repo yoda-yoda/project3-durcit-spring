@@ -24,4 +24,8 @@ public class MemberRegisterCombinedRequest {
     private String nickname;
 
     private MultipartFile profileImage; // 프로필 이미지 파일
+
+
+    // postTagRequest
+    // postRequest
 }
