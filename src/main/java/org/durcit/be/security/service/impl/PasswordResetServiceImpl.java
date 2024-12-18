@@ -1,6 +1,8 @@
 package org.durcit.be.security.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.domian.VerificationInfo;
 import org.durcit.be.security.dto.PasswordResetRequest;
@@ -26,6 +28,7 @@ import static org.durcit.be.system.exception.ExceptionMessage.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PasswordResetServiceImpl implements PasswordResetService {
 
     private final MemberService memberService;
@@ -50,11 +53,15 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         String email = memberService.getById(SecurityUtil.getCurrentMemberId()).getEmail();
         VerificationInfo info = verificationStore.get(email);
 
+        log.info("info = {}", info);
+
         if (info == null || System.currentTimeMillis() > info.getExpirationTime()) {
+            log.info("timeout");
             verificationStore.remove(email);
             return false;
         }
 
+        log.info("code = {}", code);
         if (info.getCode().equals(code)) {
             verificationStore.remove(email);
             return true;

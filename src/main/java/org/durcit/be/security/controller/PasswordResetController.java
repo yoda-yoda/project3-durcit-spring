@@ -2,6 +2,7 @@ package org.durcit.be.security.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.security.dto.PasswordResetRequest;
+import org.durcit.be.security.dto.VerifyCodeRequest;
 import org.durcit.be.security.service.PasswordResetService;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
@@ -23,8 +24,8 @@ public class PasswordResetController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<ResponseData> verifyCode(@RequestParam String code) {
-        boolean verified = passwordResetService.verifyCode(code);
+    public ResponseEntity<ResponseData> verifyCode(@RequestBody VerifyCodeRequest request) {
+        boolean verified = passwordResetService.verifyCode(request.getCode());
         if (verified) {
             return ResponseData.toResponseEntity(ResponseCode.VERIFY_EMAIL_SUCCESS);
         } else {
