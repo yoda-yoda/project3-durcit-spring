@@ -1,10 +1,8 @@
 package org.durcit.be.postsTag.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.durcit.be.post.domain.Post;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,26 +20,28 @@ public class PostsTag {
 
     private String contents;
 
+    @Setter
     private boolean deleted;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne // 현재 Posts는 포스트태그 엔티티를 만들기위해서 임의로 만든 클래스임.
-    private Posts posts;
-
-
+    @ManyToOne
+    @JoinColumn(name = "posts_id")
+    private Post post;
 
     // 빌더패턴
     @Builder
-    public PostsTag(String contents, Posts posts) {
+    public PostsTag(String contents, Post post) {
         this.contents = contents;
         this.deleted = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.posts = posts;
+        this.post = post;
     }
+
+
 
 
 

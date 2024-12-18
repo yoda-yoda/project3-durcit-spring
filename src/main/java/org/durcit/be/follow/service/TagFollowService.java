@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 public class TagFollowService {
 
     private final TagFollowRepository tagFollowRepository;
-    private final TagFollowService tagFollowService;
+
 
 }
