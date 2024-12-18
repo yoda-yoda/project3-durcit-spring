@@ -2,16 +2,21 @@ package org.durcit.be.system.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.durcit.be.system.response.item.FollowMessage;
 import org.durcit.be.system.response.item.Message;
+import org.durcit.be.system.response.item.PostMessage;
 import org.durcit.be.system.response.item.Status;
 
 @Getter
 @AllArgsConstructor
 public enum ResponseCode {
 
+    GET_USER_PROFILE_SUCCESS(Status.OK, Message.READ_USER),
     CREATED_USER(Status.CREATED, Message.CREATED_USER),
     NOT_FOUND_USER(Status.NOT_FOUND, Message.NOT_FOUND_USER),
     DUPLICATE_USER(Status.BAD_REQUEST, Message.DUPLICATE_USER),
+
+    VERIFY_EMAIL_SUCCESS(Status.NO_CONTENT, Message.VERIFY_EMAIL_SUCCESS),
 
     // 기타 성공 응답
     READ_IS_LOGIN(Status.OK, Message.READ_IS_LOGIN),
@@ -29,6 +34,30 @@ public enum ResponseCode {
     LOGIN_FAIL(Status.BAD_REQUEST, Message.LOGIN_FAIL),
     TOKEN_EXPIRED(Status.UNAUTHORIZED, Message.TOKEN_EXPIRED),
     TOKEN_ERROR(Status.UNAUTHORIZED, Message.TOKEN_ERROR),
+
+    // post
+    GET_POST_SUCCESS(Status.OK, PostMessage.GET_POST_SUCCESS),
+    CREATE_POST_SUCCESS(Status.CREATED, PostMessage.CREATE_POST_SUCCESS),
+    UPDATE_POST_SUCCESS(Status.NO_CONTENT, PostMessage.UPDATE_POST_SUCCESS),
+    DELETE_POST_SUCCESS(Status.NO_CONTENT, PostMessage.DELETE_POST_SUCCESS),
+
+    TOGGLE_EMOJI_SUCCESS(Status.NO_CONTENT, PostMessage.TOGGLE_EMOJI_SUCCESS),
+
+    GET_POST_LIKES_SUCCESS(Status.OK, PostMessage.GET_POST_LIKES_SUCCESS),
+    TOGGLE_LIKE_SUCCESS(Status.OK, PostMessage.TOGGLE_LIKE_SUCCESS),
+
+    // upload
+    UPLOAD_FILES_SUCCESS(Status.CREATED, PostMessage.UPLOAD_FILES_SUCCESS),
+    UPDATE_FILES_SUCCESS(Status.NO_CONTENT, PostMessage.UPDATE_FILES_SUCCESS),
+    UPDATE_PROFILE_IMAGE_SUCCESS(Status.NO_CONTENT, Message.UPDATE_USER),
+
+    // member follow
+    TOGGLE_MEMBER_FOLLOW_SUCCESS(Status.NO_CONTENT, FollowMessage.TOGGLE_MEMBER_FOLLOW_SUCCESS),
+    GET_MEMBER_FOLLOWER_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWER_SUCCESS),
+    GET_MEMBER_FOLLOWEE_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWEE_SUCCESS),
+
+    // push
+    GET_PUSHS_SUCCESS(Status.OK, PostMessage.GET_PUSHS_SUCCESS),
     ;
 
     private int httpStatus;

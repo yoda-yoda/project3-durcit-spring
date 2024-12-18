@@ -32,18 +32,35 @@ public class Member {
     @Setter
     private boolean isVerified;
 
-    private LocalDateTime signedAt = LocalDateTime.now();
+    @Setter
+    @Column(columnDefinition = "TEXT")
+    private String profileImage;
+
+    private LocalDateTime signedAt;
 
     @Setter
     private LocalDateTime updatedAt;
 
     @Builder
-    public Member(String username, String provider, String email, String nickname, String password, boolean isVerified) {
+    public Member(Long id, String username, String provider, String email, String nickname, String password, boolean isVerified, String profileImage) {
+        this.id = id;
         this.username = username;
         this.provider = provider;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.isVerified = isVerified;
+        this.profileImage = profileImage;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.signedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
