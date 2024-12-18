@@ -48,7 +48,7 @@ public class PostsTagController {
     }
 
 
-    @PatchMapping("/posts-tag/members/patch")
+    @PutMapping("/posts-tag/members/put")
     public ResponseEntity<ResponseData<List<PostsTagResponse>>> putPostsTag(List<PostsTagRegisterRequest> postsTagRegisterRequestList, @PathVariable Long postId) {
         List<PostsTagResponse> postsTagResponseList = postsTagService.updatePostsTag(postsTagRegisterRequestList, postId);
         return ResponseData.toResponseEntity(ResponseCode.UPDATE_POSTS_TAG_SUCCESS, postsTagResponseList);
