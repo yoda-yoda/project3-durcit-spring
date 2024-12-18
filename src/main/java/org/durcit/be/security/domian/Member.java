@@ -2,8 +2,10 @@ package org.durcit.be.security.domian;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.durcit.be.follow.domain.TagFollow;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -40,6 +42,10 @@ public class Member {
 
     @Setter
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "member")
+    private List<TagFollow> tagFollowList;
+
 
     @Builder
     public Member(Long id, String username, String provider, String email, String nickname, String password, boolean isVerified, String profileImage) {

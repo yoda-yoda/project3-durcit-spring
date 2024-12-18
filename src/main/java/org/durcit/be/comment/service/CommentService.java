@@ -1,27 +1,20 @@
 package org.durcit.be.comment.service;
 
-import jakarta.transaction.Transactional;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.comment.domain.PostComment;
 import org.durcit.be.comment.repository.PostCommentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Transactional
 public class CommentService {
 
     private final PostCommentRepository postCommentRepository;
-
-    @Transactional
-    public PostComment save(PostComment postComment) {
-        return postCommentRepository.save(postComment);
-    }
-
-    public PostComment findById(Long id) {
-        return postCommentRepository.findById()
-                .filter(tag -> !tag.isDeleted())
-    }
 
 
 

@@ -1,6 +1,5 @@
 package org.durcit.be.comment.dto;
 
-import jakarta.*;
 import jakarta.persistence.Column;
 import lombok.*;
 import org.durcit.be.comment.domain.Comment;

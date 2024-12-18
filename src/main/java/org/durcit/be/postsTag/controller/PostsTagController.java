@@ -14,11 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api/{postId}") // URL을 {postId}로 한 이유는 몇번 게시물인지를 알아야하고, 그러려면 URL로 가져와야한다고 생각했기때문이다.
 @RequiredArgsConstructor
 public class PostsTagController {
 
+    //
     // create update delete -> member
     // /api/members/posts-tag/{postId}/
 
