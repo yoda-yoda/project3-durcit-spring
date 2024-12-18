@@ -57,8 +57,7 @@ public enum ResponseCode {
     GET_MEMBER_FOLLOWEE_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWEE_SUCCESS),
 
 
-
-    // PostsTag // 따라만들어봄
+    // postsTag
     GET_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.GET_POSTS_TAG_SUCCESS),
     CREATE_POSTS_TAG_SUCCESS(Status.CREATED, PostsTagMessage.CREATE_POSTS_TAG_SUCCESS),
     UPDATE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.UPDATE_POSTS_TAG_SUCCESS),
