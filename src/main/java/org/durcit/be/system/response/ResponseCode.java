@@ -2,10 +2,7 @@ package org.durcit.be.system.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.durcit.be.system.response.item.FollowMessage;
-import org.durcit.be.system.response.item.Message;
-import org.durcit.be.system.response.item.PostMessage;
-import org.durcit.be.system.response.item.Status;
+import org.durcit.be.system.response.item.*;
 
 @Getter
 @AllArgsConstructor
@@ -55,6 +52,14 @@ public enum ResponseCode {
     TOGGLE_MEMBER_FOLLOW_SUCCESS(Status.NO_CONTENT, FollowMessage.TOGGLE_MEMBER_FOLLOW_SUCCESS),
     GET_MEMBER_FOLLOWER_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWER_SUCCESS),
     GET_MEMBER_FOLLOWEE_SUCCESS(Status.OK, FollowMessage.GET_MEMBER_FOLLOWEE_SUCCESS),
+
+
+
+    // PostsTag // 따라만들어봄
+    GET_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.GET_POSTS_TAG_SUCCESS),
+    CREATE_POSTS_TAG_SUCCESS(Status.CREATED, PostsTagMessage.CREATE_POSTS_TAG_SUCCESS),
+    UPDATE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.UPDATE_POSTS_TAG_SUCCESS),
+    DELETE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.DELETE_POSTS_TAG_SUCCESS),
 
     // push
     GET_PUSHS_SUCCESS(Status.OK, PostMessage.GET_PUSHS_SUCCESS),
