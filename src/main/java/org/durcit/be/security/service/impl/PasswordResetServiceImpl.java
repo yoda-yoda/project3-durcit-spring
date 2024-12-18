@@ -16,6 +16,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Random;
@@ -31,7 +32,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     private final JavaMailSender mailSender;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final Map<String, VerificationInfo> verificationStore = new ConcurrentHashMap<>();
+    final Map<String, VerificationInfo> verificationStore = new ConcurrentHashMap<>();
     private static final int VERIFICATION_CODE_LENGTH = 6;
     private static final long EXPIRATION_TIME_MS = 5 * 60 * 1000; // 5 minutes
 
@@ -63,6 +64,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     }
 
 
+    @Transactional
     public void changePassword(PasswordResetRequest request) {
         String email = memberService.getById(SecurityUtil.getCurrentMemberId()).getEmail();
         Member member = memberRepository.findByEmail(email)
