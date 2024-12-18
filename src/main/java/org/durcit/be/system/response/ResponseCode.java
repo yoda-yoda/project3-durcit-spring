@@ -14,6 +14,7 @@ public enum ResponseCode {
     DUPLICATE_USER(Status.BAD_REQUEST, Message.DUPLICATE_USER),
 
     VERIFY_EMAIL_SUCCESS(Status.NO_CONTENT, Message.VERIFY_EMAIL_SUCCESS),
+    VERIFY_EMAIL_FAIL(Status.BAD_REQUEST, Message.VERIFY_EMAIL_FAIL),
 
     // 기타 성공 응답
     READ_IS_LOGIN(Status.OK, Message.READ_IS_LOGIN),

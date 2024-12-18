@@ -20,6 +20,7 @@ public class Message {
 
     public static final String CREATED_USER = "SUCCESS - 회원 가입 성공";
     public static final String VERIFY_EMAIL_SUCCESS = "SUCCESS - 이메일 인증 성공";
+    public static final String VERIFY_EMAIL_FAIL = "SUCCESS - 이메일 인증 실패";
 
     public static final String READ_USER = "SUCCESS - 회원 정보 조회 성공";
     public static final String UPDATE_USER = "SUCCESS - 회원 정보 수정 성공";
