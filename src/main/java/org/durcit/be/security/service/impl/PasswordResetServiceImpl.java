@@ -43,7 +43,6 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         String email = memberService.getById(SecurityUtil.getCurrentMemberId()).getEmail();
         String code = generateVerificationCode();
         long expirationTime = System.currentTimeMillis() + EXPIRATION_TIME_MS;
-
         verificationStore.put(email, new VerificationInfo(code, expirationTime));
 
         sendEmail(email, code);
