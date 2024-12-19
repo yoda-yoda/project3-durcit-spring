@@ -14,6 +14,7 @@ import org.durcit.be.security.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,37 +34,51 @@ public class EmojiServiceImpl implements EmojiService {
     @Transactional
     public EmojiResponse toggleEmoji(EmojiRequest emojiRequest) {
         Post post = postService.getById(emojiRequest.getPostId());
+        Member member = memberService.getById(emojiRequest.getMemberId());
 
-        emojiRepository.deleteByPostIdAndMemberId(post.getId(), emojiRequest.getMemberId());
+        emojiRepository.deleteByPostIdAndMemberId(post.getId(), member.getId());
+        log.info("Deleted existing emojis for postId: {}, memberId: {}", post.getId(), member.getId());
 
-        emojiRepository.save(Emoji.builder()
+        Emoji newEmoji = Emoji.builder()
                 .post(post)
-                .member(memberService.getById(emojiRequest.getMemberId()))
+                .member(member)
                 .emoji(emojiRequest.getEmoji())
-                .build());
+                .build();
+        emojiRepository.save(newEmoji);
+        log.info("Added new emoji: {} for postId: {}, memberId: {}", newEmoji.getEmoji(), post.getId(), member.getId());
 
-        List<Object[]> results = emojiRepository.aggregateEmojisByPostId(emojiRequest.getPostId());
+        List<Emoji> emojis = emojiRepository.findByPostId(post.getId());
 
-        List<EmojisMap> emojiCounts = new ArrayList<>();
-        for (Object[] result : results) {
-            String emoji = (String) result[0];
-            Integer count = ((Number) result[1]).intValue();
-            emojiCounts.add(new EmojisMap(emoji, count));
+        Map<String, Integer> emojiCounts = new HashMap<>();
+        for (Emoji emoji : emojis) {
+            String normalizedEmoji = normalizeEmoji(emoji.getEmoji());
+            emojiCounts.put(normalizedEmoji, emojiCounts.getOrDefault(normalizedEmoji, 0) + 1);
         }
 
-        return new EmojiResponse(emojiRequest.getPostId(), emojiCounts, EmojiStatus.ADD.name());
+        List<EmojisMap> emojiDetails = emojiCounts.entrySet().stream()
+                .map(entry -> new EmojisMap(entry.getKey(), entry.getValue()))
+                .toList();
+
+        return new EmojiResponse(emojiRequest.getPostId(), emojiDetails, EmojiStatus.ADD.name());
+    }
+
+    private String normalizeEmoji(String emoji) {
+        return Normalizer.normalize(emoji, Normalizer.Form.NFC);
     }
 
     public PostEmojisResponse getPostEmojis(Long postId) {
-        List<Object[]> results = emojiRepository.aggregateEmojisByPostId(postId);
+        List<Emoji> emojis = emojiRepository.findByPostId(postId);
 
-        List<EmojiDetails> emojiCounts = new ArrayList<>();
-        for (Object[] result : results) {
-            String emoji = (String) result[0];
-            Integer count = ((Number) result[1]).intValue();
-            emojiCounts.add(new EmojiDetails(emoji, count, false));
+        Map<String, Integer> emojiCounts = new HashMap<>();
+        for (Emoji emoji : emojis) {
+            String normalizedEmoji = normalizeEmoji(emoji.getEmoji());
+            emojiCounts.put(normalizedEmoji, emojiCounts.getOrDefault(normalizedEmoji, 0) + 1);
         }
-        return new PostEmojisResponse(postId, emojiCounts);
+
+        List<EmojiDetails> emojiDetails = emojiCounts.entrySet().stream()
+                .map(entry -> new EmojiDetails(entry.getKey(), entry.getValue(), false))
+                .toList();
+        return new PostEmojisResponse(postId, emojiDetails);
     }
 
 }

@@ -23,6 +23,9 @@ public interface EmojiRepository extends JpaRepository<Emoji, Long> {
     @Query("SELECT e FROM Emoji e WHERE e.post.id = :postId AND e.member.id = :memberId")
     List<Emoji> findByPostIdAndMemberId(Long postId, Long memberId);
 
+    @Query("SELECT e FROM Emoji e WHERE e.post.id = :postId")
+    List<Emoji> findByPostId(Long postId);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM Emoji e WHERE e.post.id = :postId AND e.member.id = :memberId")
