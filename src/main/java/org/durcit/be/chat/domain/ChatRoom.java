@@ -2,6 +2,7 @@ package org.durcit.be.chat.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.durcit.be.security.domian.Member;
 
 import java.time.LocalDateTime;
 
@@ -18,19 +19,20 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 
-    @Column(nullable = false)
-    private Long opponentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "opponent_member_id", nullable = false)
+    private Member opponent;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    public static ChatRoom create(Long userId, Long opponentId) {
+    public static ChatRoom create(Member member, Member targetMember) {
         return ChatRoom.builder()
-                .userId(userId)
-                .opponentId(opponentId)
+                .member(member)
+                .opponent(targetMember)
                 .build();
     }
 

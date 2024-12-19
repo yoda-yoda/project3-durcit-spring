@@ -8,15 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-    Optional<ChatRoom> findByUserIdAndOpponentId(Long userId, Long opponentId);
 
-    @Query("SELECT c FROM ChatRoom c WHERE (c.userId = :memberId AND c.opponentId = :targetMemberId) OR (c.userId = :targetMemberId AND c.opponentId = :memberId)")
-    Optional<ChatRoom> findByMemberIds(Long memberId, Long targetMemberId);
+    Optional<ChatRoom> findByMember_IdAndOpponent_Id(Long memberId, Long opponentId);
 
-    List<ChatRoom> findByUserId(Long userId);
+    @Query("SELECT c FROM ChatRoom c WHERE (c.member.id = :userId AND c.opponent.id = :opponentId) OR (c.member.id = :opponentId AND c.opponent.id = :userId)")
+    Optional<ChatRoom> findByMemberIds(Long userId, Long opponentId);
+
+    @Query("SELECT c FROM ChatRoom c WHERE c.member.id = :memberId")
+    List<ChatRoom> findByMemberId(Long memberId);
+    @Query("SELECT c FROM ChatRoom c WHERE c.opponent.id = :opponentId")
     List<ChatRoom> findByOpponentId(Long opponentId);
 
 
-    @Query("SELECT c FROM ChatRoom c WHERE c.userId = :memberId OR c.opponentId = :memberId")
-    List<ChatRoom> findByMemberId(Long memberId);
+    @Query("SELECT c FROM ChatRoom c WHERE c.member.id = :memberId OR c.opponent.id = :memberId")
+    List<ChatRoom> findAllByMemberId(Long memberId);
 }

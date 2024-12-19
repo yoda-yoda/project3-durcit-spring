@@ -1,6 +1,7 @@
 package org.durcit.be.chat.domain;
 import jakarta.persistence.*;
 import lombok.*;
+import org.durcit.be.security.domian.Member;
 
 import java.time.LocalDateTime;
 
@@ -21,21 +22,18 @@ public class ChatMessage {
     @JoinColumn(name = "chat_room_id", nullable = false)
     private ChatRoom chatRoom;
 
-    @Column(nullable = false)
-    private Long senderId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", nullable = false)
+    private Member sender;
 
     @Column(nullable = false)
-    private String message;
+    private String content;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    public static ChatMessage create(ChatRoom chatRoom, Long senderId, String message) {
-        return ChatMessage.builder()
-                .chatRoom(chatRoom)
-                .senderId(senderId)
-                .message(message)
-                .createdAt(LocalDateTime.now())
-                .build();
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 }

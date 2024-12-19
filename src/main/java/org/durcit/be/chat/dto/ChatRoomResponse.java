@@ -12,10 +12,14 @@ import org.durcit.be.chat.domain.ChatRoom;
 @Builder
 public class ChatRoomResponse {
     private Long roomId;
+    private String nickname;
+    private String targetNickname;
 
     public static ChatRoomResponse fromEntity(ChatRoom chatRoom) {
         return ChatRoomResponse.builder()
                 .roomId(chatRoom.getId())
+                .nickname(chatRoom.getMember().getNickname())
+                .targetNickname(chatRoom.getOpponent().getNickname())
                 .build();
     }
 }

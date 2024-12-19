@@ -12,5 +12,6 @@ public interface ChatService {
     public ChatMessageResponse processMessage(ChatMessageRequest messageRequest);
     public ChatRoomResponse createChatRoom(ChatRoomRequest chatRoomRequest);
     public List<ChatRoomResponse> getChatRoomsByMemberId(Long memberId);
+    public List<ChatMessageResponse> getMessagesByRoomId(Long roomId);
 
 }

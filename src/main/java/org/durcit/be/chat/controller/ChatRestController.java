@@ -1,6 +1,7 @@
 package org.durcit.be.chat.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.durcit.be.chat.dto.ChatMessageResponse;
 import org.durcit.be.chat.dto.ChatRoomRequest;
 import org.durcit.be.chat.dto.ChatRoomResponse;
 import org.durcit.be.chat.service.ChatService;
@@ -28,6 +29,12 @@ public class ChatRestController {
     public ResponseEntity<ResponseData<List<ChatRoomResponse>>> getMyChatRooms(@RequestParam Long memberId) {
         List<ChatRoomResponse> chatRooms = chatService.getChatRoomsByMemberId(memberId);
         return ResponseData.toResponseEntity(ResponseCode.GET_CHAT_ROOM_SUCCESS, chatRooms);
+    }
+
+    @GetMapping("/rooms/{roomId}/messages")
+    public ResponseEntity<ResponseData<List<ChatMessageResponse>>> getMessagesByRoomId(@PathVariable Long roomId) {
+        List<ChatMessageResponse> messages = chatService.getMessagesByRoomId(roomId);
+        return ResponseData.toResponseEntity(ResponseCode.GET_CHAT_SUCCESS, messages);
     }
 
 }
