@@ -98,5 +98,7 @@ public class MemberService extends DefaultOAuth2UserService {
     }
 
 
-
+    public Member getByNickname(String targetNickname) {
+        return memberRepository.findByNickname(targetNickname).orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
+    }
 }

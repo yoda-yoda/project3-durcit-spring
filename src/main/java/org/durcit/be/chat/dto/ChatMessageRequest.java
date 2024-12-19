@@ -13,7 +13,7 @@ public class ChatMessageRequest {
 
     private Long roomId;
     private Long senderId;
-    private Long opponentId;
+    private String targetNickname;
     private String message;
 
 }

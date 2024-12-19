@@ -11,6 +11,7 @@ import org.durcit.be.chat.dto.ChatRoomResponse;
 import org.durcit.be.chat.repository.ChatMessageRepository;
 import org.durcit.be.chat.repository.ChatRoomRepository;
 import org.durcit.be.chat.service.ChatService;
+import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
 import org.durcit.be.system.exception.chat.InvalidChatRoomIdException;
 import org.springframework.stereotype.Service;
@@ -74,12 +75,15 @@ public class ChatServiceImpl implements ChatService {
 
     @Transactional
     public ChatMessageResponse processMessage(ChatMessageRequest messageRequest) {
+        log.info("messageRequest.getTargetNickname() = {}", messageRequest.getTargetNickname());
+        Member targetMember = memberService.getByNickname(messageRequest.getTargetNickname());
+        log.info("targetMember = {}", targetMember);
         ChatRoom chatRoom = chatRoomRepository
-                .findByMember_IdAndOpponent_Id(messageRequest.getSenderId(), messageRequest.getOpponentId())
-                .or(() -> chatRoomRepository.findByMember_IdAndOpponent_Id(messageRequest.getOpponentId(), messageRequest.getSenderId()))
+                .findByMember_IdAndOpponent_Id(messageRequest.getSenderId(), targetMember.getId())
+                .or(() -> chatRoomRepository.findByMember_IdAndOpponent_Id(targetMember.getId(), messageRequest.getSenderId()))
                 .orElseGet(() -> chatRoomRepository.save(ChatRoom.create(
                         memberService.getById(messageRequest.getSenderId()),
-                        memberService.getById(messageRequest.getOpponentId())
+                        memberService.getById(targetMember.getId())
                 )));
 
 
@@ -93,6 +97,7 @@ public class ChatServiceImpl implements ChatService {
         return ChatMessageResponse.builder()
                 .roomId(chatRoom.getId())
                 .senderId(chatMessage.getSender().getId())
+                .targetId(targetMember.getId())
                 .content(chatMessage.getContent())
                 .createdAt(chatMessage.getCreatedAt())
                 .build();

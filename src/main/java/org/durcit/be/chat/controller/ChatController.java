@@ -26,7 +26,7 @@ public class ChatController {
         );
 
         messagingTemplate.convertAndSendToUser(
-                messageRequest.getOpponentId().toString(),
+                messageResponse.getTargetId().toString(),
                 "/queue/messages",
                 messageResponse
         );
