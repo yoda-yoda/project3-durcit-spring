@@ -24,7 +24,7 @@ public class ApiLoggingAspect {
 
     private final LogRepository logRepository;
 
-    @Around("execution(* org.durcit.be..*Controller.*(..))")
+    @Around("execution(* org.durcit.be..*Controller.*(..)) && !execution(* org.durcit.be.post.controller.EmojiController.*(..))")
     public Object logApiRequest(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String memberId = SecurityUtil.getCurrentMemberIdOrNull();

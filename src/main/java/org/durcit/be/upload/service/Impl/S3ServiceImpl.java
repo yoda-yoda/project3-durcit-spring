@@ -2,8 +2,10 @@ package org.durcit.be.upload.service.Impl;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -100,9 +102,9 @@ public class S3ServiceImpl implements UploadService {
                         metadata.setContentLength(file.getSize());
                         metadata.setContentType(file.getContentType());
 
-                        amazonS3.putObject(bucketName, uniqueFileName, file.getInputStream(), metadata);
+                        amazonS3.putObject(new PutObjectRequest(bucketName, uniqueFileName, file.getInputStream(), metadata));
 
-                        String s3Url = generatePresignedUrl(bucketName, uniqueFileName);
+                        String s3Url = amazonS3.getUrl(bucketName, uniqueFileName).toString();
 
                         Images image = Images.builder()
                                 .post(postService.getById(postId))

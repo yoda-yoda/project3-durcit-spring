@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.durcit.be.post.dto.EmojiResponse;
+import org.durcit.be.post.dto.PostEmojisResponse;
 import org.durcit.be.post.dto.PostResponse;
 import org.durcit.be.postsTag.dto.PostsTagResponse;
 import org.durcit.be.upload.dto.UploadResponse;
@@ -19,5 +21,6 @@ public class PostCombinedResponse {
     private PostResponse post;
     private List<PostsTagResponse> tags;
     private List<UploadResponse> uploads;
+    private PostEmojisResponse emojis;
 
 }

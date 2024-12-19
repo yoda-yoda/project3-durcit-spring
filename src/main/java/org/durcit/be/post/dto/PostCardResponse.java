@@ -41,6 +41,11 @@ public class PostCardResponse {
     }
 
     public static PostCardResponse fromEntity(Post post) {
+        String thumbnailUrl = null;
+        if (post.getImages() != null && !post.getImages().isEmpty()) {
+            thumbnailUrl = post.getImages().iterator().next().getUrl();
+        }
+
         return PostCardResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -48,8 +53,9 @@ public class PostCardResponse {
                 .author(post.getMember().getUsername())
                 .views(post.getViews())
                 .likeCount((long) post.getLikes().size())
-                .hasImage(!post.getImages().isEmpty())
-                .postThumbnail(post.getImages().getFirst().getUrl())
+                .hasImage(post.getImages() != null && !post.getImages().isEmpty())
+                .userThumbnail(post.getMember().getProfileImage())
+                .postThumbnail(thumbnailUrl)
                 .createdAt(TimeAgoUtil.formatElapsedTime(post.getUpdatedAt()))
                 .build();
     }

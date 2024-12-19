@@ -37,6 +37,7 @@ public class OAuth2SuccessHandlerFilter extends SimpleUrlAuthenticationSuccessHa
         // 인증 성공했을 때
         // oauth2.0 인증성공시
         MemberDetails principal = (MemberDetails) authentication.getPrincipal();
+        log.info("Principal set to SecurityContext: {}", authentication.getPrincipal().getClass().getName());
 
         HashMap<String, String> params = new HashMap<>();
 
@@ -47,10 +48,12 @@ public class OAuth2SuccessHandlerFilter extends SimpleUrlAuthenticationSuccessHa
             KeyPair keyPair = jwtTokenProvider.generateKeyPair(findMember);
             params.put("access", keyPair.getAccessToken());
             params.put("refresh", keyPair.getRefreshToken());
+            params.put("memberId", keyPair.getMemberId());
         } else {
             String accessToken = jwtTokenProvider.issueAccessToken(principal.getId(), principal.getRole());
             params.put("access", accessToken);
             params.put("refresh", findRefreshToken.getRefreshToken());
+            params.put("memberId", principal.getId().toString());
         }
 
         String targetUrl = genUrlStr(params);
@@ -62,6 +65,7 @@ public class OAuth2SuccessHandlerFilter extends SimpleUrlAuthenticationSuccessHa
         return UriComponentsBuilder.fromUri(URI.create(baseUrl))
                 .queryParam("access", params.get("access"))
                 .queryParam("refresh", params.get("refresh"))
+                .queryParam("memberId", params.get("memberId"))
                 .build().toUriString();
     }
 }

@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmojiRequest {
-
+public class PostEmojisResponse {
     private Long postId;
-    private String emoji;
-    private Long memberId;
-
+    private List<EmojiDetails> emojis;
 }

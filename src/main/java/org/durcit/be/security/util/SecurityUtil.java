@@ -16,10 +16,10 @@ import static org.durcit.be.system.exception.ExceptionMessage.NO_AUTHENTICATION_
 public class SecurityUtil {
     public static Long getCurrentMemberId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.getName() == null) {
-            throw new NoAuthenticationInSecurityContextException(NO_AUTHENTICATION_IN_SECURITY_CONTEXT_ERROR);
+        if (authentication == null || authentication.getName() == null || authentication.getPrincipal() == "anonymousUser") {
+            return null;
         }
-        return ((MemberDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        return ((MemberDetails) authentication.getPrincipal()).getId();
     }
 
     public static String getCurrentMemberIdOrNull() {

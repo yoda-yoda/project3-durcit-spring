@@ -3,6 +3,7 @@ package org.durcit.be.security.service;
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.security.domian.CustomUserPrincipal;
 import org.durcit.be.security.domian.Member;
+import org.durcit.be.security.dto.MemberDetails;
 import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.system.exception.ExceptionMessage;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,11 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND_ERROR));
 
-        return new CustomUserPrincipal(
-                member.getUsername(),
-                member.getPassword(),
-                List.of(new SimpleGrantedAuthority(member.getRole())),
-                member.getId()
-        );
+        return MemberDetails.from(member);
     }
 }

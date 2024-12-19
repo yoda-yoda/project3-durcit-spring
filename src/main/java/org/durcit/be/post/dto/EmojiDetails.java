@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmojiRequest {
-
-    private Long postId;
+public class EmojiDetails {
     private String emoji;
-    private Long memberId;
-
+    private int count;
+    private boolean isPressed;
 }

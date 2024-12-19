@@ -6,7 +6,10 @@ import org.durcit.be.facade.dto.PostCombinedResponse;
 import org.durcit.be.facade.dto.PostRegisterCombinedRequest;
 import org.durcit.be.facade.dto.PostUpdateCombinedRequest;
 import org.durcit.be.facade.service.PostFacadeService;
+import org.durcit.be.post.dto.EmojiResponse;
+import org.durcit.be.post.dto.PostEmojisResponse;
 import org.durcit.be.post.dto.PostResponse;
+import org.durcit.be.post.service.EmojiService;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.postsTag.dto.PostsTagResponse;
 import org.durcit.be.postsTag.service.PostsTagService;
@@ -26,6 +29,7 @@ public class PostFacadeServiceImpl implements PostFacadeService {
     private final PostService postService;
     private final UploadService uploadService;
     private final PostsTagService postsTagService;
+    private final EmojiService emojiService;
     // 태그 서비스
 
     // 서비스 레이어들의 결합도를 낮추기 위해 사용
@@ -43,10 +47,12 @@ public class PostFacadeServiceImpl implements PostFacadeService {
         PostResponse postById = postService.getPostById(postId);
         List<PostsTagResponse> postsTagResponseListByPostId = postsTagService.getPostsTagResponseListByPostId(postId);
         List<UploadResponse> imagesByPostId = uploadService.getImagesByPostId(postId);
+        PostEmojisResponse postEmojis = emojiService.getPostEmojis(postId);
         return PostCombinedResponse.builder()
                 .post(postById)
                 .tags(postsTagResponseListByPostId)
                 .uploads(imagesByPostId)
+                .emojis(postEmojis)
                 .build();
     }
 

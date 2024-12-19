@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"posts_id", "member_id", "emoji"})
+})
 public class Emoji {
 
     @Id
@@ -25,7 +28,7 @@ public class Emoji {
     @Setter
     private Member member;
 
-    @Column(nullable = false, length = 15)
+    @Column(columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci", nullable = false)
     private String emoji;
 
     private LocalDateTime createdAt;
