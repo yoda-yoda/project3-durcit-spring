@@ -4,9 +4,13 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.repository.MemberRepository;
+import org.durcit.be.security.service.MemberService;
+import org.durcit.be.security.util.SecurityUtil;
 import org.durcit.be.system.exception.upload.S3UploadException;
 import org.durcit.be.upload.dto.ProfileImageRequest;
 import org.durcit.be.upload.service.ProfileUploadService;
@@ -32,6 +36,8 @@ import static org.durcit.be.upload.util.UploadUtil.validateFileSize;
 public class S3ProfileUploadServiceImpl implements ProfileUploadService {
 
     private final AmazonS3 amazonS3;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Value("${custom.s3.bucket-name:burcit}")
     private String bucketName;
@@ -56,9 +62,14 @@ public class S3ProfileUploadServiceImpl implements ProfileUploadService {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(profileImage.getSize());
             metadata.setContentType(profileImage.getContentType());
-            amazonS3.putObject(bucketName, PROFILE_IMAGE_FOLDER + uniqueFileName, profileImage.getInputStream(), metadata);
+            amazonS3.putObject(new PutObjectRequest(bucketName, PROFILE_IMAGE_FOLDER + uniqueFileName, profileImage.getInputStream(), metadata));
+            String url = amazonS3.getUrl(bucketName, PROFILE_IMAGE_FOLDER + uniqueFileName).toString();
 
-            return generatePresignedUrl(bucketName, PROFILE_IMAGE_FOLDER + uniqueFileName);
+            Member member = memberService.getById(SecurityUtil.getCurrentMemberId());
+            member.setProfileImage(url);
+            memberRepository.save(member);
+
+            return amazonS3.getUrl(bucketName, uniqueFileName).toString();
 
         } catch (IOException | RuntimeException e) {
             log.error("Failed to upload profile image", e);
