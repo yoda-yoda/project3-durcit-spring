@@ -33,25 +33,25 @@ public class PostController {
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postsByPage);
     }
 
-    @PostMapping("/members")
+    //@PostMapping("/members")
     public ResponseEntity<ResponseData<PostResponse>> createPost(@RequestBody PostRegisterRequest postRegisterRequest) {
         PostResponse postResponse = postService.createPost(postRegisterRequest);
         return ResponseData.toResponseEntity(ResponseCode.CREATE_POST_SUCCESS, postResponse);
     }
 
-    @PutMapping("/members/{postId}")
+    //@PutMapping("/members/{postId}")
     public ResponseEntity<ResponseData> updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
         postService.updatePost(postId, postUpdateRequest);
         return ResponseData.toResponseEntity(ResponseCode.UPDATE_POST_SUCCESS);
     }
 
-    @DeleteMapping("/members/{postId}")
+    //@DeleteMapping("/members/{postId}")
     public ResponseEntity<ResponseData> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
         return ResponseData.toResponseEntity(ResponseCode.DELETE_POST_SUCCESS);
     }
 
-    @GetMapping("/{postId}")
+    //@GetMapping("/{postId}")
     public ResponseEntity<ResponseData<PostResponse>> getPostWithInCreaseViews(@PathVariable Long postId) {
         PostResponse postResponse = postService.getPostWithViewIncrement(postId);
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postResponse);

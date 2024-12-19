@@ -33,9 +33,10 @@ public class PostFacadeServiceImpl implements PostFacadeService {
     // postService, postTagService -> 조합 Dto 사용하여 facade 패턴으로 해당 서비스에서 같이 처리
 
     @Transactional
-    public void registerPost(PostRegisterCombinedRequest request) {
+    public Long registerPost(PostRegisterCombinedRequest request) {
         PostResponse post = postService.createPost(request.getPostRegisterRequest());
         postsTagService.createPostsTag(request.getPostsTagRegisterRequest(), post.getId());
+        return post.getId();
     }
 
     public PostCombinedResponse getPostById(Long postId) {
