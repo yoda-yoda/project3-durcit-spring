@@ -2,9 +2,9 @@ package org.durcit.be.follow.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.follow.domain.TagFollow;
-import org.durcit.be.follow.dto.TagFollowDeleteRequest;
 import org.durcit.be.follow.dto.TagFollowRegisterRequest;
 import org.durcit.be.follow.dto.TagFollowResponse;
+import org.durcit.be.follow.dto.TagFollowUpdateRequest;
 import org.durcit.be.follow.repository.TagFollowRepository;
 import org.durcit.be.postsTag.repository.PostsTagRepository;
 import org.durcit.be.security.domian.Member;
@@ -32,7 +32,7 @@ public class TagFollowServiceImpl {
 
     // 메서드 기능: 유저가 추가하는 태그 내용이 담긴 요청 Dto를 List로 받는다. 그리고 그것을 각각 엔티티로 변환하여 DB에 저장하고, 해당 값을 다시 응답 Dto List로 변환하여 반환해준다.
     // 나중 추가할 로직: 이미 살아있는 태그를 똑같이 추가하면 예외가 나도록 하는것이다.
-    public List<TagFollowResponse> createTagFollow(List<TagFollowRegisterRequest> tagFollowRegisterRequestList, Long memberId) {
+    public List<TagFollowResponse> createTagFollowByRegisterRequest(List<TagFollowRegisterRequest> tagFollowRegisterRequestList, Long memberId) {
 
 
         // 어떤 멤버인지 엔티티를 획득. 해당 멤버가 없으면 오류를 던진다.
@@ -51,6 +51,43 @@ public class TagFollowServiceImpl {
         for (TagFollowRegisterRequest tagFollowRegisterRequest : tagFollowRegisterRequestList) {
 
             TagFollow tagFollow = TagFollowRegisterRequest.toEntity(tagFollowRegisterRequest, member);
+            TagFollow savedTagFollow = tagFollowRepository.save(tagFollow);
+
+
+            TagFollowResponse tagFollowResponse = TagFollowResponse.fromEntity(savedTagFollow);
+            tagFollowResponseList.add(tagFollowResponse) ;
+
+        }
+
+        // 최종 응답 Dto List를 반환한다.
+        return tagFollowResponseList;
+
+    }
+
+
+
+
+
+    // 메서드 기능: 업데이트 Dto를 List로 받는다. 그리고 그것을 각각 엔티티로 변환하여 DB에 저장하고, 해당 값을 다시 응답 Dto List로 변환하여 반환해준다.
+    public List<TagFollowResponse> createTagFollowByUpdateRequest(List<TagFollowUpdateRequest> tagFollowUpdateRequestList, Long memberId) {
+
+
+        // 어떤 멤버인지 엔티티를 획득. 해당 멤버가 없으면 오류를 던진다.
+        Member member = Optional.ofNullable(tagFollowRepository.findMemberByMemberId(memberId))
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
+
+
+        // 최종 반환할 타입을 미리 만들어둔다.
+        List<TagFollowResponse> tagFollowResponseList = new ArrayList<>();
+
+
+        // 반복자를 활용한다.
+        // 업데이트Dto를 각각 엔티티로 바꾼후 DB에 저장한다.
+        // 또한 엔티티를 다시 각각 응답Dto로 바꾼후 최종 반환 리스트에 add 한다.
+
+        for (TagFollowUpdateRequest tagFollowUpdateRequest : tagFollowUpdateRequestList) {
+
+            TagFollow tagFollow = TagFollowUpdateRequest.toEntity(tagFollowUpdateRequest, member);
             TagFollow savedTagFollow = tagFollowRepository.save(tagFollow);
 
 
@@ -168,6 +205,22 @@ public class TagFollowServiceImpl {
 
 
 
+    // 메서드 기능: 유저가 기존 태그를 수정한다.  업데이트
+    public List<TagFollowResponse> updateTagFollows(List<TagFollowUpdateRequest> tagFollowUpdateRequestList, Long memberId ) {
+
+        // 내부 메서드를 활용하여 가진 태그를 소프트딜리트 처리한다.
+        // 기존에 아무태그를 안갖고 있었거나, 이미 전부가 delete 처리된 상태였다면 이 메서드 내부에서 예외가 나온다.
+        deleteNoneDeletedAllTagFollows(memberId);
+
+        // 내부 메서드를 활용했다. 업데이트 dto 리스트와 memberId를 통해 저장한다.
+        // return값도 밑 메서드와 같기때문에 바로 return 해준다.
+        return createTagFollowByUpdateRequest(tagFollowUpdateRequestList, memberId);
+
+    }
+
+
+
+
     // 메서드 기능: 해당 유저가 기존에 갖고 있던 태그를 전부 소프트딜리트 처리 한다.
     // 예외: 기존에 아무 태그를 안갖고 있었거나, 이미 전부가 delete 처리된 상태였다면 예외 처리한다.
     public void deleteNoneDeletedAllTagFollows(Long memberId) {
@@ -234,6 +287,9 @@ public class TagFollowServiceImpl {
         tagFollowRepository.save(tagFollow);
 
     }
+
+
+
 
 
 

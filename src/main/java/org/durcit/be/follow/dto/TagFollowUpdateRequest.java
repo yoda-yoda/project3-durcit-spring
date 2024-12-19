@@ -3,16 +3,12 @@ package org.durcit.be.follow.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.durcit.be.follow.domain.TagFollow;
 import org.durcit.be.security.domian.Member;
-
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
-public class TagFollowRegisterRequest {
-
+public class TagFollowUpdateRequest {
 
     @NotNull
     private String tag;
@@ -21,16 +17,14 @@ public class TagFollowRegisterRequest {
     private LocalDateTime updatedAt;
 
 
-    public static TagFollow toEntity(TagFollowRegisterRequest tagFollowRegisterRequest, Member member) {
+    public static TagFollow toEntity(TagFollowUpdateRequest tagFollowUpdateRequest, Member member) {
 
         TagFollow tagFollow = TagFollow.builder()
-                .tag(tagFollowRegisterRequest.getTag())
+                .tag(tagFollowUpdateRequest.getTag())
                 .member(member)
                 .build();
 
         return tagFollow;
     }
-
-
 
 }
