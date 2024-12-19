@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.durcit.be.postsTag.dto.PostsTagRegisterRequest;
 import org.durcit.be.postsTag.dto.PostsTagResponse;
 
-import org.durcit.be.postsTag.service.PostsTagService;
+import org.durcit.be.postsTag.service.impl.PostsTagServiceImpl;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import java.util.List;
 public class PostsTagController {
 
 
-    private final PostsTagService postsTagService;
+    private final PostsTagServiceImpl postsTagServiceImpl;
 
 
 
@@ -28,7 +28,7 @@ public class PostsTagController {
     @GetMapping("/posts-tag")
     public ResponseEntity<ResponseData<List<PostsTagResponse>>> getPostsTag(@PathVariable Long postId) {
 
-        List<PostsTagResponse> postsTagResponseListByPostId = postsTagService.getPostsTagResponseListByPostId(postId);
+        List<PostsTagResponse> postsTagResponseListByPostId = postsTagServiceImpl.getPostsTagResponseListByPostId(postId);
         // 위 변수는 최종 응답 객체다.
         // 해당 게시물에 태그가 없다면 => 위 변수는, 비어있는 List 이다. 즉 null은 아니지만, is.empty() 가 true다.
         // 해당 게시물에 태그가 있다면 => 위 변수는, 태그 엔티티 객체를 응답 Dto로 변환하여 담은 List다.
@@ -38,28 +38,28 @@ public class PostsTagController {
 
     @PostMapping("/posts-tag/members") // 유저가 인풋창에 태그 이름을 입력하고, 확인버튼을 눌러서 정상적으로 저장되는것을 가정했다.
     public ResponseEntity<ResponseData<List<PostsTagResponse>>> createPostsTag(List<PostsTagRegisterRequest> postsTagRegisterRequestList, @PathVariable Long postId) { // 유저가 입력한 태그 내용을 Dto List로 받고, postId도 경로에서 받아온다.
-        List<PostsTagResponse> postsTagResponseList = postsTagService.createPostsTag(postsTagRegisterRequestList, postId);// 포스트태그서비스에서 메서드를 돌리고, 응답 dto List를 반환했다.
+        List<PostsTagResponse> postsTagResponseList = postsTagServiceImpl.createPostsTag(postsTagRegisterRequestList, postId);// 포스트태그서비스에서 메서드를 돌리고, 응답 dto List를 반환했다.
         return ResponseData.toResponseEntity(ResponseCode.CREATE_POSTS_TAG_SUCCESS, postsTagResponseList);
     }
 
 
     @PutMapping("/posts-tag/members/put")
     public ResponseEntity<ResponseData<List<PostsTagResponse>>> putPostsTag(List<PostsTagRegisterRequest> postsTagRegisterRequestList, @PathVariable Long postId) {
-        List<PostsTagResponse> postsTagResponseList = postsTagService.updatePostsTag(postsTagRegisterRequestList, postId);
+        List<PostsTagResponse> postsTagResponseList = postsTagServiceImpl.updatePostsTag(postsTagRegisterRequestList, postId);
         return ResponseData.toResponseEntity(ResponseCode.UPDATE_POSTS_TAG_SUCCESS, postsTagResponseList);
     }
 
 
     @DeleteMapping("/posts-tag/members/deleteByPostId")
     public ResponseEntity<ResponseData> deletePostsTagsByPostId(@PathVariable Long postId) {
-        postsTagService.deletePostsTagsByPostId(postId);
+        postsTagServiceImpl.deletePostsTagsByPostId(postId);
         return ResponseData.toResponseEntity(ResponseCode.DELETE_POSTS_TAG_SUCCESS);
     }
 
 
     @DeleteMapping("/posts-tag/members/deleteByPostsTagIdList")
     public ResponseEntity<ResponseData> deletePostsTagsByPostsTagId(List<Long> postsTagIdList) {
-        postsTagService.deletePostsTagsByPostsTagId(postsTagIdList);
+        postsTagServiceImpl.deletePostsTagsByPostsTagId(postsTagIdList);
         return ResponseData.toResponseEntity(ResponseCode.DELETE_POSTS_TAG_SUCCESS);
     }
 

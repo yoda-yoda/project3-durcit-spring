@@ -1,6 +1,5 @@
 package org.durcit.be.postsTag.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.repository.PostRepository;
@@ -9,9 +8,7 @@ import org.durcit.be.postsTag.domain.PostsTag;
 import org.durcit.be.postsTag.dto.PostsTagRegisterRequest;
 import org.durcit.be.postsTag.dto.PostsTagResponse;
 import org.durcit.be.postsTag.repository.PostsTagRepository;
-import org.durcit.be.system.exception.tag.OptionalEmptyPostsTagFindByIdException;
-import org.hibernate.dialect.TiDBDialect;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
+import org.durcit.be.postsTag.service.impl.PostsTagServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +20,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Optional.ofNullable;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+
 @Slf4j
 @Transactional
 @Rollback(false)
 @SpringBootTest
-class PostsTagServiceTest {
+class PostsTagServiceImplTest {
 
     // 생성자 주입으로 하려니까 오류가나서 필드주입으로 했다. Junit 테스트는 생성자주입이 잘안먹히나보다.
     @Autowired
-    private PostsTagService postsTagService;
+    private PostsTagServiceImpl postsTagServiceImpl;
     @Autowired
     private PostsTagRepository postsTagRepository;
     @Autowired
@@ -89,7 +85,7 @@ class PostsTagServiceTest {
         list.add(req3);
 
         // when
-        postsTagService.createPostsTag(list, 2L);
+        postsTagServiceImpl.createPostsTag(list, 2L);
 
 
         // then
@@ -142,7 +138,7 @@ class PostsTagServiceTest {
 
 
         // when
-        List<PostsTagResponse> postsTagResponseList = postsTagService.createPostsTag(list, 2L);
+        List<PostsTagResponse> postsTagResponseList = postsTagServiceImpl.createPostsTag(list, 2L);
 
         // then
         int i = 0;
@@ -212,7 +208,7 @@ class PostsTagServiceTest {
         postsTagRepository.save(postsTag2);
 
         // then
-        List<PostsTag> list = postsTagService.getAllPostsTagsWithNonDeleted();
+        List<PostsTag> list = postsTagServiceImpl.getAllPostsTagsWithNonDeleted();
 
         assertThat(list.size()).isEqualTo(2);
         assertThat(list.get(0).getId()).isEqualTo(1L);
@@ -276,7 +272,7 @@ class PostsTagServiceTest {
         postsTagRepository.save(postsTag2);
 
         // then1
-        List<PostsTag> allPostsTags = postsTagService.getAllPostsTags();
+        List<PostsTag> allPostsTags = postsTagServiceImpl.getAllPostsTags();
 
         assertThat(allPostsTags.size()).isEqualTo(3);
 
@@ -285,14 +281,14 @@ class PostsTagServiceTest {
 
         //then2
 
-        List<PostsTag> all = postsTagService.getAllPostsTags();
+        List<PostsTag> all = postsTagServiceImpl.getAllPostsTags();
 
         for (PostsTag postsTag : all) {
             postsTag.setDeleted(true);
             postsTagRepository.save(postsTag);
         }
 
-        List<PostsTag> allList = postsTagService.getAllPostsTags();
+        List<PostsTag> allList = postsTagServiceImpl.getAllPostsTags();
 
         assertThat(allList.size()).isEqualTo(3);
 
@@ -356,7 +352,7 @@ class PostsTagServiceTest {
         postsTagRepository.save(postsTag2);
 
         // then
-         postsTagService.getPostsTagById(2L);
+         postsTagServiceImpl.getPostsTagById(2L);
 
         // 결과 ok. 소프트딜리트 처리되어있는걸 찾아도 예외 작동, 해당 아이디가 디비에 아예 없어도 예외 작동.
 
@@ -989,7 +985,7 @@ class PostsTagServiceTest {
         postsTagRepository.save(tag3);
 
     	  // when
-        postsTagService.deleteOnePostsTagByPostsTagId(2L);
+        postsTagServiceImpl.deleteOnePostsTagByPostsTagId(2L);
     	  // then
 
 
@@ -1048,7 +1044,7 @@ class PostsTagServiceTest {
 
     	  // then
 
-        postsTagService.deletePostsTagsByPostsTagId(list);
+        postsTagServiceImpl.deletePostsTagsByPostsTagId(list);
 
         assertThat(postsTagRepository.findById(tag1.getId()).orElseThrow().isDeleted()).isEqualTo(true);
         assertThat(postsTagRepository.findById(tag2.getId()).orElseThrow().isDeleted()).isEqualTo(true);
