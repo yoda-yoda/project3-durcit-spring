@@ -62,7 +62,6 @@ public class PostsTagServiceImpl implements PostsTagService {
 
 
 
-
     // 테그 테이블 중에 소프트딜리트된것 뺀 모든 엔티티를 리스트로 반환하는 메서드.
     //  DB에 저장이 되었지만 전부가 딜리트처리 되어있다면 정의한 오류를 던진다. 또한 DB 저장된 것이 아예 없는 상태여도 오류를 던진다.
     public List<PostsTag> getAllPostsTagsWithNonDeleted() {

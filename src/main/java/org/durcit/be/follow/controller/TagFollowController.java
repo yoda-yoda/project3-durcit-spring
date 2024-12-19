@@ -16,12 +16,15 @@ import java.util.List;
 @RequestMapping("/api/tag-follow/members/{memberId}")
 public class TagFollowController {
 
+
     @GetMapping
     public ResponseEntity<ResponseData<List<TagFollowResponse>>> getTagFollow(@PathVariable("memberId") Long memberId) {
 
-        List<TagFollowResponse> aaa = new ArrayList<>();
+        List<TagFollowResponse> aaa = new ArrayList<>(); // 서비스 만드는중.
 
         return ResponseData.toResponseEntity(ResponseCode.GET_TAG_FOLLOW_SUCCESS,aaa);
     }
+
+
 
 }

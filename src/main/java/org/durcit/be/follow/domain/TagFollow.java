@@ -1,11 +1,14 @@
 package org.durcit.be.follow.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 import org.durcit.be.security.domian.Member;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TagFollow {
 
     @Id
@@ -25,6 +28,17 @@ public class TagFollow {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Setter
+    private boolean deleted;
+
+    @Builder
+    public TagFollow(Member member, String tag) {
+        this.member = member;
+        this.tag = tag;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.deleted = false;
+    }
 
 
 }
