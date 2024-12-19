@@ -63,6 +63,11 @@ public enum ResponseCode {
     UPDATE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.UPDATE_POSTS_TAG_SUCCESS),
     DELETE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.DELETE_POSTS_TAG_SUCCESS),
 
+    // chat
+    CREATE_CHAT_ROOM_SUCCESS(Status.OK, ChatMessage.CREATE_CHAT_ROOM_SUCCESS),
+    GET_CHAT_ROOM_SUCCESS(Status.OK, ChatMessage.GET_CHAT_ROOM_SUCCESS),
+    GET_CHAT_SUCCESS(Status.OK, ChatMessage.GET_CHAT_SUCCESS),
+
     // push
     GET_PUSHS_SUCCESS(Status.OK, PostMessage.GET_PUSHS_SUCCESS),
     ;
