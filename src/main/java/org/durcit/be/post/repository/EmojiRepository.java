@@ -15,9 +15,6 @@ public interface EmojiRepository extends JpaRepository<Emoji, Long> {
     @Query("SELECT e FROM Emoji e WHERE e.post.id = :postId AND e.member.id = :memberId AND e.emoji = :emoji")
     Emoji findByPostIdAndMemberIdAndEmoji(@Param("postId") Long postId, @Param("memberId") Long memberId, @Param("emoji") String emoji);
 
-    @Query("SELECT e.emoji AS emoji, COUNT(e.id) AS count FROM Emoji e WHERE e.post.id = :postId GROUP BY e.emoji")
-    List<Object[]> aggregateEmojisByPostId(Long postId);
-
     boolean existsByPostIdAndMemberIdAndEmoji(Long postId, Long currentMemberId, String emoji);
 
     @Query("SELECT e FROM Emoji e WHERE e.post.id = :postId AND e.member.id = :memberId")
