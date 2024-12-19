@@ -50,7 +50,7 @@ public class PostCardResponse {
                 .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .author(post.getMember().getUsername())
+                .author(post.getMember().getNickname())
                 .views(post.getViews())
                 .likeCount((long) post.getLikes().size())
                 .hasImage(post.getImages() != null && !post.getImages().isEmpty())
