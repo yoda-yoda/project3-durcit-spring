@@ -2,8 +2,7 @@ package org.durcit.be.comment.dto;
 
 import jakarta.persistence.Column;
 import lombok.*;
-import org.durcit.be.comment.domain.Comment;
-import org.durcit.be.security.domian.Member;
+
 
 import java.time.LocalDateTime;
 
