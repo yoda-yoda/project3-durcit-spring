@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.durcit.be.system.exception.ExceptionMessage.*;
@@ -99,14 +100,11 @@ public class AuthService {
         return jwtTokenProvider.generateKeyPair(member);
     }
 
+    @Transactional
     public void addRefreshTokenToBlacklist(RefreshTokenRequest refreshToken) {
-        RefreshToken token = new RefreshToken(
-                refreshToken.getRefreshToken(), memberRepository.getReferenceById(SecurityUtil.getCurrentMemberId())
-        );
-        if (refreshTokenRepository.isBannedRefToken(token)){
-            refreshTokenRepository.appendBlackList(token);
-            return;
-        }
-        throw new NotValidTokenException(NOT_VALID_TOKEN_ERROR);
+        RefreshToken validRefTokenByMemberId = refreshTokenRepository.findValidRefTokenByMemberId(refreshToken.getMemberId())
+                .orElseThrow(() -> new NotValidTokenException(NOT_VALID_TOKEN_ERROR));
+
+        refreshTokenRepository.appendBlackList(validRefTokenByMemberId);
     }
 }
