@@ -34,7 +34,8 @@ public class EmojiController {
         String destination = headerAccessor.getDestination();
         log.info("WebSocket Message Received: sessionId={}, destination={}, payload={}", sessionId, destination, request);
         EmojiResponse emojiResponse = emojiService.toggleEmoji(request);
-        webSocketService.sendMessageToTopic("/topic/emoji", emojiResponse);
+        String topic = String.format("/topic/emoji/%d", request.getPostId());
+        webSocketService.sendMessageToTopic(topic, emojiResponse);
 
         Log log = Log.builder()
                 .memberId(SecurityUtil.getCurrentMemberIdOrNull())
