@@ -20,5 +20,5 @@ public interface PostService {
     public void deletePost(Long postId);
     public PostResponse getPostWithViewIncrement(Long postId);
     public Page<PostCardResponse> getPostsByPage(Pageable pageable, String category);
-
+    public List<PostCardResponse> getMyPosts(Long memberId);
 }

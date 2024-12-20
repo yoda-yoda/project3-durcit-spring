@@ -116,5 +116,13 @@ public class PostServiceImpl implements PostService {
         return PostResponse.fromEntity(post);
     }
 
+    public List<PostCardResponse> getMyPosts(Long memberId) {
+        return postRepository.findByMemberId(memberId)
+                .stream()
+                .filter(post -> !post.isDeleted())
+                .map(PostCardResponse::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 
 }

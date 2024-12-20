@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.post.dto.*;
 import org.durcit.be.post.service.PostService;
+import org.durcit.be.security.util.SecurityUtil;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/posts")
+@RequestMapping("/api")
 public class PostController {
 
     private final PostService postService;
@@ -26,7 +27,7 @@ public class PostController {
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postService.getAllPosts());
     }
 
-    @GetMapping("/pages")
+    @GetMapping("/posts/pages")
     public ResponseEntity<ResponseData<Page<PostCardResponse>>> getPostsByPage(@Valid PostPageRequest postPageRequest) {
         PageRequest pageRequest = PageRequest.of(postPageRequest.getPage(), postPageRequest.getSize());
         Page<PostCardResponse> postsByPage = postService.getPostsByPage(pageRequest, postPageRequest.getCategory());
@@ -57,6 +58,11 @@ public class PostController {
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postResponse);
     }
 
-
+    @GetMapping("/members/my-posts")
+    public ResponseEntity<ResponseData<List<PostCardResponse>>> getMyPosts() {
+        Long currentMemberId = SecurityUtil.getCurrentMemberId();
+        List<PostCardResponse> myPosts = postService.getMyPosts(currentMemberId);
+        return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, myPosts);
+    }
 
 }
