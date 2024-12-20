@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode
-public class NotificationMessage {
+public class PostNotificationMessage {
     private Long followerId;
     private Long postId;
     private String message;
 
     @Builder
-    public NotificationMessage(Long followerId, Long postId, String message) {
+    public PostNotificationMessage(Long followerId, Long postId, String message) {
         this.followerId = followerId;
         this.postId = postId;
         this.message = message;

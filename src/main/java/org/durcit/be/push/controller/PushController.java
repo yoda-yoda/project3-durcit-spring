@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/pushs")
+@RequestMapping("/api/members/pushs")
 public class PushController {
 
     private final PushService pushService;

@@ -1,6 +1,6 @@
 package org.durcit.be.post.service;
 
-import org.durcit.be.post.dto.NotificationMessage;
+import org.durcit.be.post.dto.PostNotificationMessage;
 import org.durcit.be.system.service.WebSocketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -31,7 +30,7 @@ class NotificationListenerTest {
     @DisplayName("RabbitMQ 메시지 수신 -> WebSocket 메시지 전송")
     void handleNotification_shouldSendMessageToWebSocket() {
         // given
-        NotificationMessage message = NotificationMessage.builder()
+        PostNotificationMessage message = PostNotificationMessage.builder()
                 .followerId(1L)
                 .postId(10L)
                 .message("새 글이 작성되었습니다!")

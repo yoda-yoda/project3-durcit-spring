@@ -6,6 +6,7 @@ import org.durcit.be.follow.domain.FollowStatus;
 import org.durcit.be.follow.domain.MemberFollow;
 import org.durcit.be.follow.dto.MemberFollowResponse;
 import org.durcit.be.follow.repository.MemberFollowRepository;
+import org.durcit.be.follow.service.FollowNotificationService;
 import org.durcit.be.follow.service.MemberFollowService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
@@ -24,7 +25,7 @@ public class MemberFollowServiceImpl implements MemberFollowService {
 
     private final MemberFollowRepository memberFollowRepository;
     private final MemberService memberService;
-    private final WebSocketService webSocketService;
+    private final FollowNotificationService followNotificationService;
 
     @Transactional
     public void toggleFollow(Long followeeId) {
@@ -44,7 +45,7 @@ public class MemberFollowServiceImpl implements MemberFollowService {
             follow.setStatus(FollowStatus.UNFOLLOWED);
         } else {
             follow.setStatus(FollowStatus.FOLLOWED);
-            webSocketService.sendMessageToTopic("/topic/notification/" + follow.getFollowee().getId(), follow.getFollower().getId() + "님이 당신을 팔로우합니다.");
+            followNotificationService.notifyToFollowee(follower, followee.getId());
         }
 
         memberFollowRepository.save(follow);
