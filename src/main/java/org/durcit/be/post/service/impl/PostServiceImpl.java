@@ -55,6 +55,7 @@ public class PostServiceImpl implements PostService {
     }
 
     public Post getById(Long postId) {
+        postRepository.incrementViews(postId);
         return postRepository.findById(postId)
                 .filter(post -> !post.isDeleted())
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));
