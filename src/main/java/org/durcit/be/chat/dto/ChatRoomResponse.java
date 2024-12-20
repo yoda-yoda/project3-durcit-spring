@@ -14,12 +14,20 @@ public class ChatRoomResponse {
     private Long roomId;
     private String nickname;
     private String targetNickname;
+    private Long memberId;
+    private Long targetId;
+    private String memberProfile;
+    private String targetProfile;
 
     public static ChatRoomResponse fromEntity(ChatRoom chatRoom) {
         return ChatRoomResponse.builder()
                 .roomId(chatRoom.getId())
                 .nickname(chatRoom.getMember().getNickname())
                 .targetNickname(chatRoom.getOpponent().getNickname())
+                .memberId(chatRoom.getMember().getId())
+                .targetId(chatRoom.getOpponent().getId())
+                .memberProfile(chatRoom.getMember().getProfileImage())
+                .targetProfile(chatRoom.getOpponent().getProfileImage())
                 .build();
     }
 }
