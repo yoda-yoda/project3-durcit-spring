@@ -3,7 +3,6 @@ package org.durcit.be.postsTag.service;
 import org.durcit.be.postsTag.domain.PostsTag;
 import org.durcit.be.postsTag.dto.PostsTagRegisterRequest;
 import org.durcit.be.postsTag.dto.PostsTagResponse;
-import org.durcit.be.postsTag.dto.PostsTagUpdateRequest;
 
 import java.util.List;
 
