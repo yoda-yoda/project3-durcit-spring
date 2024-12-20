@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.durcit.be.chat.dto.ChatMessageRequest;
 import org.durcit.be.chat.dto.ChatMessageResponse;
 import org.durcit.be.chat.service.ChatService;
+import org.durcit.be.system.service.WebSocketService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -13,21 +14,16 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
 
     private final ChatService chatService;
-    private final SimpMessagingTemplate messagingTemplate;
+    private final WebSocketService webSocketService;
+
+
 
     @MessageMapping("/chat/send")
     public void sendMessage(ChatMessageRequest messageRequest) {
         ChatMessageResponse messageResponse = chatService.processMessage(messageRequest);
 
-        messagingTemplate.convertAndSendToUser(
-                messageRequest.getSenderId().toString(),
-                "/queue/messages",
-                messageResponse
-        );
-
-        messagingTemplate.convertAndSendToUser(
-                messageResponse.getTargetId().toString(),
-                "/queue/messages",
+        webSocketService.sendMessageToTopic(
+                "/topic/chat/" + messageResponse.getRoomId(),
                 messageResponse
         );
     }

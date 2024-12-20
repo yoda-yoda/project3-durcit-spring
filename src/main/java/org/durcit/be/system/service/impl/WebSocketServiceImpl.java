@@ -14,7 +14,7 @@ public class WebSocketServiceImpl implements WebSocketService {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void sendMessageToUser(String userId, String destination, Object message) {
-        log.info("Sending message to user {}: {}", userId, message);
+        log.info("Sending message to user {}: {}, {}", userId, message, destination);
         messagingTemplate.convertAndSendToUser(userId, destination, message);
     }
 
