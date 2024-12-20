@@ -11,4 +11,5 @@ public interface MemberFollowService {
     public void toggleFollow(Long followeeId);
     public List<MemberFollowResponse> getFollowers(Long memberId);
     public List<MemberFollowResponse> getFollowees(Long memberId);
+    public boolean isFollowing(Long followeeId);
 }

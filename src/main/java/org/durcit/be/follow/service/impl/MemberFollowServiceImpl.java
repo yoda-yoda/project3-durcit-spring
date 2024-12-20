@@ -10,6 +10,7 @@ import org.durcit.be.follow.service.MemberFollowService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
 import org.durcit.be.security.util.SecurityUtil;
+import org.durcit.be.system.service.WebSocketService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class MemberFollowServiceImpl implements MemberFollowService {
 
     private final MemberFollowRepository memberFollowRepository;
     private final MemberService memberService;
+    private final WebSocketService webSocketService;
 
     @Transactional
     public void toggleFollow(Long followeeId) {
@@ -42,6 +44,7 @@ public class MemberFollowServiceImpl implements MemberFollowService {
             follow.setStatus(FollowStatus.UNFOLLOWED);
         } else {
             follow.setStatus(FollowStatus.FOLLOWED);
+            webSocketService.sendMessageToTopic("/topic/notification/" + follow.getFollowee().getId(), follow.getFollower().getId() + "님이 당신을 팔로우합니다.");
         }
 
         memberFollowRepository.save(follow);
@@ -63,6 +66,17 @@ public class MemberFollowServiceImpl implements MemberFollowService {
         return followees.stream()
                 .map(MemberFollowResponse::from)
                 .toList();
+    }
+
+    public boolean isFollowing(Long followeeId) {
+        Long currentUserId = SecurityUtil.getCurrentMemberId();
+        Member currentUser = memberService.getById(currentUserId);
+        Member followee = memberService.getById(followeeId);
+
+        return memberFollowRepository
+                .findByFollowerAndFollowee(currentUser, followee)
+                .map(follow -> follow.getStatus() == FollowStatus.FOLLOWED)
+                .orElse(false);
     }
 
 }
