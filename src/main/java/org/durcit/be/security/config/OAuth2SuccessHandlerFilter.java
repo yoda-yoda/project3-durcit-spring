@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.domian.RefreshToken;
 import org.durcit.be.security.dto.KeyPair;
-import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.domian.MemberDetails;
 import org.durcit.be.security.service.JwtTokenProvider;
 import org.durcit.be.security.service.MemberService;
 import org.springframework.beans.factory.annotation.Value;

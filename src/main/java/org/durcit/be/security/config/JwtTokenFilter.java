@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.domian.MemberDetails;
 import org.durcit.be.security.dto.TokenBody;
 import org.durcit.be.security.service.JwtTokenProvider;
 import org.durcit.be.security.service.MemberService;

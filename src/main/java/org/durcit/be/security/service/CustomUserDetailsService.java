@@ -1,18 +1,14 @@
 package org.durcit.be.security.service;
 
 import lombok.RequiredArgsConstructor;
-import org.durcit.be.security.domian.CustomUserPrincipal;
 import org.durcit.be.security.domian.Member;
-import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.domian.MemberDetails;
 import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.system.exception.ExceptionMessage;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

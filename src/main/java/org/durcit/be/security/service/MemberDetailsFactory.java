@@ -1,6 +1,6 @@
 package org.durcit.be.security.service;
 
-import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.domian.MemberDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class MemberDetailsFactory {

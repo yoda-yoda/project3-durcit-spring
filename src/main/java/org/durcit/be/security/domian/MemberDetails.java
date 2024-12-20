@@ -1,8 +1,7 @@
-package org.durcit.be.security.dto;
+package org.durcit.be.security.domian;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.durcit.be.security.domian.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

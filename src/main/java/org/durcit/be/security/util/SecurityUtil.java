@@ -3,11 +3,10 @@ package org.durcit.be.security.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.domian.MemberDetails;
 import org.durcit.be.system.exception.auth.NoAuthenticationInSecurityContextException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 import static org.durcit.be.system.exception.ExceptionMessage.NO_AUTHENTICATION_IN_SECURITY_CONTEXT_ERROR;
 
