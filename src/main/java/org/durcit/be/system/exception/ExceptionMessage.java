@@ -34,4 +34,5 @@ public class ExceptionMessage {
 
     // chat
     public static final String INVALID_CHAT_ROOM_ID_ERROR = "유효하지 않은 채팅방 아이디 입니다.";
+    public static final String INVALID_CHAT_ROOM_CREATION_ERROR = "유효하지 않은 채팅방 개설입니다.";
 }

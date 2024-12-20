@@ -13,15 +13,18 @@ import org.durcit.be.chat.repository.ChatRoomRepository;
 import org.durcit.be.chat.service.ChatService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
+import org.durcit.be.system.exception.chat.InvalidChatRoomCreationException;
 import org.durcit.be.system.exception.chat.InvalidChatRoomIdException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.durcit.be.system.exception.ExceptionMessage.INVALID_CHAT_ROOM_CREATION_ERROR;
 import static org.durcit.be.system.exception.ExceptionMessage.INVALID_CHAT_ROOM_ID_ERROR;
 
 @Service
@@ -43,6 +46,10 @@ public class ChatServiceImpl implements ChatService {
 
     @Transactional
     public ChatRoomResponse createChatRoom(ChatRoomRequest chatRoomRequest) {
+        if (Objects.equals(chatRoomRequest.getMemberId(), chatRoomRequest.getTargetMemberId())) {
+            throw new InvalidChatRoomCreationException(INVALID_CHAT_ROOM_CREATION_ERROR);
+        }
+
         Optional<ChatRoom> existingRoom = chatRoomRepository.findByMemberIds(
                 chatRoomRequest.getMemberId(),
                 chatRoomRequest.getTargetMemberId()
@@ -77,14 +84,19 @@ public class ChatServiceImpl implements ChatService {
     public ChatMessageResponse processMessage(ChatMessageRequest messageRequest) {
         log.info("messageRequest.getTargetNickname() = {}", messageRequest.getTargetNickname());
         Member targetMember = memberService.getByNickname(messageRequest.getTargetNickname());
-        log.info("targetMember = {}", targetMember);
+        log.info("targetMember = {}", targetMember.getId());
         ChatRoom chatRoom = chatRoomRepository
-                .findByMember_IdAndOpponent_Id(messageRequest.getSenderId(), targetMember.getId())
-                .or(() -> chatRoomRepository.findByMember_IdAndOpponent_Id(targetMember.getId(), messageRequest.getSenderId()))
-                .orElseGet(() -> chatRoomRepository.save(ChatRoom.create(
-                        memberService.getById(messageRequest.getSenderId()),
-                        memberService.getById(targetMember.getId())
-                )));
+                .findByMemberIds(messageRequest.getSenderId(), targetMember.getId())
+                .or(() -> chatRoomRepository.findByMemberIds(targetMember.getId(), messageRequest.getSenderId()))
+                .orElseGet(() -> {
+                    if (Objects.equals(messageRequest.getSenderId(), targetMember.getId())) {
+                        throw new InvalidChatRoomCreationException(INVALID_CHAT_ROOM_CREATION_ERROR);
+                    }
+                    return chatRoomRepository.save(ChatRoom.create(
+                            memberService.getById(messageRequest.getSenderId()),
+                            memberService.getById(targetMember.getId())
+                    ));
+                });
 
 
         ChatMessage chatMessage = ChatMessage.builder()
