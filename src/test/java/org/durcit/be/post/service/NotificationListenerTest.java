@@ -1,6 +1,7 @@
 package org.durcit.be.post.service;
 
 import org.durcit.be.post.dto.PostNotificationMessage;
+import org.durcit.be.system.service.NotificationListener;
 import org.durcit.be.system.service.WebSocketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

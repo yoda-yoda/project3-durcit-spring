@@ -1,10 +1,9 @@
-package org.durcit.be.post.service;
+package org.durcit.be.system.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.follow.dto.FollowNotificationMessage;
 import org.durcit.be.post.dto.PostNotificationMessage;
-import org.durcit.be.system.service.WebSocketService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
