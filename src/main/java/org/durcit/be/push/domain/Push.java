@@ -23,6 +23,8 @@ public class Push {
 
     private String content;
 
+    private Long postId;
+
     @Setter
     private boolean confirmed;
 
@@ -30,10 +32,11 @@ public class Push {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Push(String memberId, PushType pushType, String content) {
+    public Push(String memberId, PushType pushType, String content, Long postId) {
         this.memberId = memberId;
         this.pushType = pushType;
         this.content = content;
+        this.postId = postId;
     }
 
     @PrePersist

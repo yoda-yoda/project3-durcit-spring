@@ -35,6 +35,7 @@ public class PushServiceImpl implements PushService {
                         .id(push.getId())
                         .message(push.getContent())
                         .createdAt(push.getCreatedAt())
+                        .postId(push.getPostId())
                         .build())
                 .collect(Collectors.toList());
     }
