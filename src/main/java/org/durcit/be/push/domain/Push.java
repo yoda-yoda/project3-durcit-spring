@@ -1,10 +1,7 @@
 package org.durcit.be.push.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.durcit.be.security.domian.Member;
 
 import java.time.LocalDateTime;
@@ -26,6 +23,9 @@ public class Push {
 
     private String content;
 
+    @Setter
+    private boolean confirmed;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -40,11 +40,13 @@ public class Push {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.confirmed = false;
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+        this.confirmed = true;
     }
 
 

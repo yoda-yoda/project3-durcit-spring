@@ -43,6 +43,7 @@ public class PostFacadeServiceImpl implements PostFacadeService {
         return post.getId();
     }
 
+    @Transactional
     public PostCombinedResponse getPostById(Long postId) {
         PostResponse postById = postService.getPostById(postId);
         List<PostsTagResponse> postsTagResponseListByPostId = postsTagService.getPostsTagResponseListByPostId(postId);

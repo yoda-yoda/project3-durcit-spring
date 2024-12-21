@@ -6,9 +6,7 @@ import org.durcit.be.push.service.PushService;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +21,12 @@ public class PushController {
     public ResponseEntity<ResponseData<List<PushResponse>>> getPushsByMemberId(String memberId) {
         List<PushResponse> pushsByMemberId = pushService.getPushsByMemberId(memberId);
         return ResponseData.toResponseEntity(ResponseCode.GET_PUSHS_SUCCESS, pushsByMemberId);
+    }
+
+    @PutMapping("/{pushId}/confirm")
+    public ResponseEntity<ResponseData> confirmPush(@PathVariable Long pushId) {
+        pushService.confirmPush(pushId);
+        return ResponseData.toResponseEntity(ResponseCode.UPDATE_PUSH_SUCCESS);
     }
 
 

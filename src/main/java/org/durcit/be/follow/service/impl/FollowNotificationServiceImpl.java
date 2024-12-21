@@ -31,11 +31,12 @@ public class FollowNotificationServiceImpl implements FollowNotificationService 
                 .build();
         log.info("follower = {}", follower);
         log.info("followeeId = {}", followeeId);
-        pushService.createPush(Push.builder()
+        Push push = pushService.createPush(Push.builder()
                 .pushType(PushType.NEW_FOLLOWER)
                 .memberId(String.valueOf(followeeId))
                 .content(notification.getMessage())
                 .build());
+        notification.setId(push.getId());
         rabbitTemplate.convertAndSend("notifyExchange", "notify.notify", notification);
     }
 

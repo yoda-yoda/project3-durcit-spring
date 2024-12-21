@@ -69,7 +69,8 @@ public enum ResponseCode {
     GET_CHAT_SUCCESS(Status.OK, ChatMessage.GET_CHAT_SUCCESS),
 
     // push
-    GET_PUSHS_SUCCESS(Status.OK, PostMessage.GET_PUSHS_SUCCESS),
+    GET_PUSHS_SUCCESS(Status.OK, PushMessage.GET_PUSHS_SUCCESS),
+    UPDATE_PUSH_SUCCESS(Status.NO_CONTENT, PushMessage.UPDATE_PUSH_SUCCESS)
     ;
 
     private int httpStatus;

@@ -15,6 +15,8 @@ public class PushResponse {
 
     private Long id;
     private String message;
+    private Long postId;
+    private boolean confirmed;
     private LocalDateTime createdAt;
 
 }

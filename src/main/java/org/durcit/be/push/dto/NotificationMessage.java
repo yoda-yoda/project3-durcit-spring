@@ -11,8 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class NotificationMessage {
 
+    private Long id;
     private Long messageReceiver;
     private String message;
     private Long postId;
+    private boolean confirmed = false;
 
 }
