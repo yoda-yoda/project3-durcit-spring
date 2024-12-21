@@ -1,6 +1,7 @@
 package org.durcit.be.push.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.push.dto.PushResponse;
 import org.durcit.be.push.service.PushService;
 import org.durcit.be.system.response.ResponseCode;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members/pushs")
+@Slf4j
 public class PushController {
 
     private final PushService pushService;
@@ -25,6 +27,7 @@ public class PushController {
 
     @PutMapping("/{pushId}/confirm")
     public ResponseEntity<ResponseData> confirmPush(@PathVariable Long pushId) {
+        log.info("pushId = {}", pushId);
         pushService.confirmPush(pushId);
         return ResponseData.toResponseEntity(ResponseCode.UPDATE_PUSH_SUCCESS);
     }

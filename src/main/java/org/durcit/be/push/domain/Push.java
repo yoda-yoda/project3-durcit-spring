@@ -49,7 +49,6 @@ public class Push {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
-        this.confirmed = true;
     }
 
 
