@@ -10,6 +10,7 @@ import org.durcit.be.chat.dto.ChatRoomRequest;
 import org.durcit.be.chat.dto.ChatRoomResponse;
 import org.durcit.be.chat.repository.ChatMessageRepository;
 import org.durcit.be.chat.repository.ChatRoomRepository;
+import org.durcit.be.chat.service.ChatNotificationService;
 import org.durcit.be.chat.service.ChatService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
@@ -36,6 +37,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final MemberService memberService;
+    private final ChatNotificationService chatNotificationService;
 
     public List<ChatRoomResponse> getChatRoomsByMemberId(Long memberId) {
         List<ChatRoom> chatRooms = chatRoomRepository.findAllByMemberId(memberId);
@@ -83,6 +85,7 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     public ChatMessageResponse processMessage(ChatMessageRequest messageRequest) {
         log.info("messageRequest.getTargetNickname() = {}", messageRequest.getTargetNickname());
+        Member member = memberService.getById(messageRequest.getSenderId());
         Member targetMember = memberService.getByNickname(messageRequest.getTargetNickname());
         log.info("targetMember = {}", targetMember.getId());
         ChatRoom chatRoom = chatRoomRepository
@@ -105,6 +108,8 @@ public class ChatServiceImpl implements ChatService {
                 .content(messageRequest.getMessage())
                 .build();
         chatMessageRepository.save(chatMessage);
+
+        chatNotificationService.notifyToTargetMember(member, targetMember);
 
         return ChatMessageResponse.builder()
                 .roomId(chatRoom.getId())
