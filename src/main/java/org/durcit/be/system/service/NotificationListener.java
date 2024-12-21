@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.follow.dto.FollowNotificationMessage;
 import org.durcit.be.post.dto.PostNotificationMessage;
+import org.durcit.be.push.dto.NotificationMessage;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,10 @@ public class NotificationListener {
         webSocketService.sendMessageToUser(message.getFollowerId().toString(), "/queue/post/notifications", message.getMessage());
     }
 
-    @RabbitListener(queues = "followNotificationQueue")
-    public void handleFollowNotification(FollowNotificationMessage message) {
+    @RabbitListener(queues = "notificationQueue")
+    public void handleFollowNotification(NotificationMessage message) {
         log.info("Received notification message: {}", message);
-        webSocketService.sendMessageToTopic("/topic/notification/" + message.getFolloweeId(), message);
+        webSocketService.sendMessageToTopic("/topic/notification/" + message.getMessageReceiver(), message);
     }
 
 }

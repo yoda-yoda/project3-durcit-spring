@@ -23,8 +23,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public DirectExchange followExchange() {
-        return new DirectExchange("followExchange", true, false);
+    public DirectExchange notifyExchange() {
+        return new DirectExchange("notifyExchange", true, false);
     }
 
     @Bean
@@ -40,10 +40,10 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue followNotificationQueue() {
+    public Queue notificationQueue() {
         Map<String, Object> args = new HashMap<>();
         args.put("x-message-ttl", 60000); // 1분 TTL
-        return new Queue("followNotificationQueue", true, false, false, args);
+        return new Queue("notificationQueue", true, false, false, args);
     }
 
     @Bean
@@ -52,8 +52,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding followNotificationBinding(DirectExchange followExchange, Queue followNotificationQueue) {
-        return BindingBuilder.bind(followNotificationQueue).to(followExchange).with("follow.notify");
+    public Binding notificationBinding(DirectExchange notifyExchange, Queue notificationQueue) {
+        return BindingBuilder.bind(notificationQueue).to(notifyExchange).with("notify.notify");
     }
 
     @Bean

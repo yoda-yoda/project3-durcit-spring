@@ -6,6 +6,7 @@ import org.durcit.be.follow.dto.FollowNotificationMessage;
 import org.durcit.be.follow.service.FollowNotificationService;
 import org.durcit.be.push.domain.Push;
 import org.durcit.be.push.domain.PushType;
+import org.durcit.be.push.dto.NotificationMessage;
 import org.durcit.be.push.service.PushService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.system.service.WebSocketService;
@@ -23,10 +24,9 @@ public class FollowNotificationServiceImpl implements FollowNotificationService 
     private final PushService pushService;
 
     public void notifyToFollowee(Member follower, Long followeeId) {
-        FollowNotificationMessage notification = FollowNotificationMessage.builder()
-                .followerId(follower.getId())
-                .followerNickname(follower.getNickname())
-                .followeeId(followeeId)
+        NotificationMessage notification = NotificationMessage.builder()
+                .messageReceiver(followeeId)
+                .postId(null)
                 .message(follower.getNickname() + "님이 팔로우를 시작하셨습니다!")
                 .build();
         log.info("follower = {}", follower);
@@ -36,7 +36,7 @@ public class FollowNotificationServiceImpl implements FollowNotificationService 
                 .memberId(String.valueOf(followeeId))
                 .content(notification.getMessage())
                 .build());
-        rabbitTemplate.convertAndSend("followExchange", "follow.notify", notification);
+        rabbitTemplate.convertAndSend("notifyExchange", "notify.notify", notification);
     }
 
 
