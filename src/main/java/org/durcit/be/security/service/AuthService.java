@@ -13,10 +13,7 @@ import org.durcit.be.security.dto.RegisterRequest;
 import org.durcit.be.security.repository.adapter.RefreshTokenRepositoryAdapter;
 import org.durcit.be.security.util.ProfileImageUtil;
 import org.durcit.be.security.util.SecurityUtil;
-import org.durcit.be.system.exception.auth.DuplicateEmailException;
-import org.durcit.be.system.exception.auth.EmailNotVerifiedException;
-import org.durcit.be.system.exception.auth.InvalidUsernamePasswordException;
-import org.durcit.be.system.exception.auth.NotValidTokenException;
+import org.durcit.be.system.exception.auth.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,6 +92,10 @@ public class AuthService {
 
         if (!member.isVerified()) {
             throw new EmailNotVerifiedException(EMAIL_NOT_VERIFIED_ERROR);
+        }
+
+        if (member.isBlocked()) {
+            throw new MemberBlockedException(MEMBER_BLOCKED_ERROR);
         }
 
         return jwtTokenProvider.generateKeyPair(member);

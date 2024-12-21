@@ -35,6 +35,9 @@ public class Member {
     private boolean isVerified;
 
     @Setter
+    private boolean isBlocked;
+
+    @Setter
     @Column(columnDefinition = "TEXT")
     private String profileImage;
 
@@ -63,6 +66,7 @@ public class Member {
     protected void onCreate() {
         this.signedAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.isBlocked = false;
     }
 
     @PreUpdate

@@ -11,6 +11,7 @@ import org.durcit.be.security.dto.KeyPair;
 import org.durcit.be.security.domian.MemberDetails;
 import org.durcit.be.security.service.JwtTokenProvider;
 import org.durcit.be.security.service.MemberService;
+import org.durcit.be.system.exception.ExceptionMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -38,6 +39,12 @@ public class OAuth2SuccessHandlerFilter extends SimpleUrlAuthenticationSuccessHa
         // oauth2.0 인증성공시
         MemberDetails principal = (MemberDetails) authentication.getPrincipal();
         log.info("Principal set to SecurityContext: {}", authentication.getPrincipal().getClass().getName());
+
+        if (principal.isBlocked()) {
+            log.warn("Blocked user attempted to log in: {}", principal.getId());
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, ExceptionMessage.MEMBER_BLOCKED_ERROR);
+            return;
+        }
 
         HashMap<String, String> params = new HashMap<>();
 

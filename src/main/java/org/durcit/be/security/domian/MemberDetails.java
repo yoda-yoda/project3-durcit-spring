@@ -25,6 +25,9 @@ public class MemberDetails implements OAuth2User, UserDetails {
     @Setter
     private String role;
 
+    @Setter
+    private boolean isBlocked;
+
     private Map<String, Object> attributes;
 
     @Builder
@@ -85,6 +88,7 @@ public class MemberDetails implements OAuth2User, UserDetails {
         memberDetails.email = member.getEmail();
         memberDetails.role = member.getRole();
         memberDetails.name = member.getUsername();
+        memberDetails.isBlocked = member.isBlocked();
         return memberDetails;
     }
 }
