@@ -36,11 +36,11 @@ public class PostsSearchServiceImpl implements PostsSearchService {
 
 
         // 리포지터리에서 jpql로 만든 메서드를 활용해 조회한다.
-        // 즉 검색과 일치하는 제목의 Post와, delete false 만 DB에서 조회하여 담는다.
+        // 즉 검색 내용이 포함된 제목의 Post와, delete false 만 DB에서 조회하여 담는다.
         List<Post> findPostList = postsSearchRepository.findPostsByTitleAndNoneDeleted(postTitle);
 
 
-        // 검색된 제목과 일치하는 Post가 없거나, delete true만 있다면 빈 List를 반환하고 메서드를 종료한다.
+        // 그러한 Post가 없거나, delete가 true만 있다면 빈 List를 반환하고 메서드를 종료한다.
         if ( findPostList.isEmpty() ) {
             return new ArrayList<>();
         }
@@ -74,11 +74,11 @@ public class PostsSearchServiceImpl implements PostsSearchService {
 
 
         // 리포지터리에서 jqpl로 만든 메서드를 활용해 조회한다.
-        // 즉 검색과 일치하는 제목의 Post와, delete false 만 DB에서 조회하여 담는다.
+        // 즉 검색 내용이 포함된 제목의 Post와, delete false 만 DB에서 조회하여 담는다.
         List<Post> findPostList = postsSearchRepository.findPostsByTitleAndNoneDeleted(postTitle);
 
 
-        // 검색된 제목과 일치하는 Post가 없거나, delete true만 있다면 오류를 던진다.
+        // 그러한 Post가 없거나, delete true만 있다면 오류를 던진다.
         if ( findPostList.isEmpty() ) {
             throw new PostSearchNotFoundException(POST_SEARCH_NOT_FOUND_ERROR);
         }

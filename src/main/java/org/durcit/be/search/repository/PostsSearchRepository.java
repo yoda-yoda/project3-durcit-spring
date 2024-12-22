@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostsSearchRepository extends JpaRepository<PostsSearch, Long> {
 
-    @Query("SELECT p FROM Post as p WHERE p.title = :title AND p.deleted = false")
+    @Query("SELECT p FROM Post as p WHERE p.title LIKE %:title% AND p.deleted = false")
     public List<Post> findPostsByTitleAndNoneDeleted(@Param("title") String title);
 
 }

@@ -41,7 +41,6 @@ class TagSearchServiceImplTest {
 
 
 
-
     @Test
     @DisplayName("Post 3개, PostsTag 3개, 1개의 Tag만 delete true 일때 - getAllPostCardResponsesWithNoneDeletedPostsTag 메서드 테스트1")
     void getAllPostCardResponsesWithNoneDeletedPostsTag_method_test1() throws Exception {
@@ -574,10 +573,6 @@ class TagSearchServiceImplTest {
         assertThat(postTwo.getId()).isEqualTo(post2.getId()); // 아이디 2L
         assertThat(postTwo.getTitle()).isEqualTo("제목2");
         log.info("post.getTitle() =============== {}", postTwo.getTitle()); // 제목2
-
-
-
-
 
 
     }

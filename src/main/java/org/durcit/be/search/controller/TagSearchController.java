@@ -2,7 +2,6 @@ package org.durcit.be.search.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.post.dto.PostCardResponse;
-import org.durcit.be.search.dto.PostsSearchRequest;
 import org.durcit.be.search.dto.TagSearchRequest;
 import org.durcit.be.search.service.TagSearchService;
 import org.durcit.be.system.response.ResponseCode;
@@ -21,6 +20,7 @@ public class TagSearchController {
 
 
     private final TagSearchService tagSearchService;
+
 
 
 
