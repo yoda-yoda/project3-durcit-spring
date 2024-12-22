@@ -14,6 +14,10 @@ import org.durcit.be.security.repository.adapter.RefreshTokenRepositoryAdapter;
 import org.durcit.be.security.util.ProfileImageUtil;
 import org.durcit.be.security.util.SecurityUtil;
 import org.durcit.be.system.exception.auth.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +38,7 @@ public class AuthService {
     private final VerificationTokenRepository tokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepositoryAdapter refreshTokenRepository;
+    private final AuthenticationManager authenticationManager;
 
     @Transactional
     public void register(RegisterRequest request, String profileImageUrl) {
@@ -97,7 +102,6 @@ public class AuthService {
         if (member.isBlocked()) {
             throw new MemberBlockedException(MEMBER_BLOCKED_ERROR);
         }
-
         return jwtTokenProvider.generateKeyPair(member);
     }
 

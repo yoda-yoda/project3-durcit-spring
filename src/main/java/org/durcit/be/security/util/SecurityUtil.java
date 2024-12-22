@@ -15,7 +15,7 @@ import static org.durcit.be.system.exception.ExceptionMessage.NO_AUTHENTICATION_
 public class SecurityUtil {
     public static Long getCurrentMemberId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.getName() == null || authentication.getPrincipal() == "anonymousUser") {
+        if (authentication == null || authentication.getPrincipal() == "anonymousUser") {
             return null;
         }
         return ((MemberDetails) authentication.getPrincipal()).getId();

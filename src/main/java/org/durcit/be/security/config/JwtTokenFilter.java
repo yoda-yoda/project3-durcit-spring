@@ -35,8 +35,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (realToken != null && jwtTokenProvider.validate(realToken)) {
             TokenBody tokenBody = jwtTokenProvider.parseJwt(realToken);
             MemberDetails memberDetails = memberService.loadMemberDetails(tokenBody.getMemberId());
-
+            log.info("memberDetails.getId() = {}", memberDetails.getId());
             Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, realToken, memberDetails.getAuthorities());
+            log.info("authentication.getPrincipal() = {}", ((MemberDetails) authentication.getPrincipal()).getEmail());
+            log.info("authentication.getPrincipal() = {}", ((MemberDetails) authentication.getPrincipal()).getId());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
