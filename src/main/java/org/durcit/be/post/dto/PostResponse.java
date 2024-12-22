@@ -43,6 +43,7 @@ public class PostResponse {
                 .views(post.getViews())
                 .createdAt(TimeAgoUtil.formatElapsedTime(post.getUpdatedAt()))
                 .userThumbnail(post.getMember().getProfileImage())
+                .likes((long) post.getLikes().size())
                 .build();
     }
 
