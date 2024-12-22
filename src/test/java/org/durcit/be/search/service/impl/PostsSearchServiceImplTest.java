@@ -221,9 +221,7 @@ class PostsSearchServiceImplTest {
 
       
         // 결과 ok => 빈 리스트 반환.
-        // 포스트카드리스폰스의 fromEntity 메서드는, Post에 모든 값이 들어가있어야 작동하지만,
-        // 이 테스트는 간략한 Post 엔티티만 만들어서 테스트 하는것이기때문에, 최종 Response dto가 잘만들어졌는지까지는 알수없었다.
-        // 다만 fromEntity에서 오류가 나는거라면 그전의 로직은 통과한거기때문에 그것으로 정상작동을 추측 가능하다.
+
 
 
 
@@ -266,9 +264,6 @@ class PostsSearchServiceImplTest {
         log.info("list.toString() = {}", list.toString()); // [] 빈리스트
 
         // 결과 ok => 빈 리스트 반환.
-        // 포스트카드리스폰스의 fromEntity 메서드는, Post에 모든 값이 들어가있어야 작동하지만,
-        // 이 테스트는 간략한 Post 엔티티만 만들어서 테스트 하는것이기때문에, 최종 Response dto가 잘만들어졌는지까지는 알수없었다.
-        // 다만 fromEntity에서 오류가 나는거라면 그전의 로직은 통과한거기때문에 그것으로 정상작동을 추측 가능하다.
 
     }
 

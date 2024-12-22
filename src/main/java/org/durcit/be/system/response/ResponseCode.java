@@ -71,6 +71,9 @@ public enum ResponseCode {
     //tagSearch
     GET_TAG_SEARCH_SUCCESS(Status.OK, TagSearchMessage.GET_TAG_SEARCH_SUCCESS),
 
+    //postsContentSearch
+    GET_POSTS_CONTENT_SEARCH_SUCCESS(Status.OK, TagSearchMessage.GET_TAG_SEARCH_SUCCESS),
+
 
 
     // push
