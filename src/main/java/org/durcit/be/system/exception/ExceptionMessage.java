@@ -34,5 +34,8 @@ public class ExceptionMessage {
     public static final String NO_TAG_FOLLOW_IN_LIST_TYPE_ERROR = "내부적 로직상 찾아올수있는 tagFollow 객체가 없어서, 담아둘 공간인 List<tagFollow> 가 빈 리스트 입니다.";
     public static final String TAG_FOLLOW_NOT_FOUND_ERROR = "해당하는 팔로우 태그를 찾을 수 없습니다.";
 
+    // postSearch
+    public static final String POST_SEARCH_NOT_FOUND_ERROR = "검색한 포스트 제목을 찾을 수 없습니다.";
+
 
 }

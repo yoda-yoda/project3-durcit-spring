@@ -65,6 +65,12 @@ public enum ResponseCode {
     UPDATE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.UPDATE_POSTS_TAG_SUCCESS),
     DELETE_POSTS_TAG_SUCCESS(Status.OK, PostsTagMessage.DELETE_POSTS_TAG_SUCCESS),
 
+    //postsSearch
+    GET_POSTS_SEARCH_SUCCESS(Status.OK, PostsSearchMessage.GET_POSTS_SEARCH_SUCCESS),
+
+    //tagSearch
+    GET_TAG_SEARCH_SUCCESS(Status.OK, TagSearchMessage.GET_TAG_SEARCH_SUCCESS),
+
 
 
     // push
