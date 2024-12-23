@@ -1,6 +1,7 @@
 package org.durcit.be.comment.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.comment.domain.Comment;
 import org.durcit.be.comment.domain.CommentMention;
 import org.durcit.be.comment.dto.CommentCardResponse;
@@ -27,6 +28,7 @@ import static org.durcit.be.system.exception.ExceptionMessage.*;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
@@ -47,6 +49,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     public void registerComment(CommentRegisterRequest request) {
+        log.info("request.getPostId() = {}", request.getPostId());
         Comment parentComment = null;
         if (request.getParentId() != null) {
             parentComment = commentRepository.findById(request.getParentId()).orElseThrow(
@@ -77,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
                 mentionNotificationService.notifyToTargetMember(
                         memberService.getById(SecurityUtil.getCurrentMemberId()),
                         targetMember,
-                        comment.getId()
+                        request.getPostId()
                 );
             });
         }

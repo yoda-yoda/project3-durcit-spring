@@ -21,7 +21,7 @@ public class MentionController {
 
     private final MentionService mentionService;
 
-    @GetMapping("/api/users/mentions")
+    @GetMapping("/mentions")
     public ResponseEntity<ResponseData<List<MentionResponse>>> getMentionableMembers(@RequestParam String query) {
         List<MentionResponse> mentions = mentionService.getMentionableMembers(query);
         return ResponseData.toResponseEntity(ResponseCode.GET_MENTION_POSSIBLE_MEMBERS_SUCCESS, mentions);
