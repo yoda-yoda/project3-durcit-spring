@@ -43,6 +43,8 @@ public class ExceptionMessage {
     // postSearch
     public static final String POST_SEARCH_NOT_FOUND_ERROR = "검색한 포스트 제목을 찾을 수 없습니다.";
 
+    // comment
+    public static final String INVALID_COMMENT_ID_ERROR = "유효하지 않은 댓글 번호 입니다.";
 
     // push
     public static final String PUSH_CANNOT_FOUND_ERROR = "해당 푸시알람을 찾을 수 없습니다.";

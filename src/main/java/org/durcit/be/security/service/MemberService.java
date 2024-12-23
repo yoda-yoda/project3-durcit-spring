@@ -28,6 +28,9 @@ public class MemberService extends DefaultOAuth2UserService {
         return memberRepository.findById(id);
     }
 
+    public Member findByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname).orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
+    }
 
     public Member getById(Long id) {
         return findById(id).stream()

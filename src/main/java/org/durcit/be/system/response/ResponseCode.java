@@ -82,11 +82,15 @@ public enum ResponseCode {
     //postsContentSearch
     GET_POSTS_CONTENT_SEARCH_SUCCESS(Status.OK, TagSearchMessage.GET_TAG_SEARCH_SUCCESS),
 
-
-
     // push
     GET_PUSHS_SUCCESS(Status.OK, PushMessage.GET_PUSHS_SUCCESS),
-    UPDATE_PUSH_SUCCESS(Status.NO_CONTENT, PushMessage.UPDATE_PUSH_SUCCESS)
+    UPDATE_PUSH_SUCCESS(Status.NO_CONTENT, PushMessage.UPDATE_PUSH_SUCCESS),
+
+    // comment
+    CREATE_COMMENT_SUCCESS(Status.CREATED, CommentMessage.CREATE_COMMENT_SUCCESS),
+    GET_COMMENT_SUCCESS(Status.OK, CommentMessage.GET_COMMENT_SUCCESS),
+    UPDATE_COMMENT_SUCCESS(Status.NO_CONTENT, CommentMessage.UPDATE_COMMENT_SUCCESS),
+    DELETE_COMMENT_SUCCESS(Status.NO_CONTENT, CommentMessage.DELETE_COMMENT_SUCCESS),
     ;
 
     private int httpStatus;
