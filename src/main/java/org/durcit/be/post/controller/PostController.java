@@ -34,6 +34,13 @@ public class PostController {
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postsByPage);
     }
 
+    @GetMapping("/posts/pages/tags")
+    public ResponseEntity<ResponseData<Page<PostCardResponse>>> getPostsByFollowedTags(@Valid PostPageRequest postPageRequest, @RequestParam Long memberId) {
+        PageRequest pageRequest = PageRequest.of(postPageRequest.getPage(), postPageRequest.getSize());
+        Page<PostCardResponse> postsByTags = postService.getPostsByFollowedTags(memberId, pageRequest, postPageRequest.getCategory());
+        return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postsByTags);
+    }
+
     //@PostMapping("/members")
     public ResponseEntity<ResponseData<PostResponse>> createPost(@RequestBody PostRegisterRequest postRegisterRequest) {
         PostResponse postResponse = postService.createPost(postRegisterRequest);

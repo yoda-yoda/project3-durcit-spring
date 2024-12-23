@@ -21,4 +21,6 @@ public interface TagFollowRepository extends JpaRepository<TagFollow, Long> {
     List<String> findFollowedTagsByMemberId(@Param("memberId") Long memberId);
 
     boolean existsByTagAndMemberId(String contents, Long memberId);
+
+    List<TagFollow> findTagsByMemberId(Long memberId);
 }

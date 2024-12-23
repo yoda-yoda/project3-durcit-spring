@@ -1,6 +1,10 @@
 package org.durcit.be.post.repository;
 
+import org.durcit.be.follow.domain.TagFollow;
 import org.durcit.be.post.domain.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +23,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByMemberId(@Param("memberId") Long memberId);
 
     List<Post> findByTitleContaining(String query);
+
+    @Query("SELECT p FROM Post p JOIN p.postsTagList t WHERE t.contents IN :tags")
+    Page<Post> findPostsByTags(@Param("tags") List<String> tags, Pageable pageable);
 }

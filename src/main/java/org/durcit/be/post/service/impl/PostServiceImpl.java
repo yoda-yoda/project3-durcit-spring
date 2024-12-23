@@ -1,8 +1,11 @@
 package org.durcit.be.post.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.durcit.be.follow.domain.TagFollow;
 import org.durcit.be.follow.dto.MemberFollowResponse;
+import org.durcit.be.follow.repository.TagFollowRepository;
 import org.durcit.be.follow.service.MemberFollowService;
+import org.durcit.be.follow.service.TagFollowService;
 import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.dto.PostCardResponse;
 import org.durcit.be.post.dto.PostRegisterRequest;
@@ -17,14 +20,12 @@ import org.durcit.be.security.util.SecurityUtil;
 import org.durcit.be.post.aop.annotations.PostRequireAuthorization;
 import org.durcit.be.post.aop.annotations.RequireCurrentMemberId;
 import org.durcit.be.system.exception.post.PostNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,7 @@ public class PostServiceImpl implements PostService {
     private final MemberService memberService;
     private final MemberFollowService memberFollowService;
     private final PostNotificationService postNotificationService;
+    private final TagFollowRepository tagFollowRepository;
 
     public List<PostResponse> getAllPosts() {
         return postRepository.findAll()
@@ -71,14 +73,50 @@ public class PostServiceImpl implements PostService {
     public Page<PostCardResponse> getPostsByPage(Pageable pageable, String category) {
         Sort sort = getSortByCategory(category);
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
-        return postRepository.findAll(sortedPageable)
-                .map(PostCardResponse::fromEntity);
+
+        Page<Post> posts = postRepository.findAll(sortedPageable);
+
+        if (category.equalsIgnoreCase("hot")) {
+            return getSortByHotCategory(posts, sortedPageable);
+        }
+
+        return posts.map(PostCardResponse::fromEntity);
+    }
+
+
+
+    public Page<PostCardResponse> getPostsByFollowedTags(Long memberId, PageRequest pageRequest, String category) {
+        List<TagFollow> followedTags = tagFollowRepository.findTagsByMemberId(memberId);
+        if (followedTags.isEmpty()) {
+            return Page.empty();
+        }
+        List<String> followedTagsString = followedTags.stream().map(TagFollow::getTag).toList();
+
+        Sort sort = getSortByCategory(category);
+        PageRequest sortedPageRequest = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize(), sort);
+        Page<Post> posts = postRepository.findPostsByTags(followedTagsString, sortedPageRequest);
+
+        if (category.equalsIgnoreCase("hot")) {
+            return getSortByHotCategory(posts, sortedPageRequest);
+        }
+
+        return posts.map(PostCardResponse::fromEntity);
+    }
+
+    private PageImpl<PostCardResponse> getSortByHotCategory(Page<Post> posts, Pageable pageRequest) {
+        List<PostCardResponse> sortedPosts = posts.stream()
+                .map(PostCardResponse::fromEntity)
+                .sorted(Comparator.comparingLong((PostCardResponse p) -> p.getLikeCount() + p.getCommentCount())
+                        .reversed())
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(sortedPosts, pageRequest, sortedPosts.size());
     }
 
     private Sort getSortByCategory(String category) {
         return switch (category.toLowerCase()) {
             case "best" -> Sort.by(Sort.Order.desc("views")); // 조회수 많은 순
-            case "hot" -> Sort.by(Sort.Order.desc("likeCount"), Sort.Order.desc("commentCount")); // 좋아요 + 댓글 많은 순
+            case "hot" -> Sort.unsorted(); // DTO 변환 후 정렬
             default -> Sort.by(Sort.Order.desc("createdAt")); // 신규글 순
         };
     }
