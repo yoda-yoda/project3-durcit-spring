@@ -57,7 +57,7 @@ class PushServiceImplTest {
                 Push.builder().content("Message 1").pushType(PushType.FOLLOWER).build(),
                 Push.builder().content("Message 2").pushType(PushType.FOLLOWER).build()
         );
-        when(pushRepository.findAllByMemberId(memberId)).thenReturn(pushList);
+        when(pushRepository.findAllByMemberIdOrderByCreatedAtDesc(memberId)).thenReturn(pushList);
 
         // when
         List<PushResponse> result = pushService.getPushsByMemberId(memberId);
@@ -67,7 +67,7 @@ class PushServiceImplTest {
         assertThat(result.get(0).getMessage()).isEqualTo("Message 1");
         assertThat(result.get(1).getMessage()).isEqualTo("Message 2");
 
-        verify(pushRepository, times(1)).findAllByMemberId(memberId);
+        verify(pushRepository, times(1)).findAllByMemberIdOrderByCreatedAtDesc(memberId);
     }
 
 

@@ -23,7 +23,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     public MemberProfileResponse getCurrentMemberProfile() {
         Long memberId = SecurityUtil.getCurrentMemberId();
-
+        log.info("memberId = {}", memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
 

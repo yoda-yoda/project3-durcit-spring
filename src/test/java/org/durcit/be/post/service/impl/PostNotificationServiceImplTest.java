@@ -1,9 +1,9 @@
 package org.durcit.be.post.service.impl;
 
 import org.durcit.be.follow.dto.MemberFollowResponse;
-import org.durcit.be.post.domain.Post;
-import org.durcit.be.post.dto.NotificationMessage;
+import org.durcit.be.post.dto.PostNotificationMessage;
 import org.durcit.be.post.dto.PostResponse;
+import org.durcit.be.push.service.PushService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -26,6 +25,9 @@ class PostNotificationServiceImplTest {
 
     @Mock
     private RabbitTemplate rabbitTemplate;
+
+    @Mock
+    private PushService pushService;
 
     @InjectMocks
     private PostNotificationServiceImpl postNotificationService;
@@ -49,13 +51,13 @@ class PostNotificationServiceImplTest {
                 .build();
         List<MemberFollowResponse> followers = List.of(follower1, follower2);
 
-        NotificationMessage expectedMessage1 = NotificationMessage.builder()
+        PostNotificationMessage expectedMessage1 = PostNotificationMessage.builder()
                 .followerId(1L)
                 .postId(10L)
                 .message("author1님이 새 글을 작성하였습니다!")
                 .build();
 
-        NotificationMessage expectedMessage2 = NotificationMessage.builder()
+        PostNotificationMessage expectedMessage2 = PostNotificationMessage.builder()
                 .followerId(2L)
                 .postId(10L)
                 .message("author1님이 새 글을 작성하였습니다!")
@@ -72,13 +74,13 @@ class PostNotificationServiceImplTest {
         );
 
         // then
-        verify(rabbitTemplate, times(2)).convertAndSend(eq("postExchange"), eq("post.notify"), any(NotificationMessage.class));
+        verify(rabbitTemplate, times(2)).convertAndSend(eq("postExchange"), eq("post.notify"), any(PostNotificationMessage.class));
 
         // 메시지 캡처
-        ArgumentCaptor<NotificationMessage> messageCaptor = ArgumentCaptor.forClass(NotificationMessage.class);
+        ArgumentCaptor<PostNotificationMessage> messageCaptor = ArgumentCaptor.forClass(PostNotificationMessage.class);
         verify(rabbitTemplate, times(2)).convertAndSend(eq("postExchange"), eq("post.notify"), messageCaptor.capture());
 
-        List<NotificationMessage> sentMessages = messageCaptor.getAllValues();
+        List<PostNotificationMessage> sentMessages = messageCaptor.getAllValues();
         assertThat(sentMessages).containsExactlyInAnyOrder(expectedMessage1, expectedMessage2);
     }
 }

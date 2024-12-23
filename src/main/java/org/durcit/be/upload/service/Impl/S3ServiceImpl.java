@@ -2,8 +2,10 @@ package org.durcit.be.upload.service.Impl;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.durcit.be.system.exception.upload.ImageNotFoundException;
 import org.durcit.be.system.exception.upload.S3UploadException;
 import org.durcit.be.upload.domain.Images;
 import org.durcit.be.upload.dto.UploadRequest;
+import org.durcit.be.upload.dto.UploadResponse;
 import org.durcit.be.upload.dto.UploadUpdateRequest;
 import org.durcit.be.upload.repository.ImagesRepository;
 import org.durcit.be.upload.service.UploadService;
@@ -27,6 +30,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.durcit.be.system.exception.ExceptionMessage.*;
 import static org.durcit.be.upload.util.UploadUtil.*;
@@ -46,6 +50,17 @@ public class S3ServiceImpl implements UploadService {
 
     @Value("${custom.s3.presigned-url.expiration-time}")
     private int presignedUrlExpirationMinutes;
+
+    public List<UploadResponse> getImagesByPostId(Long postId) {
+        List<Images> images = imagesRepository.findAllByPostId(postId);
+
+        return images.stream()
+                .map(image -> UploadResponse.builder()
+                        .url(image.getUrl())
+                        .originalFilename(image.getOriginalFilename())
+                        .build())
+                .collect(Collectors.toList());
+    }
 
     @Override
     @Transactional
@@ -87,9 +102,9 @@ public class S3ServiceImpl implements UploadService {
                         metadata.setContentLength(file.getSize());
                         metadata.setContentType(file.getContentType());
 
-                        amazonS3.putObject(bucketName, uniqueFileName, file.getInputStream(), metadata);
+                        amazonS3.putObject(new PutObjectRequest(bucketName, uniqueFileName, file.getInputStream(), metadata));
 
-                        String s3Url = generatePresignedUrl(bucketName, uniqueFileName);
+                        String s3Url = amazonS3.getUrl(bucketName, uniqueFileName).toString();
 
                         Images image = Images.builder()
                                 .post(postService.getById(postId))

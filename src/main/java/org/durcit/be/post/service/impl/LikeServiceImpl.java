@@ -8,6 +8,7 @@ import org.durcit.be.post.repository.LikeRepository;
 import org.durcit.be.post.service.LikeService;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.security.domian.Member;
+import org.durcit.be.security.service.MemberService;
 import org.durcit.be.security.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class LikeServiceImpl implements LikeService {
 
     private final PostService postService;
     private final LikeRepository likeRepository;
+    private final MemberService memberService;
 
     public long getLikeCount(Long postId) {
         return likeRepository.countByPostId(postId);
@@ -28,7 +30,7 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public boolean toggleLike(Long postId) {
         Long memberId = SecurityUtil.getCurrentMemberId();
-        Member member = Member.builder().id(memberId).build();
+        Member member = memberService.getById(memberId);
         Post post = postService.getById(postId);
 
         Like existingLike = likeRepository.findByPostIdAndMemberId(postId, memberId);

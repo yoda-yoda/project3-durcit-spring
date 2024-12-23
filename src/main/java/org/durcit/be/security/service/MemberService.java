@@ -3,7 +3,7 @@ package org.durcit.be.security.service;
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.security.domian.Member;
-import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.domian.MemberDetails;
 import org.durcit.be.security.util.ProfileImageUtil;
 import org.durcit.be.system.exception.auth.MemberNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.durcit.be.system.exception.ExceptionMessage.MEMBER_NOT_FOUND_ERROR;
@@ -98,5 +97,7 @@ public class MemberService extends DefaultOAuth2UserService {
     }
 
 
-
+    public Member getByNickname(String targetNickname) {
+        return memberRepository.findByNickname(targetNickname).orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
+    }
 }

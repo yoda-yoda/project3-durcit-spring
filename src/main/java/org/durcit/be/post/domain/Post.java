@@ -2,6 +2,7 @@ package org.durcit.be.post.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.durcit.be.postsTag.domain.PostsTag;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.upload.domain.Images;
 
@@ -15,7 +16,6 @@ import java.util.List;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "posts_id")
     @Setter
     private Long id;
 
@@ -42,6 +42,9 @@ public class Post {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<PostsTag> postsTagList;
 
     @Builder
     public Post(Long id, Member member, String title, String content, Long views) {

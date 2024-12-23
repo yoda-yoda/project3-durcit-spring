@@ -23,6 +23,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public DirectExchange notifyExchange() {
+        return new DirectExchange("notifyExchange", true, false);
+    }
+
+    @Bean
     public Jackson2JsonMessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
@@ -35,8 +40,20 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue notificationQueue() {
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-message-ttl", 60000); // 1분 TTL
+        return new Queue("notificationQueue", true, false, false, args);
+    }
+
+    @Bean
     public Binding postNotificationBinding(DirectExchange postExchange, Queue postNotificationQueue) {
         return BindingBuilder.bind(postNotificationQueue).to(postExchange).with("post.notify");
+    }
+
+    @Bean
+    public Binding notificationBinding(DirectExchange notifyExchange, Queue notificationQueue) {
+        return BindingBuilder.bind(notificationQueue).to(notifyExchange).with("notify.notify");
     }
 
     @Bean

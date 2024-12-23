@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.durcit.be.security.dto.MemberDetails;
+import org.durcit.be.security.domian.MemberDetails;
 import org.durcit.be.security.dto.TokenBody;
 import org.durcit.be.security.service.JwtTokenProvider;
 import org.durcit.be.security.service.MemberService;
@@ -35,8 +35,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (realToken != null && jwtTokenProvider.validate(realToken)) {
             TokenBody tokenBody = jwtTokenProvider.parseJwt(realToken);
             MemberDetails memberDetails = memberService.loadMemberDetails(tokenBody.getMemberId());
-
+            log.info("memberDetails.getId() = {}", memberDetails.getId());
             Authentication authentication = new UsernamePasswordAuthenticationToken(memberDetails, realToken, memberDetails.getAuthorities());
+            log.info("authentication.getPrincipal() = {}", ((MemberDetails) authentication.getPrincipal()).getEmail());
+            log.info("authentication.getPrincipal() = {}", ((MemberDetails) authentication.getPrincipal()).getId());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

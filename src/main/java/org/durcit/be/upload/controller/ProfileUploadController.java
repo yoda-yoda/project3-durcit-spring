@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/members/profile")
@@ -17,9 +18,9 @@ public class ProfileUploadController {
 
     private final ProfileUploadService profileUploadService;
 
-    @PutMapping
-    public ResponseEntity<ResponseData> profileImageUpdate(ProfileImageRequest profileImageRequest) {
-        profileUploadService.uploadProfileReturnUrl(profileImageRequest);
+    @PutMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<ResponseData> profileImageUpdate(MultipartFile file) {
+        profileUploadService.uploadProfileReturnUrl(new ProfileImageRequest(file));
         return ResponseData.toResponseEntity(ResponseCode.UPDATE_PROFILE_IMAGE_SUCCESS);
     }
 

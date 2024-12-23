@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "likes")
 public class Like {
 
     @Id

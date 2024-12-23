@@ -51,13 +51,13 @@ class EmojiServiceImplTest {
                 .id(postId)
                 .build();
 
-        EmojiRequest emojiRequest = new EmojiRequest(postId, emojiSymbol);
+        EmojiRequest emojiRequest = new EmojiRequest(postId, emojiSymbol, memberId);
 
         when(postService.getById(postId)).thenReturn(post);
         when(emojiRepository.findByPostIdAndMemberIdAndEmoji(postId, memberId, emojiSymbol))
                 .thenReturn(null);
-        when(emojiRepository.aggregateEmojisByPostId(postId))
-                .thenReturn(Map.of("👍", 1));
+//        when(emojiRepository.aggregateEmojisByPostId(postId))
+//                .thenReturn(Map.of("👍", 1, 2));
 
         // when
         EmojiResponse response = emojiService.toggleEmoji(emojiRequest);
@@ -88,13 +88,13 @@ class EmojiServiceImplTest {
                 .emoji(emojiSymbol)
                 .build();
 
-        EmojiRequest emojiRequest = new EmojiRequest(postId, emojiSymbol);
+        EmojiRequest emojiRequest = new EmojiRequest(postId, emojiSymbol, memberId);
 
         when(postService.getById(postId)).thenReturn(post);
         when(emojiRepository.findByPostIdAndMemberIdAndEmoji(postId, memberId, emojiSymbol))
                 .thenReturn(existingEmoji);
-        when(emojiRepository.aggregateEmojisByPostId(postId))
-                .thenReturn(Map.of());
+//        when(emojiRepository.aggregateEmojisByPostId(postId))
+//                .thenReturn(Map.of());
 
         // when
         EmojiResponse response = emojiService.toggleEmoji(emojiRequest);

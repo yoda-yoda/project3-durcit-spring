@@ -19,14 +19,16 @@ public class UploadController {
 
     private final UploadService uploadService;
 
-    @PostMapping("/files")
-    public ResponseEntity<ResponseData> upload(@RequestBody UploadRequest request) {
-        uploadService.upload(request);
+    @PostMapping(path = "/files", consumes = {"multipart/form-data"})
+    public ResponseEntity<ResponseData> upload(
+            @RequestParam("postId") Long postId,
+            @RequestParam("files") List<MultipartFile> files) {
+        uploadService.upload(new UploadRequest(postId, files));
         return ResponseData.toResponseEntity(ResponseCode.UPLOAD_FILES_SUCCESS);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ResponseData> updateImages(@RequestBody UploadUpdateRequest request) {
+    @PutMapping(path = "/update", consumes = {"multipart/form-data"})
+    public ResponseEntity<ResponseData> updateImages(@ModelAttribute UploadUpdateRequest request) {
         uploadService.updateImages(request);
         return ResponseData.toResponseEntity(ResponseCode.UPDATE_FILES_SUCCESS);
     }

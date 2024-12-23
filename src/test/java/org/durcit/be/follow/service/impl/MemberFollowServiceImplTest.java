@@ -121,7 +121,7 @@ class MemberFollowServiceImplTest {
     void getFollowees_shouldReturnFolloweeList() {
         // given
         when(memberService.getById(follower.getId())).thenReturn(follower);
-        when(memberFollowRepository.findFolloweesByFollower(follower))
+        when(memberFollowRepository.findFolloweesByFollower(memberService.getById(follower.getId())))
                 .thenReturn(List.of(followee));
 
         // when

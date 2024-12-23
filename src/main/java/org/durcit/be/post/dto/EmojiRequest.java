@@ -11,5 +11,6 @@ public class EmojiRequest {
 
     private Long postId;
     private String emoji;
+    private Long memberId;
 
 }

@@ -36,11 +36,14 @@ public class JwtTokenProvider {
         String accessToken = issueAccessToken(member.getId(), member.getRole());
         String refreshToken = issueRefreshToken(member.getId(), member.getRole());
 
+        log.info("member.getId() = {}", member.getId());
+
         refreshTokenRepositoryAdapter.save(member, refreshToken);
 
         return KeyPair.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .memberId(member.getId().toString())
                 .build();
     }
 

@@ -13,5 +13,6 @@ public class KeyPair {
 
     private String accessToken;
     private String refreshToken;
+    private String memberId;
 
 }
