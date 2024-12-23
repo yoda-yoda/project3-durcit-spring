@@ -19,6 +19,8 @@ public class Member {
 
     private String username;
     private String provider;
+
+    @Setter
     private String nickname;
 
     @Setter

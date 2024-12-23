@@ -12,6 +12,7 @@ public class ExceptionMessage {
     public static final String INVALID_PASSWORD_ERROR = "비밀번호가 맞지 않습니다.";
     public static final String INVALID_CHK_PASSWORD_NEW_PASSWORD_ERROR = "신규 비밀번호와 확인 비밀번호가 서로 다릅니다.";
     public static final String EMAIL_NOT_VERIFIED_ERROR = "이메일이 인증되지 않은 회원입니다.";
+    public static final String EXISTING_NICKNAME_ERROR = "이미 사용중인 닉네임입니다.";
 
 
     public static final String MEMBER_NOT_FOUND_ERROR = "멤버를 찾을 수 없습니다.";
@@ -40,10 +41,15 @@ public class ExceptionMessage {
     // chat
     public static final String INVALID_CHAT_ROOM_ID_ERROR = "유효하지 않은 채팅방 아이디 입니다.";
     public static final String INVALID_CHAT_ROOM_CREATION_ERROR = "유효하지 않은 채팅방 개설입니다.";
+
     // postSearch
     public static final String POST_SEARCH_NOT_FOUND_ERROR = "검색한 포스트 제목을 찾을 수 없습니다.";
 
+    // adminLog
+    public static final String ADMIN_LOG_NOT_FOUND_ERROR = "LOG를 찾을 수 없습니다.";
 
     // push
     public static final String PUSH_CANNOT_FOUND_ERROR = "해당 푸시알람을 찾을 수 없습니다.";
+
+
 }

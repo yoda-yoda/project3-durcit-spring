@@ -6,9 +6,6 @@ import org.durcit.be.post.dto.PostCardResponse;
 import org.durcit.be.post.repository.PostRepository;
 import org.durcit.be.postsTag.domain.PostsTag;
 import org.durcit.be.postsTag.repository.PostsTagRepository;
-import org.durcit.be.search.dto.TagSearchRequest;
-import org.durcit.be.search.repository.TagSearchRepository;
-import org.durcit.be.search.service.TagSearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j

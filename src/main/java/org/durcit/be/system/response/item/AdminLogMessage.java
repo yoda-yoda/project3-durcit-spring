@@ -1,12 +1,12 @@
 package org.durcit.be.system.response.item;
 
-
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PostsContentSearchMessage {
+public class AdminLogMessage {
 
-    public static final String GET_POSTS_CONTENT_SUCCESS = "SUCCESS - 게시물 내용 검색 성공";
+    public static String ADMIN_LOG_SUCCESS = "SUCCESS - 로그 조회 성공";
+
 
 }

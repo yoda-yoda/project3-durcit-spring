@@ -3,12 +3,9 @@ package org.durcit.be.system.response.item;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PostsSearchMessage {
+public class UpdateNicknameMessage {
 
-
-    public static final String GET_POSTS_SEARCH_SUCCESS = "SUCCESS - 게시물 검색 성공";
-
+    public static final String UPDATE_NICKNAME_SUCCESS = "SUCCESS - 검색 성공";
 
 }

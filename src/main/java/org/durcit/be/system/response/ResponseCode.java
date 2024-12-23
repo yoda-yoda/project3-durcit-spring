@@ -73,23 +73,23 @@ public enum ResponseCode {
     GET_CHAT_ROOM_SUCCESS(Status.OK, ChatMessage.GET_CHAT_ROOM_SUCCESS),
     GET_CHAT_SUCCESS(Status.OK, ChatMessage.GET_CHAT_SUCCESS),
 
-    //postsSearch
-    GET_POSTS_SEARCH_SUCCESS(Status.OK, PostsSearchMessage.GET_POSTS_SEARCH_SUCCESS),
-
-    //tagSearch
-    GET_TAG_SEARCH_SUCCESS(Status.OK, TagSearchMessage.GET_TAG_SEARCH_SUCCESS),
-
-    //postsContentSearch
-    GET_POSTS_CONTENT_SEARCH_SUCCESS(Status.OK, TagSearchMessage.GET_TAG_SEARCH_SUCCESS),
-
     // search
     GET_SEARCH_SUCCESS(Status.OK, SearchMessage.GET_SEARCH_SUCCESS),
 
-
-
     // push
     GET_PUSHS_SUCCESS(Status.OK, PushMessage.GET_PUSHS_SUCCESS),
-    UPDATE_PUSH_SUCCESS(Status.NO_CONTENT, PushMessage.UPDATE_PUSH_SUCCESS)
+    UPDATE_PUSH_SUCCESS(Status.NO_CONTENT, PushMessage.UPDATE_PUSH_SUCCESS),
+
+    // adminLog
+    GET_ADMIN_LOG_SUCCESS(Status.OK, AdminLogMessage.ADMIN_LOG_SUCCESS),
+
+    // update nickName
+    UPDATE_NICKNAME_SUCCESS(Status.OK, UpdateNicknameMessage.UPDATE_NICKNAME_SUCCESS),
+
+
+
+
+
     ;
 
     private int httpStatus;
