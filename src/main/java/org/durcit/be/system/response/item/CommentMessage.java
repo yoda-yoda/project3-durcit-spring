@@ -9,4 +9,5 @@ public class CommentMessage {
     public static final String GET_COMMENT_SUCCESS = "SUCCESS - 댓글 조회 성공";
     public static final String UPDATE_COMMENT_SUCCESS = "SUCCESS - 댓글 수정 성공";
     public static final String DELETE_COMMENT_SUCCESS = "SUCCESS - 댓글 삭제 성공";
+    public static final String GET_MENTION_POSSIBLE_MEMBERS_SUCCESS = "SUCCESS - 멘션 가능 유저 조회 성공";
 }

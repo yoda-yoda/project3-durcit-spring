@@ -3,6 +3,8 @@ package org.durcit.be.upload.service.Impl;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import org.durcit.be.security.repository.MemberRepository;
+import org.durcit.be.security.service.MemberService;
 import org.durcit.be.system.exception.upload.S3UploadException;
 import org.durcit.be.upload.dto.ProfileImageRequest;
 import org.durcit.be.upload.util.UploadUtil;
@@ -26,11 +28,15 @@ class S3ProfileUploadServiceImplTest {
 
     private AmazonS3 amazonS3;
     private S3ProfileUploadServiceImpl s3ProfileUploadService;
+    private MemberService memberService;
+    private MemberRepository memberRepository;
 
     @BeforeEach
     void setUp() {
         amazonS3 = mock(AmazonS3.class);
-        s3ProfileUploadService = new S3ProfileUploadServiceImpl(amazonS3);
+        memberService = mock(MemberService.class);
+        memberRepository = mock(MemberRepository.class);
+        s3ProfileUploadService = new S3ProfileUploadServiceImpl(amazonS3, memberService, memberRepository);
 
         // S3 설정값 초기화
         ReflectionTestUtils.setField(s3ProfileUploadService, "bucketName", "mock-bucket");
