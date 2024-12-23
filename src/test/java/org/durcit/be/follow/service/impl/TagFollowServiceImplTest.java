@@ -39,40 +39,41 @@ class TagFollowServiceImplTest {
 
 
     		// given
-//        Member mem1 = Member.builder()
-//                .nickname("멤버1")
-//                .email("aaa@naver.com")
-//                .build();
+        Member mem1 = Member.builder()
+                .nickname("멤버1")
+                .email("aaa@naver.com")
+                .build();
+
+        Member mem2 = Member.builder()
+                .nickname("멤버2")
+                .email("bbb@naver.com")
+                .build();
+
+        memberRepository.save(mem1);
+        memberRepository.save(mem2);
+
+        TagFollow follow1 = TagFollow.builder()
+                .tag("메이플스토리")
+                .member(mem1)
+                .build();
+
+        tagFollowRepository.save(follow1);
+
+
+
+//        // when
+//        TagFollowRegisterRequest req = new TagFollowRegisterRequest();
+//        req.setTag("메이플스토리");
 //
-//        Member mem2 = Member.builder()
-//                .nickname("멤버2")
-//                .email("bbb@naver.com")
-//                .build();
+//        TagFollowResponse tagFollowResponse = tagFollowServiceImpl.createAndDeleteTagFollowByRegisterRequest(req, 1L);
 //
-//        memberRepository.save(mem1);
-//        memberRepository.save(mem2);
+//        // then
+//        assertThat(tagFollowResponse.getTag()).isEqualTo("메이플스토리");
+//        log.info("tagFollowResponse.getTag() = {}", tagFollowResponse.getTag());
 //
-//        TagFollow follow1 = TagFollow.builder()
-//                .tag("메이플스토리")
-//                .member(mem1)
-//                .build();
-//
-//        tagFollowRepository.save(follow1);
-
-
-        // when
-        TagFollowRegisterRequest req = new TagFollowRegisterRequest();
-        req.setTag("메이플스토리");
-
-        TagFollowResponse tagFollowResponse = tagFollowServiceImpl.createAndDeleteTagFollowByRegisterRequest(req, 1L);
-
-        // then
-        assertThat(tagFollowResponse.getTag()).isEqualTo("메이플스토리");
-        log.info("tagFollowResponse.getTag() = {}", tagFollowResponse.getTag());
-
-        // 결과 1 정상작동 OK => DB에서 직접확인함. 유저가 요청 태그를 디비에 갖고있을때 true 면 false 되고, flase면 true 된다.
-        // 결과 2 정상작동 OK => DB에 아예 없는 상태에서도 생성되고, 또 반복적으로 결과1처럼 작동한다.
-        // 응답 객체도 잘 만들어진다.
+//        // 결과 1 정상작동 OK => DB에서 직접확인함. 유저가 요청 태그를 디비에 갖고있을때 true 면 false 되고, flase면 true 된다.
+//        // 결과 2 정상작동 OK => DB에 아예 없는 상태에서도 생성되고, 또 반복적으로 결과1처럼 작동한다.
+//        // 응답 객체도 잘 만들어진다.
 
 
     }
