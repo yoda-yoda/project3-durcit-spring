@@ -22,5 +22,6 @@ public interface PostService {
     public PostResponse getPostWithViewIncrement(Long postId);
     public Page<PostCardResponse> getPostsByPage(Pageable pageable, String category);
     public Page<PostCardResponse> getPostsByFollowedTags(Long memberId, PageRequest pageRequest, String category);
+    public Page<PostCardResponse> searchPostsByTag(String tag, PageRequest pageRequest);
     public List<PostCardResponse> getMyPosts(Long memberId);
 }

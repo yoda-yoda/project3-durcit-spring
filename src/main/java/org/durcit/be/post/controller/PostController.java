@@ -9,6 +9,7 @@ import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,16 @@ public class PostController {
         PageRequest pageRequest = PageRequest.of(postPageRequest.getPage(), postPageRequest.getSize());
         Page<PostCardResponse> postsByTags = postService.getPostsByFollowedTags(memberId, pageRequest, postPageRequest.getCategory());
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postsByTags);
+    }
+
+    @GetMapping("/posts/search/tags")
+    public ResponseEntity<ResponseData<Page<PostCardResponse>>> searchPostsByTag(
+            @RequestParam String tag,
+            @RequestParam int page,
+            @RequestParam int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
+        Page<PostCardResponse> postsByTag = postService.searchPostsByTag(tag, pageRequest);
+        return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postsByTag);
     }
 
     //@PostMapping("/members")

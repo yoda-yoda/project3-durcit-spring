@@ -26,4 +26,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p JOIN p.postsTagList t WHERE t.contents IN :tags")
     Page<Post> findPostsByTags(@Param("tags") List<String> tags, Pageable pageable);
+
+    @Query("SELECT p FROM Post p JOIN p.postsTagList t WHERE t.contents = :tag")
+    Page<Post> findPostsByTag(@Param("tag") String tag, Pageable pageable);
 }

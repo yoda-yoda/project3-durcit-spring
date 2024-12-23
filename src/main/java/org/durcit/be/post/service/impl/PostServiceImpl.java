@@ -121,6 +121,12 @@ public class PostServiceImpl implements PostService {
         };
     }
 
+    @Transactional(readOnly = true)
+    public Page<PostCardResponse> searchPostsByTag(String tag, PageRequest pageRequest) {
+        return postRepository.findPostsByTag(tag, pageRequest)
+                .map(PostCardResponse::fromEntity);
+    }
+
     @Transactional
     @RequireCurrentMemberId
     public PostResponse createPost(PostRegisterRequest postRegisterRequest) {
