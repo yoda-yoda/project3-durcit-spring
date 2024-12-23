@@ -40,7 +40,7 @@ public class CommentController {
         return ResponseData.toResponseEntity(ResponseCode.DELETE_COMMENT_SUCCESS);
     }
 
-    @GetMapping("/member/{memberId}")
+    @GetMapping("/members/my-comments/{memberId}")
     public ResponseEntity<ResponseData<List<CommentCardResponse>>> getCommentsByMemberId(@PathVariable Long memberId) {
         List<CommentCardResponse> responses = commentService.getCommentsByMemberId(memberId);
         return ResponseData.toResponseEntity(ResponseCode.GET_COMMENT_SUCCESS, responses);
