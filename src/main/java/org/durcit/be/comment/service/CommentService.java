@@ -12,4 +12,7 @@ public interface CommentService {
     public void registerComment(CommentRegisterRequest request);
     public void updateComment(CommentUpdateRequest request);
     public void deleteComment(Long commentId);
+    public List<CommentCardResponse> getDeletedComments();
+    public void restoreDeletedComments(Long commentId);
+    public void restoreCommentsByPostId(Long postId);
 }

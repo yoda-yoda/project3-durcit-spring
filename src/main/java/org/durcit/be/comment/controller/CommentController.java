@@ -46,5 +46,17 @@ public class CommentController {
         return ResponseData.toResponseEntity(ResponseCode.GET_COMMENT_SUCCESS, responses);
     }
 
+    @GetMapping("/admins/comments")
+    public ResponseEntity<ResponseData<List<CommentCardResponse>>> getAllComments() {
+        List<CommentCardResponse> allComments = commentService.getDeletedComments();
+        return ResponseData.toResponseEntity(ResponseCode.GET_COMMENT_SUCCESS, allComments);
+    }
+
+    @PutMapping("/admins/comments/{commentId}")
+    public ResponseEntity<ResponseData> restoreComment(@PathVariable Long commentId) {
+        commentService.restoreDeletedComments(commentId);
+        return ResponseData.toResponseEntity(ResponseCode.UPDATE_COMMENT_SUCCESS);
+    }
+
 
 }

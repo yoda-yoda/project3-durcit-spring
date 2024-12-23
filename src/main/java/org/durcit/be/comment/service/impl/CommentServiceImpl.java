@@ -99,4 +99,29 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
     }
 
+    public List<CommentCardResponse> getDeletedComments() {
+        List<Comment> comments = commentRepository.findAll();
+        return comments.stream().map(CommentCardResponse::from).toList();
+    }
+
+    @Transactional
+    public void restoreDeletedComments(Long commentId) {
+        Comment comment = commentRepository.findByIdAndDeletedTrue(commentId)
+                .orElseThrow(() -> new InvalidCommentIdException(INVALID_COMMENT_ID_ERROR));
+        comment.setDeleted(true);
+        commentRepository.save(comment);
+    }
+
+    @Transactional
+    public void restoreCommentsByPostId(Long postId) {
+        List<Comment> deletedComments = commentRepository.findAllByPostIdAndDeletedTrue(postId);
+
+        if (deletedComments.isEmpty()) {
+            throw new InvalidCommentIdException(INVALID_COMMENT_ID_ERROR);
+        }
+
+        deletedComments.forEach(comment -> comment.setDeleted(false));
+        commentRepository.saveAll(deletedComments);
+    }
+
 }
