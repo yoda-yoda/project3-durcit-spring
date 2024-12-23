@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Transactional
-    public void registerComment(CommentRegisterRequest request) {
+    public CommentCardResponse registerComment(CommentRegisterRequest request) {
         log.info("request.getPostId() = {}", request.getPostId());
         Comment parentComment = null;
         if (request.getParentId() != null) {
@@ -93,7 +93,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         commentNotificationService.notifyToTargetMember(commentAuthor, post.getMember(), request.getPostId());
-
+        return CommentCardResponse.from(comment);
     }
 
     @Transactional

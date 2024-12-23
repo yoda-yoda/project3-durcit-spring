@@ -23,9 +23,9 @@ public class CommentController {
 
 
     @PostMapping("/members/comments")
-    public ResponseEntity<ResponseData> registerComment(@RequestBody CommentRegisterRequest request) {
-        commentService.registerComment(request);
-        return ResponseData.toResponseEntity(ResponseCode.CREATE_COMMENT_SUCCESS);
+    public ResponseEntity<ResponseData<CommentCardResponse>> registerComment(@RequestBody CommentRegisterRequest request) {
+        CommentCardResponse commentCardResponse = commentService.registerComment(request);
+        return ResponseData.toResponseEntity(ResponseCode.CREATE_COMMENT_SUCCESS, commentCardResponse);
     }
 
     @PutMapping("/members/comments")

@@ -9,7 +9,7 @@ import java.util.List;
 public interface CommentService {
     public List<CommentCardResponse> getCommentsByPostId(Long postId);
     public List<CommentCardResponse> getCommentsByMemberId(Long memberId);
-    public void registerComment(CommentRegisterRequest request);
+    public CommentCardResponse registerComment(CommentRegisterRequest request);
     public void updateComment(CommentUpdateRequest request);
     public void deleteComment(Long commentId);
     public List<CommentCardResponse> getDeletedComments();
