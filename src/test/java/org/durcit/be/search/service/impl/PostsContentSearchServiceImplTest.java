@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.dto.PostCardResponse;
 import org.durcit.be.post.repository.PostRepository;
-import org.durcit.be.search.dto.PostsContentSearchRequest;
-import org.durcit.be.search.service.PostsContentSearchService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

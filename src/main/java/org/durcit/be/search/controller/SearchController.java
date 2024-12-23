@@ -2,9 +2,7 @@ package org.durcit.be.search.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.post.dto.PostCardResponse;
-import org.durcit.be.search.dto.PostsSearchRequest;
 import org.durcit.be.search.dto.SearchRequest;
-import org.durcit.be.search.service.PostsSearchService;
 import org.durcit.be.search.service.SearchService;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
