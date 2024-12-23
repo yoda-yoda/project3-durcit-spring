@@ -9,10 +9,12 @@ import org.durcit.be.comment.dto.CommentUpdateRequest;
 import org.durcit.be.comment.repository.CommentMentionRepository;
 import org.durcit.be.comment.repository.CommentRepository;
 import org.durcit.be.comment.service.CommentService;
+import org.durcit.be.comment.service.MentionNotificationService;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
 import org.durcit.be.security.util.SecurityUtil;
+import org.durcit.be.system.exception.auth.MemberNotFoundException;
 import org.durcit.be.system.exception.auth.UnauthorizedAccessException;
 import org.durcit.be.system.exception.comment.InvalidCommentIdException;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.durcit.be.system.exception.ExceptionMessage.INVALID_COMMENT_ID_ERROR;
-import static org.durcit.be.system.exception.ExceptionMessage.UNAUTHORIZED_ACCESS_ERROR;
+import static org.durcit.be.system.exception.ExceptionMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final CommentMentionRepository commentMentionRepository;
     private final MemberService memberService;
-    private final PostService postService;
+    private final MentionNotificationService mentionNotificationService;
 
     public List<CommentCardResponse> getCommentsByPostId(Long postId) {
         List<Comment> comments = commentRepository.findAllByPostIdAndDeletedFalse(postId);
@@ -58,23 +59,34 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
 
         if (request.getMentionList() != null && !request.getMentionList().isEmpty()) {
-            List<CommentMention> mentionList = request.getMentionList().stream()
-                    .map(nickname -> {
-                        Member member = memberService.findByNickname(nickname);
-                        return CommentMention.builder()
-                                .member(member)
-                                .comment(comment)
-                                .build();
-                    })
-                    .toList();
-            commentMentionRepository.saveAll(mentionList);
+            request.getMentionList().forEach(nickname -> {
+                Member targetMember = memberService.findByNickname(nickname);
+                if (targetMember == null) {
+                    throw new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR);
+                }
+
+                CommentMention mention = CommentMention.builder()
+                        .member(targetMember)
+                        .comment(comment)
+                        .build();
+                commentMentionRepository.save(mention);
+
+                mentionNotificationService.notifyToTargetMember(
+                        memberService.getById(SecurityUtil.getCurrentMemberId()),
+                        targetMember,
+                        comment.getId()
+                );
+            });
         }
+
+
     }
 
     @Transactional
     public void updateComment(CommentUpdateRequest request) {
         Comment comment = commentRepository.findByIdAndDeletedFalse(request.getId())
                 .orElseThrow(() -> new InvalidCommentIdException(INVALID_COMMENT_ID_ERROR));
+
         Member currentUser = memberService.getById(SecurityUtil.getCurrentMemberId());
 
         if (!comment.getAuthor().equals(currentUser) && !currentUser.getRole().equals("ADMIN")) {
@@ -83,6 +95,31 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setContent(request.getContent());
         commentRepository.save(comment);
+
+        List<CommentMention> existingMentions = commentMentionRepository.findAllByCommentId(comment.getId());
+        List<String> newMentionNicknames = request.getMentions() != null ? request.getMentions() : List.of();
+
+        existingMentions.stream()
+                .filter(mention -> !newMentionNicknames.contains(mention.getMember().getNickname()))
+                .forEach(commentMentionRepository::delete);
+
+        newMentionNicknames.stream()
+                .filter(nickname -> existingMentions.stream()
+                        .noneMatch(mention -> mention.getMember().getNickname().equals(nickname)))
+                .forEach(nickname -> {
+                    Member targetMember = memberService.findByNickname(nickname);
+                    if (targetMember == null) {
+                        throw new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR);
+                    }
+
+                    CommentMention mention = CommentMention.builder()
+                            .member(targetMember)
+                            .comment(comment)
+                            .build();
+                    commentMentionRepository.save(mention);
+
+                    mentionNotificationService.notifyToTargetMember(currentUser, targetMember, comment.getId());
+                });
     }
 
     @Transactional
