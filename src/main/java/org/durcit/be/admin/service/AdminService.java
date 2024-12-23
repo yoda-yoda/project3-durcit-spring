@@ -4,7 +4,7 @@ import org.durcit.be.admin.dto.AdminLogResponse;
 
 import java.util.List;
 
-public interface AdminLogService {
+public interface AdminService {
 
     public List<AdminLogResponse> getAllLogs();
 

@@ -80,8 +80,8 @@ public enum ResponseCode {
     GET_PUSHS_SUCCESS(Status.OK, PushMessage.GET_PUSHS_SUCCESS),
     UPDATE_PUSH_SUCCESS(Status.NO_CONTENT, PushMessage.UPDATE_PUSH_SUCCESS),
 
-    // adminLog
-    GET_ADMIN_LOG_SUCCESS(Status.OK, AdminLogMessage.ADMIN_LOG_SUCCESS),
+    // admin
+    GET_ADMIN_LOG_SUCCESS(Status.OK, AdminMessage.GET_ADMIN_LOG_SUCCESS),
 
     // update nickName
     UPDATE_NICKNAME_SUCCESS(Status.OK, UpdateNicknameMessage.UPDATE_NICKNAME_SUCCESS),

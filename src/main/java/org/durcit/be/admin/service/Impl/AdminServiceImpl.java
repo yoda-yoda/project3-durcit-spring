@@ -2,8 +2,8 @@ package org.durcit.be.admin.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.admin.dto.AdminLogResponse;
-import org.durcit.be.admin.repository.AdminLogRepository;
-import org.durcit.be.admin.service.AdminLogService;
+import org.durcit.be.admin.repository.AdminRepository;
+import org.durcit.be.admin.service.AdminService;
 import org.durcit.be.log.domain.Log;
 import org.durcit.be.system.exception.adminLog.AdminLogNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,15 @@ import static org.durcit.be.system.exception.ExceptionMessage.ADMIN_LOG_NOT_FOUN
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class AdminLogServiceImpl implements AdminLogService {
+public class AdminServiceImpl implements AdminService {
 
 
-    private final AdminLogRepository adminLogRepository;
+    private final AdminRepository adminRepository;
 
 
     public List<AdminLogResponse> getAllLogs() {
 
-        List<Log> findAllLogs = adminLogRepository.findAllLogs();
+        List<Log> findAllLogs = adminRepository.findAllLogs();
 
         if (findAllLogs.isEmpty()) {
             throw new AdminLogNotFoundException(ADMIN_LOG_NOT_FOUND_ERROR);
