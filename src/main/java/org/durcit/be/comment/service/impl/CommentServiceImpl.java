@@ -9,8 +9,10 @@ import org.durcit.be.comment.dto.CommentRegisterRequest;
 import org.durcit.be.comment.dto.CommentUpdateRequest;
 import org.durcit.be.comment.repository.CommentMentionRepository;
 import org.durcit.be.comment.repository.CommentRepository;
+import org.durcit.be.comment.service.CommentNotificationService;
 import org.durcit.be.comment.service.CommentService;
 import org.durcit.be.comment.service.MentionNotificationService;
+import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
@@ -36,6 +38,7 @@ public class CommentServiceImpl implements CommentService {
     private final MemberService memberService;
     private final MentionNotificationService mentionNotificationService;
     private final PostService postService;
+    private final CommentNotificationService commentNotificationService;
 
     public List<CommentCardResponse> getCommentsByPostId(Long postId) {
         List<Comment> comments = commentRepository.findAllByPostIdAndDeletedFalse(postId);
@@ -56,11 +59,15 @@ public class CommentServiceImpl implements CommentService {
                     () -> new InvalidCommentIdException(INVALID_COMMENT_ID_ERROR)
             );
         }
+
+        Post post = postService.getById(request.getPostId());
+        Member commentAuthor = memberService.getById(SecurityUtil.getCurrentMemberId());
+
         Comment comment = Comment.builder()
                 .parent(parentComment)
                 .content(request.getContent())
-                .author(memberService.getById(SecurityUtil.getCurrentMemberId()))
-                .post(postService.getById(request.getPostId()))
+                .author(commentAuthor)
+                .post(post)
                 .build();
         commentRepository.save(comment);
 
@@ -85,6 +92,7 @@ public class CommentServiceImpl implements CommentService {
             });
         }
 
+        commentNotificationService.notifyToTargetMember(commentAuthor, post.getMember(), request.getPostId());
 
     }
 
