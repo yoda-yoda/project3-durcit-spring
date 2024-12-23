@@ -15,4 +15,5 @@ public interface CommentService {
     public List<CommentCardResponse> getDeletedComments();
     public void restoreDeletedComments(Long commentId);
     public void restoreCommentsByPostId(Long postId);
+    public void deleteCommentsByPostId(Long postId);
 }

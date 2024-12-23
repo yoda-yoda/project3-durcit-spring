@@ -124,4 +124,12 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.saveAll(deletedComments);
     }
 
+    @Transactional
+    public void deleteCommentsByPostId(Long postId) {
+        List<Comment> comments = commentRepository.findAllByPostIdAndDeletedFalse(postId);
+        comments.forEach(comment -> comment.setDeleted(true));
+        commentRepository.saveAll(comments);
+    }
+
+
 }
