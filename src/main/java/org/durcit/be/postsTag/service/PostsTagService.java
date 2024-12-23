@@ -20,6 +20,7 @@ public interface PostsTagService {
     public void deleteOnePostsTagByPostsTagId(Long postsTagId);
     public void deletePostsTagsByPostsTagId(List<Long> postsTagIdList);
     public void deletePostsTagsByPostId(Long postId);
+    public List<PostsTag> recoverPostsTag(Long postId);
 
 
 

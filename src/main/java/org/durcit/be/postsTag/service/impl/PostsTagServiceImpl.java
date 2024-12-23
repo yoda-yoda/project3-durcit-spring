@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 import static org.durcit.be.system.exception.ExceptionMessage.*;
@@ -124,6 +125,34 @@ public class PostsTagServiceImpl implements PostsTagService {
         // 모든 태그 객체가 리스트에 담겨 이렇게 반환된다.
 
     }
+
+
+
+
+
+    // 메서드 기능: 위와 같은데 예외가 없다.
+    // 즉 소프트딜리트 되어있든 안되어있든 postId 를 기준으로 Post가 가지고있는 태그들을 list에 담아서 반환하는 메서드.
+    // 예외 : 만약 해당 포스트에 저장된 태그가 아예없다면 예외가 아니라 빈 List를 반환하도록 했다.
+    public List<PostsTag> getPostsTagListByPostIdWithEmptyList(Long postId) {
+
+        Post postById = Optional.ofNullable(postsTagRepository.findPostByPostId(postId))
+                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));        // postId 로 찾았는데 post가 없다면 오류 던지고, 있으면 할당했다.
+
+
+        List<PostsTag> getList = postById.getPostsTagList();
+        // 해당 게시글이 어떤 태그리스트를 갖고있는지 getter 로 얻어서 담는다. getter로 얻기때문에 소프트딜리트가 되어있어도 상관없이 담길것이다.
+        // 만약 게시글에 태그가 없다면 빈 리스트일것이다.
+
+
+        return getList;
+        // 해당 게시글과 연동된 태그 DB에 어떤 태그든(소프트 딜리트 되었어도) 저장되어있기만 했다면,
+        // 모든 태그 객체가 리스트에 담겨 이렇게 반환된다.
+        // 빈 리스트여도 반환된다.
+
+    }
+
+
+
 
 
 
@@ -338,6 +367,42 @@ public class PostsTagServiceImpl implements PostsTagService {
             postsTag.setDeleted(true);
             postsTagRepository.save(postsTag);
         }
+
+    }
+
+
+
+
+    // 메서드 기능: 해당 게시글의 태그를 delete true에서 false로 바꾼다. 이곳의 내부 메서드도 활용했다.
+    // 예외: 해당 포스트를 찾지못하면 내부 메서드에서 예외를 던진다.
+    // 반환: 해당 포스트가 가진 태그가 DB에 아예 없다면 빈 리스트를 반환한다.
+    @Transactional
+    public List<PostsTag> recoverPostsTag(Long postId) {
+
+
+        // 해당 포스트Id로 찾은 Post에 아무 태그가 없다면 빈 리스트일 것이다.
+        // delete true인 tag가 하나라도있어도 담긴다.
+        List<PostsTag> findList = getPostsTagListByPostIdWithEmptyList(postId);
+
+
+        // 태그가 아예 없다면 빈 리스트를 반환한다.
+        if( findList.isEmpty() ) {
+            return new ArrayList<>();
+        }
+
+
+        // 해당 태그들의 delete 를 전부 false로 바꾼후 저장.
+        for (PostsTag postsTag : findList) {
+            postsTag.setDeleted(false);
+            postsTagRepository.save(postsTag);
+        }
+
+
+
+        // 사용할 일이 있을수 있어서 다시 내부 메서드를 활용해 반환해줬다.
+        // 방금 전에 delete를 false 처리한 PostsTag 객체 List를 메서드 호출한 곳에 return 해준다.
+        return getPostsTagListByPostIdWithEmptyList(postId);
+
 
     }
 

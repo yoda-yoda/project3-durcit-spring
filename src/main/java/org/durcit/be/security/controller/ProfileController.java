@@ -26,6 +26,11 @@ public class ProfileController {
     }
 
 
+
+
+    // 메서드 기능: 입력 닉네임을 받아서 변경하는 기능이다.  
+    // 예외: 같은 닉네임이 있으면 예외를 던진다.
+    // 반환: 저장한 엔티티를 MemberProfileResponse 로 변환하여 반환한다.
     @PutMapping("/profile/nickname-update")
     public ResponseEntity<ResponseData<MemberProfileResponse>> updateNickname(NicknameRequest nicknameRequest) {
         MemberProfileResponse updatedNicknameMemberProfile = profileService.updateNickName(nicknameRequest);

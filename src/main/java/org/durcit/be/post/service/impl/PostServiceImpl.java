@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.durcit.be.system.exception.ExceptionMessage.POST_NOT_FOUND_ERROR;
@@ -131,6 +132,25 @@ public class PostServiceImpl implements PostService {
                 .map(PostCardResponse::fromEntity)
                 .collect(Collectors.toList());
     }
+
+
+
+
+    // 메서드 기능: 해당 게시글의 delete 를 false로 바꾼다.
+    // 예외: 해당 포스트를 찾지못하면 예외를 던진다.
+    // 반환: 저장한 Post를 반환한다.
+    @Transactional
+    public Post recoverPost(Long postId) {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));
+
+        post.setDeleted(false);
+        return postRepository.save(post);
+
+    }
+
+
 
 
 }

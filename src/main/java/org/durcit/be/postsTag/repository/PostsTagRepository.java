@@ -12,7 +12,9 @@ public interface PostsTagRepository extends JpaRepository<PostsTag, Long> {
 
     List<PostsTag> findByContents(String contents);
 
-    @Query("SELECT p FROM Post as p WHERE p.id = :postId")  // postId 를 통해 jpql로 List<Post> 를 받아온다.
+    @Query("SELECT p FROM Post as p WHERE p.id = :postId")  // postId 를 통해 jpql로 Post 를 받아온다.
     public Post findPostByPostId(@Param("postId") Long postId);
+
+
 
 }

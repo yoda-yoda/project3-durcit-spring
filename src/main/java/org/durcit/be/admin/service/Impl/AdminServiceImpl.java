@@ -5,6 +5,10 @@ import org.durcit.be.admin.dto.AdminLogResponse;
 import org.durcit.be.admin.repository.AdminRepository;
 import org.durcit.be.admin.service.AdminService;
 import org.durcit.be.log.domain.Log;
+import org.durcit.be.post.domain.Post;
+import org.durcit.be.post.dto.PostCardResponse;
+import org.durcit.be.post.service.PostService;
+import org.durcit.be.postsTag.service.PostsTagService;
 import org.durcit.be.system.exception.adminLog.AdminLogNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +26,15 @@ public class AdminServiceImpl implements AdminService {
 
 
     private final AdminRepository adminRepository;
+    private final PostService postService;
+    private final PostsTagService postsTagService;
 
 
+
+
+    // 메서드 기능: Log(api_log) 테이블을 전부 조회하여 응답 Dto로 변환후 반환한다.
+    // 예외: Log(api_log) 테이블이 비어있으면 예외를 던진다.
+    // 반환: 각각의 엔티티를 응답 Dto로 변환후 List로 반환한다.
     public List<AdminLogResponse> getAllLogs() {
 
         List<Log> findAllLogs = adminRepository.findAllLogs();
@@ -40,6 +51,37 @@ public class AdminServiceImpl implements AdminService {
 
         return adminLogResponses;
     }
+
+
+
+
+
+
+
+    // 메서드 기능: PostId를 받아 해당 Post와 거기 담긴 Tag를 전부 delete false 설정한다.
+    // 예외: 해당하는 Post가 없으면 예외를 던진다.
+    // 반환: 작업이 끝난 Post를 PostCard 타입으로 변환후 반환한다.
+    // 수정할것: 댓글 부분을 살리는 로직을 추가해야한다.
+    public PostCardResponse recoverPostAndPostsTag(Long postId) {
+
+
+        // 해당 Post를 delete false 처리한다.
+        postService.recoverPost(postId);
+
+
+        // 해당 Post의 Tag를 delete false 처리한다.
+        // 태그가 아예 없으면 예외가 아닌 빈 List를 반환하는 메서드다.
+        postsTagService.recoverPostsTag(postId);
+
+
+        // PostCard 타입으로 변환하기위해, 해당 post를 반환받는다.
+        // postService의 메서드를 이용했다.
+        Post post = postService.getById(postId);
+
+        return PostCardResponse.fromEntity(post);
+
+    }
+
 
 
 
