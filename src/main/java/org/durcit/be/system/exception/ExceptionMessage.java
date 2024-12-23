@@ -30,8 +30,12 @@ public class ExceptionMessage {
 
     // postsTag
     public static final String OPTIONAL_EMPTY_POSTS_TAG_FIND_BY_ID_ERROR = "findById로 찾아온 PostsTag의 Optional 객체가 비어있습니다.";
-    public static final String OPTIONAL_EMPTY_POSTS_TAG_BY_CONTENTS_ERROR = "요청(검색) Dto의 contents를 가진 엔티티가 태그 테이블에 존재하지 않습니다.";
-    public static final String OPTIONAL_EMPTY_POSTS_TAG_BY_FIND_ALL_ERROR = "PostsTag 리포지터리의 FindAll로 찾은 Optional 객체가 비어있습니다.";
+    public static final String EMPTY_POSTS_TAG_LIST_IN_POST_ERROR = "Post 안의 연관관계 필드인 PostsTagList 객체가 비어있습니다. (비어있는 List 입니다.)";
+    public static final String NO_POSTS_TAG_IN_LIST_TYPE_ERROR = "내부적 로직상 찾아올수있는 PostsTag 객체가 없어서, 담아둘 공간인 List<PostsTag> 가 빈 리스트 입니다.";
+
+    // tagFollow
+    public static final String NO_TAG_FOLLOW_IN_LIST_TYPE_ERROR = "내부적 로직상 찾아올수있는 tagFollow 객체가 없어서, 담아둘 공간인 List<tagFollow> 가 빈 리스트 입니다.";
+    public static final String TAG_FOLLOW_NOT_FOUND_ERROR = "해당하는 팔로우 태그를 찾을 수 없습니다.";
 
     // chat
     public static final String INVALID_CHAT_ROOM_ID_ERROR = "유효하지 않은 채팅방 아이디 입니다.";

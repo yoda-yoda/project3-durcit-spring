@@ -5,7 +5,6 @@ import lombok.*;
 import org.durcit.be.post.domain.Post;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -31,7 +30,6 @@ public class PostsTag {
     @JoinColumn(name = "posts_id")
     private Post post;
 
-    // 빌더패턴
     @Builder
     public PostsTag(String contents, Post post) {
         this.contents = contents;

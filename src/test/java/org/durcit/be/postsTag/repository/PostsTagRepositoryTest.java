@@ -5,7 +5,7 @@ import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.repository.PostRepository;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.postsTag.domain.PostsTag;
-import org.durcit.be.postsTag.service.PostsTagService;
+import org.durcit.be.postsTag.service.impl.PostsTagServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @Slf4j
@@ -29,7 +28,7 @@ class PostsTagRepositoryTest {
 
     // 생성자 주입으로 하려니까 오류가나서 필드주입으로 했다. Junit 테스트는 생성자주입이 잘안먹히나보다.
     @Autowired
-    private PostsTagService postsTagService;
+    private PostsTagServiceImpl postsTagServiceImpl;
     @Autowired
     private PostsTagRepository postsTagRepository;
     @Autowired

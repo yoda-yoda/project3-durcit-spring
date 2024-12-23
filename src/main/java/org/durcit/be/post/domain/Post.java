@@ -43,7 +43,7 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "post") //    유빈님것과 merge 후 postsTag와의 연관관계때문에 새로 추가함.
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<PostsTag> postsTagList;
 
     @Builder
