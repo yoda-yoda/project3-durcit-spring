@@ -62,7 +62,6 @@ public class PostsSearchServiceImpl implements PostsSearchService {
 
 
 
-
     // 메서드 기능: 검색한 Post 제목과 일치하면서 동시에 delete false 인 Post만 찾아담는다. 위 메서드와 비슷한데 예외와 반환만 다르다.
     // 예외 : 해당하는 제목이 없거나, delete가 true면 예외를 던진다.
     // 반환: 해당 Post 를 List로 담아 최종 반환한다.

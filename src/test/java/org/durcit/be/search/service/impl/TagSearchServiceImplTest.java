@@ -40,10 +40,10 @@ class TagSearchServiceImplTest {
 
 
 
-
     @Test
     @DisplayName("Post 3개, PostsTag 3개, 1개의 Tag만 delete true 일때 - getAllPostCardResponsesWithNoneDeletedPostsTag 메서드 테스트1")
     void getAllPostCardResponsesWithNoneDeletedPostsTag_method_test1() throws Exception {
+
 
         // given
         Post post1 = Post.builder()

@@ -213,7 +213,7 @@ class PostsSearchServiceImplTest {
 
         // when
         List<PostCardResponse> list = postsSearchService.getAllPostCardResponsesWithNoneDeleted(request);
-        
+
         // then
 
         log.info("list.size() = {}", list.size()); // 0

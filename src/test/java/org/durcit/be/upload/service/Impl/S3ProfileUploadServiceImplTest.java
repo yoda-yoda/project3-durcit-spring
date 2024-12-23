@@ -30,7 +30,7 @@ class S3ProfileUploadServiceImplTest {
     @BeforeEach
     void setUp() {
         amazonS3 = mock(AmazonS3.class);
-        s3ProfileUploadService = new S3ProfileUploadServiceImpl(amazonS3);
+       // s3ProfileUploadService = new S3ProfileUploadServiceImpl(amazonS3);
 
         // S3 설정값 초기화
         ReflectionTestUtils.setField(s3ProfileUploadService, "bucketName", "mock-bucket");
