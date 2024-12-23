@@ -1,12 +1,14 @@
 package org.durcit.be.follow.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.follow.domain.TagFollow;
 import org.durcit.be.follow.dto.TagFollowRegisterRequest;
 import org.durcit.be.follow.dto.TagFollowResponse;
 import org.durcit.be.follow.dto.TagFollowUpdateRequest;
 import org.durcit.be.follow.repository.TagFollowRepository;
 import org.durcit.be.follow.service.TagFollowService;
+import org.durcit.be.postsTag.dto.PostsTagResponse;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.system.exception.auth.MemberNotFoundException;
 import org.durcit.be.system.exception.tagFollow.NoTagFollowInListTypeException;
@@ -25,12 +27,24 @@ import static org.durcit.be.system.exception.ExceptionMessage.*;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class TagFollowServiceImpl implements TagFollowService {
 
 
 
     private final TagFollowRepository tagFollowRepository;
 
+    public List<PostsTagResponse> processTagsWithFollowStatus(List<PostsTagResponse> tags, Long memberId) {
+        return tags.stream()
+                .map(tag -> checkIsFollowingTags(tag, memberId))
+                .collect(Collectors.toList());
+    }
+
+    public PostsTagResponse checkIsFollowingTags(PostsTagResponse postsTagResponse, Long memberId) {
+        boolean isFollowing = tagFollowRepository.existsByTagAndMemberId(postsTagResponse.getContents(), memberId);
+        postsTagResponse.setFollowing(isFollowing);
+        return postsTagResponse;
+    }
 
 
     // 메서드 기능: 태그팔로우 저장, 삭제, 재저장, 재삭제 기능이 이 메서드 하나로 작동하도록 한다.(토글 방식)
@@ -57,6 +71,7 @@ public class TagFollowServiceImpl implements TagFollowService {
             tagFollowRepository.save(optionalTagFollow.get());
             return TagFollowResponse.fromEntity(optionalTagFollow.get());
         }
+        log.info("tagFollowRegisterRequest.getTag() = {}", tagFollowRegisterRequest.getTag());
         TagFollow toEntity = TagFollowRegisterRequest.toEntity(tagFollowRegisterRequest, member);
         tagFollowRepository.save(toEntity);
         return TagFollowResponse.fromEntity(toEntity);

@@ -2,6 +2,7 @@ package org.durcit.be.post.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.durcit.be.comment.domain.Comment;
 import org.durcit.be.postsTag.domain.PostsTag;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.upload.domain.Images;
@@ -32,6 +33,9 @@ public class Post {
 
     @Setter
     private boolean deleted;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Like> likes;

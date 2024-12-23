@@ -17,11 +17,12 @@ public class PostResponse {
     private Long authorId;
     private Long views;
     private Long likes;
+    private Long comments;
     private String userThumbnail;
     private String createdAt;
 
     @Builder
-    public PostResponse(Long id, String title, String content, String author, String userThumbnail, Long likes, Long views, String createdAt, Long authorId) {
+    public PostResponse(Long id, String title, String content, String author, String userThumbnail, Long likes, Long views, String createdAt, Long authorId, Long comments) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -30,6 +31,7 @@ public class PostResponse {
         this.views = views;
         this.createdAt = createdAt;
         this.likes = likes;
+        this.comments = comments;
         this.userThumbnail = userThumbnail;
     }
 
@@ -43,6 +45,7 @@ public class PostResponse {
                 .views(post.getViews())
                 .createdAt(TimeAgoUtil.formatElapsedTime(post.getUpdatedAt()))
                 .userThumbnail(post.getMember().getProfileImage())
+                .comments(post.getComments() != null? (long) post.getComments().size() : 0L)
                 .likes(post.getLikes() != null ? (long) post.getLikes().size() : 0L)
                 .build();
     }

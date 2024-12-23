@@ -22,9 +22,9 @@ public class PostFacadeController {
         return ResponseData.toResponseEntity(ResponseCode.CREATE_POST_SUCCESS, postId);
     }
 
-    @GetMapping("/posts/{postId}")
-    public ResponseEntity<ResponseData<PostCombinedResponse>> getPosts(@PathVariable Long postId) {
-        PostCombinedResponse postById = postFacadeService.getPostById(postId);
+    @PostMapping("/posts/{postId}")
+    public ResponseEntity<ResponseData<PostCombinedResponse>> getPosts(@PathVariable Long postId, @RequestBody Long memberId) {
+        PostCombinedResponse postById = postFacadeService.getPostById(postId, memberId);
         return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postById);
     }
 

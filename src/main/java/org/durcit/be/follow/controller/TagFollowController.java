@@ -29,7 +29,7 @@ public class TagFollowController {
     // 해당 서비스 메서드 기능 => 해당 멤버가 어떤 태그를 최초 저장하는거라면 DB에 저장시키고, 최초 저장이 아니라면 delete 처리를 반대로 바꿔놓는다.
     // 메서드 목적: 이 메서드 하나로 저장, 삭제, 재저장, 재삭제가 가능하도록 했다.
     // 반환: 해당 태그에 대한 응답Dto 1개를 반환한다.
-    public ResponseEntity<ResponseData<TagFollowResponse>> createAndDeleteMemberTagFollow(TagFollowRegisterRequest tagFollowRegisterRequest, @PathVariable("memberId") Long memberId ){
+    public ResponseEntity<ResponseData<TagFollowResponse>> createAndDeleteMemberTagFollow(@RequestBody TagFollowRegisterRequest tagFollowRegisterRequest, @PathVariable("memberId") Long memberId ){
 
         TagFollowResponse tagFollowResponse = tagFollowService.createAndDeleteTagFollowByRegisterRequest(tagFollowRegisterRequest, memberId);
 
