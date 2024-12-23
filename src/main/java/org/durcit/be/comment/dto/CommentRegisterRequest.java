@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRegisterRequest {
+    private Long postId;
     private String content;
     private List<String> mentionList;
     private Long parentId;

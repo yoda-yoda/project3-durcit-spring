@@ -18,6 +18,7 @@ public class CommentCardResponse {
     private Long id;
     private String content;
     private String authorNickname;
+    private String userThumbnail;
     private Long authorId;
     private Long parentId;
     private String createdAt;
@@ -28,8 +29,9 @@ public class CommentCardResponse {
                 .id(comment.getId())
                 .content(comment.getContent())
                 .authorNickname(comment.getAuthor().getNickname())
+                .userThumbnail(comment.getAuthor().getProfileImage())
                 .authorId(comment.getAuthor().getId())
-                .parentId(comment.getParent().getId())
+                .parentId(comment.getParent() != null ? comment.getParent().getId() : null)
                 .mentionList(comment.getMentionList() != null
                         ? comment.getMentionList().stream()
                         .map(mention -> mention.getMember().getNickname())

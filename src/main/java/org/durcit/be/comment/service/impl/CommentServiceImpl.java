@@ -33,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMentionRepository commentMentionRepository;
     private final MemberService memberService;
     private final MentionNotificationService mentionNotificationService;
+    private final PostService postService;
 
     public List<CommentCardResponse> getCommentsByPostId(Long postId) {
         List<Comment> comments = commentRepository.findAllByPostIdAndDeletedFalse(postId);
@@ -55,6 +56,8 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = Comment.builder()
                 .parent(parentComment)
                 .content(request.getContent())
+                .author(memberService.getById(SecurityUtil.getCurrentMemberId()))
+                .post(postService.getById(request.getPostId()))
                 .build();
         commentRepository.save(comment);
 

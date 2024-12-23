@@ -40,10 +40,11 @@ public class Comment {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Comment(String content, Member author, Comment parent, List<CommentMention> mentionList) {
+    public Comment(String content, Member author, Comment parent, List<CommentMention> mentionList, Post post) {
         this.content = content;
         this.author = author;
         this.parent = parent;
+        this.post = post;
         this.mentionList = mentionList;
     }
 
