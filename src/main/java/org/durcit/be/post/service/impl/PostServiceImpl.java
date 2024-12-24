@@ -3,6 +3,7 @@ package org.durcit.be.post.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.follow.domain.TagFollow;
 import org.durcit.be.follow.dto.MemberFollowResponse;
+import org.durcit.be.follow.dto.TagFollowMembersResponse;
 import org.durcit.be.follow.repository.TagFollowRepository;
 import org.durcit.be.follow.service.MemberFollowService;
 import org.durcit.be.follow.service.TagFollowService;
@@ -14,6 +15,7 @@ import org.durcit.be.post.dto.PostUpdateRequest;
 import org.durcit.be.post.repository.PostRepository;
 import org.durcit.be.post.service.PostNotificationService;
 import org.durcit.be.post.service.PostService;
+import org.durcit.be.postsTag.domain.PostsTag;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.service.MemberService;
 import org.durcit.be.security.util.SecurityUtil;
@@ -42,6 +44,7 @@ public class PostServiceImpl implements PostService {
     private final MemberFollowService memberFollowService;
     private final PostNotificationService postNotificationService;
     private final TagFollowRepository tagFollowRepository;
+    private final TagFollowService tagFollowService;
 
     public List<PostResponse> getAllPosts() {
         return postRepository.findAll()
@@ -138,6 +141,18 @@ public class PostServiceImpl implements PostService {
 
         List<MemberFollowResponse> followers = memberFollowService.getFollowers(member.getId());
         postNotificationService.notifyFollowers(postResponse, followers);
+
+        // List<PostsTag> -> List<String>
+        List<TagFollowMembersResponse> tagFollowers = tagFollowService.getTagFollowMembersResponses(
+                post.getPostsTagList().stream()
+                        .map(PostsTag::getContents)
+                        .toList()
+        );
+
+        List<TagFollowMembersResponse> list = tagFollowers.stream().peek(tagFollowMembersResponse -> tagFollowMembersResponse.setPostId(post.getId())).toList();
+
+        postNotificationService.notifyTagFollowers(list);
+
 
         return postResponse;
     }

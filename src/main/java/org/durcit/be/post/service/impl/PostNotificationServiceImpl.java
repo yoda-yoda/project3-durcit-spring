@@ -3,6 +3,7 @@ package org.durcit.be.post.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.follow.dto.MemberFollowResponse;
+import org.durcit.be.follow.dto.TagFollowMembersResponse;
 import org.durcit.be.post.dto.PostNotificationMessage;
 import org.durcit.be.post.dto.PostResponse;
 import org.durcit.be.post.service.PostNotificationService;
@@ -37,6 +38,25 @@ public class PostNotificationServiceImpl implements PostNotificationService {
                     .memberId(String.valueOf(follower.getMemberId()))
                     .content(notification.getMessage())
                     .postId(post.getId())
+                    .build());
+            notification.setId(push.getId());
+            log.info("notification.getPostId() = {}", notification.getPostId());
+            rabbitTemplate.convertAndSend("notifyExchange", "notify.notify", notification);
+        }
+    }
+
+    public void notifyTagFollowers(List<TagFollowMembersResponse> tagFollowers) {
+        for (TagFollowMembersResponse follower : tagFollowers) {
+            NotificationMessage notification = NotificationMessage.builder()
+                    .messageReceiver(follower.getMemberId())
+                    .postId(follower.getPostId())
+                    .message("#" + follower.getTag() + " 게시글이 올라왔습니다!")
+                    .build();
+            Push push = pushService.createPush(Push.builder()
+                    .pushType(PushType.TAG)
+                    .memberId(String.valueOf(follower.getMemberId()))
+                    .content(notification.getMessage())
+                    .postId(notification.getPostId())
                     .build());
             notification.setId(push.getId());
             log.info("notification.getPostId() = {}", notification.getPostId());

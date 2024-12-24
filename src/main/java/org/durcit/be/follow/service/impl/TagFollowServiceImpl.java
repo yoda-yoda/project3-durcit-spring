@@ -3,6 +3,7 @@ package org.durcit.be.follow.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.follow.domain.TagFollow;
+import org.durcit.be.follow.dto.TagFollowMembersResponse;
 import org.durcit.be.follow.dto.TagFollowRegisterRequest;
 import org.durcit.be.follow.dto.TagFollowResponse;
 import org.durcit.be.follow.dto.TagFollowUpdateRequest;
@@ -381,6 +382,16 @@ public class TagFollowServiceImpl implements TagFollowService {
     }
 
 
+    public List<TagFollowMembersResponse> getTagFollowMembersResponses(List<String> tags) {
+        List<TagFollowMembersResponse> tagFollowResponseList = new ArrayList<>();
+        for (String tag : tags) {
+            List<Member> followers = tagFollowRepository.findMemberByTag(tag);
+            for (Member follower : followers) {
+                tagFollowResponseList.add(new TagFollowMembersResponse(tag, follower.getId()));
+            }
+        }
+        return tagFollowResponseList;
+    }
 
 
 

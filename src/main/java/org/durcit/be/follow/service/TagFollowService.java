@@ -1,6 +1,7 @@
 package org.durcit.be.follow.service;
 
 import org.durcit.be.follow.domain.TagFollow;
+import org.durcit.be.follow.dto.TagFollowMembersResponse;
 import org.durcit.be.follow.dto.TagFollowRegisterRequest;
 import org.durcit.be.follow.dto.TagFollowResponse;
 import org.durcit.be.follow.dto.TagFollowUpdateRequest;
@@ -23,7 +24,7 @@ public interface TagFollowService {
    public void deleteNoneDeletedAllTagFollows(Long memberId) ;
    public void deleteAllTagFollowsByIds(List<Long> tagFollowIdList) ;
    public void deleteOneTagFollowById(Long tagFollowId);
-
+   public List<TagFollowMembersResponse> getTagFollowMembersResponses(List<String> tags);
 
 
 

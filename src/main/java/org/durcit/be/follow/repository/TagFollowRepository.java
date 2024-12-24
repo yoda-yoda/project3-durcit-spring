@@ -15,6 +15,10 @@ public interface TagFollowRepository extends JpaRepository<TagFollow, Long> {
     @Query("SELECT m FROM Member as m WHERE m.id = :memberId")
     public Member findMemberByMemberId(@Param("memberId") Long memberId);
 
+
+    @Query("SELECT t.member FROM TagFollow as t WHERE t.tag = :tag")
+    public List<Member> findMemberByTag(@Param("tags") String tag);
+
     Optional<TagFollow> findByMemberAndTag(@Param("member") Member member, @Param("tag") String tag);
 
 
