@@ -8,6 +8,6 @@ public interface ProfileService {
 
     public MemberProfileResponse getCurrentMemberProfile();
     public MemberProfileResponse updateNickName(NicknameRequest nicknameRequest);
-
+    public boolean isDuplicateNickname(NicknameRequest nicknameRequest);
 
 }

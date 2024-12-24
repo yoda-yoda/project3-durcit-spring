@@ -87,7 +87,7 @@ public enum ResponseCode {
 
     // update nickName
     UPDATE_NICKNAME_SUCCESS(Status.OK, UpdateNicknameMessage.UPDATE_NICKNAME_SUCCESS),
-
+    CHECK_DUPLICATE_NICKNAME_SUCCESS(Status.OK, UpdateNicknameMessage.CHECK_DUPLICATE_NICKNAME_SUCCESS),
 
 
 

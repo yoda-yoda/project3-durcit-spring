@@ -48,6 +48,9 @@ public class ProfileServiceImpl implements ProfileService {
                 .build();
     }
 
+    public boolean isDuplicateNickname(NicknameRequest nicknameRequest) {
+        return memberRepository.existsByNickname(nicknameRequest.getNickname());
+    }
 
 
 
@@ -65,7 +68,7 @@ public class ProfileServiceImpl implements ProfileService {
 
         String nickname = nicknameRequest.getNickname();
 
-        if ( memberRepository.existsByNickname(nickname) ) {
+        if (isDuplicateNickname(nicknameRequest)) {
             throw new ExistingNicknameException(EXISTING_NICKNAME_ERROR);
         }
 

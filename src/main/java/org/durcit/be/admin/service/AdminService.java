@@ -8,6 +8,6 @@ import java.util.List;
 public interface AdminService {
 
     public List<AdminLogResponse> getAllLogs();
-    public PostCardResponse recoverPostAndPostsTag(Long postId);
+    public void recoverPostAndPostsTag(Long postId);
 
 }

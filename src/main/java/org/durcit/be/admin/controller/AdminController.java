@@ -24,7 +24,6 @@ public class AdminController {
     private final AdminService adminService;
 
 
-
     // 메서드 기능: Log(api_log) 테이블을 전부 조회한다.
     // 반환: 각각의 엔티티를 응답 Dto로 변환후 List로 반환한다.
     @GetMapping("/log")
@@ -43,11 +42,11 @@ public class AdminController {
     // 반환: 작업이 끝난 Post를 PostCard 타입으로 변환후 반환한다.
     // 수정할것: 댓글 부분을 살리는 로직을 추가해야한다.
     @PutMapping("/recover/{postId}")
-    public ResponseEntity<ResponseData<PostCardResponse>> recoverPost(@PathVariable Long postId) {
+    public ResponseEntity<ResponseData> recoverPost(@PathVariable Long postId) {
 
-        PostCardResponse postCardResponse = adminService.recoverPostAndPostsTag(postId);
+        adminService.recoverPostAndPostsTag(postId);
 
-        return ResponseData.toResponseEntity(ResponseCode.RECOVER_POST_SUCCESS, postCardResponse);
+        return ResponseData.toResponseEntity(ResponseCode.RECOVER_POST_SUCCESS);
 
     }
 
