@@ -51,6 +51,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<TagFollow> tagFollowList;
 
+    @Setter
+    private String bio;
 
     @Builder
     public Member(Long id, String username, String provider, String email, String nickname, String password, boolean isVerified, String profileImage) {

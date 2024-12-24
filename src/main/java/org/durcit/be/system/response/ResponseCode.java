@@ -84,11 +84,15 @@ public enum ResponseCode {
     // admin
     GET_ADMIN_LOG_SUCCESS(Status.OK, AdminMessage.GET_ADMIN_LOG_SUCCESS),
     RECOVER_POST_SUCCESS(Status.OK, AdminMessage.RECOVER_POST_SUCCESS),
+    UPDATE_ROLE_SUCCESS(Status.OK, AdminMessage.UPDATE_ROLE_SUCCESS),
 
 
     // update nickName
     UPDATE_NICKNAME_SUCCESS(Status.OK, UpdateNicknameMessage.UPDATE_NICKNAME_SUCCESS),
     CHECK_DUPLICATE_NICKNAME_SUCCESS(Status.OK, UpdateNicknameMessage.CHECK_DUPLICATE_NICKNAME_SUCCESS),
+
+    // update bio
+    UPDATE_BIO_SUCCESS(Status.OK, UpdateProfileMessage.UPDATE_BIO_SUCCESS),
 
 
 

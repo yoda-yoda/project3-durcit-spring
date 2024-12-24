@@ -14,4 +14,13 @@ public class TagFollowMembersResponse {
     private Long postId;
 
 
+    public TagFollowMembersResponse(String tag, Long memberId) {
+            this.tag = tag;
+            this.memberId = memberId;
+    }
+
+
 }
+
+
+

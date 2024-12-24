@@ -29,4 +29,14 @@ public class PostFacadeController {
     }
 
 
+
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<ResponseData<PostCombinedResponse>> aaa(@PathVariable Long postId, @RequestBody Long memberId) {
+        PostCombinedResponse postById = postFacadeService.getPostById(postId, memberId);
+        return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postById);
+    }
+
+
+
+
 }

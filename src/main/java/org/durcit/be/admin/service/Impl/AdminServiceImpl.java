@@ -5,18 +5,21 @@ import org.durcit.be.admin.dto.AdminLogResponse;
 import org.durcit.be.admin.repository.AdminRepository;
 import org.durcit.be.admin.service.AdminService;
 import org.durcit.be.log.domain.Log;
-import org.durcit.be.post.domain.Post;
-import org.durcit.be.post.dto.PostCardResponse;
 import org.durcit.be.post.service.PostService;
 import org.durcit.be.postsTag.service.PostsTagService;
+import org.durcit.be.security.domian.Member;
+import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.system.exception.adminLog.AdminLogNotFoundException;
+import org.durcit.be.system.exception.auth.MemberNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.durcit.be.system.exception.ExceptionMessage.ADMIN_LOG_NOT_FOUND_ERROR;
+import static org.durcit.be.system.exception.ExceptionMessage.MEMBER_NOT_FOUND_ERROR;
 
 
 @Service
@@ -28,6 +31,7 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final PostService postService;
     private final PostsTagService postsTagService;
+    private final MemberRepository memberRepository;
 
 
 
@@ -64,7 +68,7 @@ public class AdminServiceImpl implements AdminService {
     // 수정할것: 댓글 부분을 살리는 로직을 추가해야한다.
     public void recoverPostAndPostsTag(Long postId) {
 
-
+        
         // 해당 Post를 delete false 처리한다.
         postService.recoverPost(postId);
 
@@ -79,6 +83,56 @@ public class AdminServiceImpl implements AdminService {
 
 
     }
+
+
+
+
+    @Transactional
+    // 메서드 기능: 해당 멤버의 Role을 "ADMIN" 으로 바꿔준다.
+    // 예외: 해당 멤버가 없다면 예외를 던진다.
+    // 반환: X
+    public void roleUpdateToAdmin(Long memberId) {
+
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
+
+        findMember.setRole("ADMIN");
+        memberRepository.save(findMember);
+
+
+    }
+
+
+    @Transactional
+    // 메서드 기능: 해당 멤버의 Role을 "MANAGER" 로 바꿔준다.
+    // 예외: 해당 멤버가 없다면 예외를 던진다.
+    // 반환: X
+    public void roleUpdateToManager(Long memberId) {
+
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
+
+        findMember.setRole("MANAGER");
+        memberRepository.save(findMember);
+
+
+    }
+
+
+    @Transactional
+    // 메서드 기능: 해당 멤버의 Role을 "MEMBER"로 바꿔준다.
+    // 예외: 해당 멤버가 없다면 예외를 던진다.
+    // 반환: X
+    public void roleUpdateToMember(Long memberId) {
+
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND_ERROR));
+
+        findMember.setRole("MEMBER");
+        memberRepository.save(findMember);
+
+    }
+
 
 
 

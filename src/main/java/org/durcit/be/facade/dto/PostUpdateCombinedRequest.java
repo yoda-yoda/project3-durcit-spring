@@ -13,7 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostUpdateCombinedRequest {
+
     private PostUpdateRequest postUpdateRequest;
     private List<PostsTagRegisterRequest> postsTagRegisterRequests;
-    private UploadUpdateRequest uploadUpdateRequest;
+
 }
