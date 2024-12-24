@@ -2,10 +2,13 @@ package org.durcit.be.facade.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.durcit.be.comment.dto.CommentCardResponse;
+import org.durcit.be.comment.service.CommentService;
 import org.durcit.be.facade.dto.PostCombinedResponse;
 import org.durcit.be.facade.dto.PostRegisterCombinedRequest;
 import org.durcit.be.facade.dto.PostUpdateCombinedRequest;
 import org.durcit.be.facade.service.PostFacadeService;
+import org.durcit.be.follow.service.TagFollowService;
 import org.durcit.be.post.dto.EmojiResponse;
 import org.durcit.be.post.dto.PostEmojisResponse;
 import org.durcit.be.post.dto.PostResponse;
@@ -30,6 +33,8 @@ public class PostFacadeServiceImpl implements PostFacadeService {
     private final UploadService uploadService;
     private final PostsTagService postsTagService;
     private final EmojiService emojiService;
+    private final CommentService commentService;
+    private final TagFollowService tagFollowService;
     // 태그 서비스
 
     // 서비스 레이어들의 결합도를 낮추기 위해 사용
@@ -44,16 +49,21 @@ public class PostFacadeServiceImpl implements PostFacadeService {
     }
 
     @Transactional
-    public PostCombinedResponse getPostById(Long postId) {
+    public PostCombinedResponse getPostById(Long postId, Long memberId) {
         PostResponse postById = postService.getPostById(postId);
         List<PostsTagResponse> postsTagResponseListByPostId = postsTagService.getPostsTagResponseListByPostId(postId);
+        if (memberId != null) {
+            postsTagResponseListByPostId = tagFollowService.processTagsWithFollowStatus(postsTagResponseListByPostId, memberId);
+        }
         List<UploadResponse> imagesByPostId = uploadService.getImagesByPostId(postId);
         PostEmojisResponse postEmojis = emojiService.getPostEmojis(postId);
+        List<CommentCardResponse> comments = commentService.getCommentsByPostId(postId);
         return PostCombinedResponse.builder()
                 .post(postById)
                 .tags(postsTagResponseListByPostId)
                 .uploads(imagesByPostId)
                 .emojis(postEmojis)
+                .comments(comments)
                 .build();
     }
 
@@ -66,6 +76,8 @@ public class PostFacadeServiceImpl implements PostFacadeService {
     @Transactional
     public void deletePosts(Long postId) {
         postService.deletePost(postId);
+        postsTagService.deletePostsTagsByPostId(postId);
+        commentService.deleteCommentsByPostId(postId);
     }
 
 

@@ -47,6 +47,8 @@ public class ExceptionMessage {
 
     // adminLog
     public static final String ADMIN_LOG_NOT_FOUND_ERROR = "LOG를 찾을 수 없습니다.";
+    // comment
+    public static final String INVALID_COMMENT_ID_ERROR = "유효하지 않은 댓글 번호 입니다.";
 
     // push
     public static final String PUSH_CANNOT_FOUND_ERROR = "해당 푸시알람을 찾을 수 없습니다.";

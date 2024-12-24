@@ -8,13 +8,14 @@ import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.durcit.be.search.dto.SearchResultResponse;
 
 import java.util.List;
 
 
-@Controller
+
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/search")
 public class SearchController {
@@ -34,5 +35,10 @@ public class SearchController {
         return ResponseData.toResponseEntity(ResponseCode.GET_SEARCH_SUCCESS, postCardResponsesList);
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseData<List<SearchResultResponse>>> search(@RequestParam("query") String query) {
+        List<SearchResultResponse> results = searchService.search(query);
+        return ResponseData.toResponseEntity(ResponseCode.SEARCH_SUCCESS, results);
+    }
 
 }

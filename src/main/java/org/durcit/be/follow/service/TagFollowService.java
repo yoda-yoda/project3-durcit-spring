@@ -4,11 +4,14 @@ import org.durcit.be.follow.domain.TagFollow;
 import org.durcit.be.follow.dto.TagFollowRegisterRequest;
 import org.durcit.be.follow.dto.TagFollowResponse;
 import org.durcit.be.follow.dto.TagFollowUpdateRequest;
+import org.durcit.be.postsTag.dto.PostsTagResponse;
+
 import java.util.List;
 
 
 public interface TagFollowService {
 
+   public List<PostsTagResponse> processTagsWithFollowStatus(List<PostsTagResponse> tags, Long memberId);
    public TagFollowResponse createAndDeleteTagFollowByRegisterRequest(TagFollowRegisterRequest tagFollowRegisterRequest, Long memberId);
    public List<TagFollowResponse> createTagFollowsByRegisterRequests(List<TagFollowRegisterRequest> tagFollowRegisterRequestList, Long memberId);
    public List<TagFollowResponse> createTagFollowsByUpdateRequests(List<TagFollowUpdateRequest> tagFollowUpdateRequestList, Long memberId);

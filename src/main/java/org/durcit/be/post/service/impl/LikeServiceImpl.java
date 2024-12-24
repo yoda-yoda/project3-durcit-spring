@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.durcit.be.post.domain.Like;
 import org.durcit.be.post.domain.Post;
+import org.durcit.be.post.dto.PostCardResponse;
 import org.durcit.be.post.repository.LikeRepository;
 import org.durcit.be.post.service.LikeService;
 import org.durcit.be.post.service.PostService;
@@ -12,6 +13,9 @@ import org.durcit.be.security.service.MemberService;
 import org.durcit.be.security.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,6 +29,13 @@ public class LikeServiceImpl implements LikeService {
 
     public long getLikeCount(Long postId) {
         return likeRepository.countByPostId(postId);
+    }
+
+    public List<PostCardResponse> getLikedPostsByMember(Long memberId) {
+        List<Like> likes = likeRepository.findAllByMemberId(memberId);
+        return likes.stream()
+                .map(like -> PostCardResponse.fromEntity(like.getPost()))
+                .collect(Collectors.toList());
     }
 
     @Transactional

@@ -1,27 +1,62 @@
 package org.durcit.be.comment.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.durcit.be.comment.dto.CommentCardResponse;
+import org.durcit.be.comment.dto.CommentRegisterRequest;
+import org.durcit.be.comment.dto.CommentUpdateRequest;
+import org.durcit.be.comment.service.CommentService;
+import org.durcit.be.system.response.ResponseCode;
+import org.durcit.be.system.response.ResponseData;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/api")
 public class CommentController {
 
-    // 구현 기능 정리
+    private final CommentService commentService;
 
-    // 생성됐을때, 댓글의 멘션 내용을 requestDTO <- (멘션에 대한 리스트)
-    // COMMENT에서 정보를 갖고있어야함
 
-    // 게시글과 같이( 멘션당한사람에게 요청을 보내는것 )
+    @PostMapping("/members/comments")
+    public ResponseEntity<ResponseData<CommentCardResponse>> registerComment(@RequestBody CommentRegisterRequest request) {
+        CommentCardResponse commentCardResponse = commentService.registerComment(request);
+        return ResponseData.toResponseEntity(ResponseCode.CREATE_COMMENT_SUCCESS, commentCardResponse);
+    }
 
-    // 부모 댓글( -> 댓글)
+    @PutMapping("/members/comments")
+    public ResponseEntity<ResponseData> updateComment(@RequestBody CommentUpdateRequest request) {
+        commentService.updateComment(request);
+        return ResponseData.toResponseEntity(ResponseCode.UPDATE_COMMENT_SUCCESS);
+    }
 
-    // 1. post id 받아서, 해당하는 포스트에 대한 댓글을 가져오는 것
+    @DeleteMapping("/members/comments/{commentId}")
+    public ResponseEntity<ResponseData> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseData.toResponseEntity(ResponseCode.DELETE_COMMENT_SUCCESS);
+    }
 
-    // 2. 댓글을 등록하는 컨트롤러
+    @GetMapping("/members/my-comments/{memberId}")
+    public ResponseEntity<ResponseData<List<CommentCardResponse>>> getCommentsByMemberId(@PathVariable Long memberId) {
+        List<CommentCardResponse> responses = commentService.getCommentsByMemberId(memberId);
+        return ResponseData.toResponseEntity(ResponseCode.GET_COMMENT_SUCCESS, responses);
+    }
 
-    // 3. 댓글 내용 수정
-    // 수정할 때, 멘션이랑 내용만 달라질 수 있다.
-    // 부모댓글은 바뀔수 없음( 이것말고도 다른 예외처리 잘 하기 )
+    @GetMapping("/admins/comments")
+    public ResponseEntity<ResponseData<List<CommentCardResponse>>> getAllComments() {
+        List<CommentCardResponse> allComments = commentService.getDeletedComments();
+        return ResponseData.toResponseEntity(ResponseCode.GET_COMMENT_SUCCESS, allComments);
+    }
 
-    // 4. 댓글 삭제 soft delete(논리삭제)
-
-    // 컨트롤러 -> 서비스, 또는 뷰 -> 컨트롤러
+    @PutMapping("/admins/comments/{commentId}")
+    public ResponseEntity<ResponseData> restoreComment(@PathVariable Long commentId) {
+        commentService.restoreDeletedComments(commentId);
+        return ResponseData.toResponseEntity(ResponseCode.UPDATE_COMMENT_SUCCESS);
+    }
 
 
 }

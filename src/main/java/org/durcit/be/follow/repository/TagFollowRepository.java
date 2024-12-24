@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TagFollowRepository extends JpaRepository<TagFollow, Long> {
@@ -17,6 +18,9 @@ public interface TagFollowRepository extends JpaRepository<TagFollow, Long> {
     Optional<TagFollow> findByMemberAndTag(@Param("member") Member member, @Param("tag") String tag);
 
 
+    List<String> findFollowedTagsByMemberId(@Param("memberId") Long memberId);
 
+    boolean existsByTagAndMemberId(String contents, Long memberId);
 
+    List<TagFollow> findTagsByMemberId(Long memberId);
 }

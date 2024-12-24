@@ -22,12 +22,10 @@ public class TagFollowRegisterRequest {
 
     public static TagFollow toEntity(TagFollowRegisterRequest tagFollowRegisterRequest, Member member) {
 
-        TagFollow tagFollow = TagFollow.builder()
+        return TagFollow.builder()
                 .tag(tagFollowRegisterRequest.getTag())
                 .member(member)
                 .build();
-
-        return tagFollow;
     }
 
 

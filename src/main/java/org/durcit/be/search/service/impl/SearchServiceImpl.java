@@ -5,7 +5,11 @@ import org.durcit.be.post.domain.Post;
 import org.durcit.be.post.dto.PostCardResponse;
 import org.durcit.be.search.dto.SearchRequest;
 import org.durcit.be.search.repository.SearchRepository;
+import org.durcit.be.post.repository.PostRepository;
+import org.durcit.be.postsTag.repository.PostsTagRepository;
+import org.durcit.be.search.dto.SearchResultResponse;
 import org.durcit.be.search.service.SearchService;
+import org.durcit.be.security.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +22,31 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class SearchServiceImpl implements SearchService {
 
-
-
-
+    private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
+    private final PostsTagRepository postsTagRepository;
     private final SearchRepository searchRepository;
+
+    public List<SearchResultResponse> search(String query) {
+        List<SearchResultResponse> results = new ArrayList<>();
+
+        results.addAll(postRepository.findByTitleContaining(query).stream()
+                .map(post -> new SearchResultResponse("post", post.getId(), post.getTitle()))
+                .toList());
+
+        results.addAll(memberRepository.findByNicknameContaining(query).stream()
+                .map(user -> new SearchResultResponse("user", user.getId(), user.getNickname()))
+                .toList());
+
+        results.addAll(postsTagRepository.findByContentsContaining(query).stream()
+                .map(tag -> new SearchResultResponse("tag", tag.getId(), tag.getContents()))
+                .toList());
+
+        return results;
+
+    }
+
+
 
 
 

@@ -76,6 +76,7 @@ public enum ResponseCode {
     // search
     GET_SEARCH_SUCCESS(Status.OK, SearchMessage.GET_SEARCH_SUCCESS),
 
+
     // push
     GET_PUSHS_SUCCESS(Status.OK, PushMessage.GET_PUSHS_SUCCESS),
     UPDATE_PUSH_SUCCESS(Status.NO_CONTENT, PushMessage.UPDATE_PUSH_SUCCESS),
@@ -91,7 +92,15 @@ public enum ResponseCode {
 
 
 
+    // comment
+    CREATE_COMMENT_SUCCESS(Status.CREATED, CommentMessage.CREATE_COMMENT_SUCCESS),
+    GET_COMMENT_SUCCESS(Status.OK, CommentMessage.GET_COMMENT_SUCCESS),
+    UPDATE_COMMENT_SUCCESS(Status.NO_CONTENT, CommentMessage.UPDATE_COMMENT_SUCCESS),
+    DELETE_COMMENT_SUCCESS(Status.NO_CONTENT, CommentMessage.DELETE_COMMENT_SUCCESS),
+    GET_MENTION_POSSIBLE_MEMBERS_SUCCESS(Status.OK, CommentMessage.GET_MENTION_POSSIBLE_MEMBERS_SUCCESS),
 
+    // search
+    SEARCH_SUCCESS(Status.OK, SearchMessage.SEARCH_SUCCESS)
     ;
 
     private int httpStatus;
