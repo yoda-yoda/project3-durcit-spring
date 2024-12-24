@@ -12,6 +12,6 @@ public interface AdminService {
     public void roleUpdateToAdmin(Long memberId);
     public void roleUpdateToManager(Long memberId);
     public void roleUpdateToMember(Long memberId);
-
+    public void hardDeletePostAndPostsTag(Long postId);
 
 }

@@ -5,12 +5,17 @@ import org.durcit.be.admin.dto.AdminLogResponse;
 import org.durcit.be.admin.repository.AdminRepository;
 import org.durcit.be.admin.service.AdminService;
 import org.durcit.be.log.domain.Log;
+import org.durcit.be.post.domain.Post;
+import org.durcit.be.post.repository.PostRepository;
 import org.durcit.be.post.service.PostService;
+import org.durcit.be.postsTag.domain.PostsTag;
+import org.durcit.be.postsTag.repository.PostsTagRepository;
 import org.durcit.be.postsTag.service.PostsTagService;
 import org.durcit.be.security.domian.Member;
 import org.durcit.be.security.repository.MemberRepository;
 import org.durcit.be.system.exception.adminLog.AdminLogNotFoundException;
 import org.durcit.be.system.exception.auth.MemberNotFoundException;
+import org.durcit.be.system.exception.post.PostNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.durcit.be.system.exception.ExceptionMessage.ADMIN_LOG_NOT_FOUND_ERROR;
-import static org.durcit.be.system.exception.ExceptionMessage.MEMBER_NOT_FOUND_ERROR;
+import static org.durcit.be.system.exception.ExceptionMessage.*;
 
 
 @Service
@@ -32,7 +36,8 @@ public class AdminServiceImpl implements AdminService {
     private final PostService postService;
     private final PostsTagService postsTagService;
     private final MemberRepository memberRepository;
-
+    private final PostRepository postRepository;
+    private final PostsTagRepository postsTagRepository;
 
 
 
@@ -68,7 +73,7 @@ public class AdminServiceImpl implements AdminService {
     // 수정할것: 댓글 부분을 살리는 로직을 추가해야한다.
     public void recoverPostAndPostsTag(Long postId) {
 
-        
+
         // 해당 Post를 delete false 처리한다.
         postService.recoverPost(postId);
 
@@ -83,6 +88,29 @@ public class AdminServiceImpl implements AdminService {
 
 
     }
+
+
+
+    @Transactional
+    // 메서드 기능: PostId를 받아 해당 Post와 거기 담긴 Tag를 전부 hard삭제(물리삭제) 한다.
+    // 예외: 해당하는 Post가 없으면 예외를 던진다.
+    // 반환: void
+    public void hardDeletePostAndPostsTag(Long postId) {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND_ERROR));
+
+        List<PostsTag> getPostsTagList = post.getPostsTagList();
+
+        if ( !getPostsTagList.isEmpty() ) {
+            postsTagRepository.deleteAll(getPostsTagList);
+        }
+
+        postRepository.delete(post);
+
+
+    }
+
 
 
 

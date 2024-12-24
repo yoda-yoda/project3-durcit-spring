@@ -85,6 +85,7 @@ public enum ResponseCode {
     GET_ADMIN_LOG_SUCCESS(Status.OK, AdminMessage.GET_ADMIN_LOG_SUCCESS),
     RECOVER_POST_SUCCESS(Status.OK, AdminMessage.RECOVER_POST_SUCCESS),
     UPDATE_ROLE_SUCCESS(Status.OK, AdminMessage.UPDATE_ROLE_SUCCESS),
+    HARD_DELETE_POST_AND_POSTS_TAG_SUCCESS(Status.OK, AdminMessage.HARD_DELETE_POST_AND_POSTS_TAG_SUCCESS),
 
 
     // update nickName

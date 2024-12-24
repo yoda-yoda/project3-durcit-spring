@@ -57,6 +57,21 @@ public class AdminController {
 
 
 
+    // 메서드 기능: PostId를 받아 해당 Post와 거기 담긴 Tag를 전부 hard삭제(물리삭제) 한다.
+    // 예외: 해당하는 Post가 없으면 예외를 던진다.
+    // 반환: void
+    @DeleteMapping("/delete/{postId}")
+    public ResponseEntity<ResponseData> hardDeletePostAndTag(@PathVariable Long postId) {
+
+        adminService.hardDeletePostAndPostsTag(postId);
+
+        return ResponseData.toResponseEntity(ResponseCode.HARD_DELETE_POST_AND_POSTS_TAG_SUCCESS);
+
+    }
+
+
+
+
     // 메서드 기능: 해당 멤버의 Role을 "ADMIN"으로 바꿔준다.
     // 예외: 해당 멤버가 없다면 예외를 던진다.
     // 반환: X
