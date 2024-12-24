@@ -3,6 +3,7 @@ package org.durcit.be.facade.controller;
 import lombok.RequiredArgsConstructor;
 import org.durcit.be.facade.dto.PostCombinedResponse;
 import org.durcit.be.facade.dto.PostRegisterCombinedRequest;
+import org.durcit.be.facade.dto.PostUpdateCombinedRequest;
 import org.durcit.be.facade.service.impl.PostFacadeServiceImpl;
 import org.durcit.be.system.response.ResponseCode;
 import org.durcit.be.system.response.ResponseData;
@@ -31,9 +32,10 @@ public class PostFacadeController {
 
 
     @PutMapping("/posts/{postId}")
-    public ResponseEntity<ResponseData<PostCombinedResponse>> aaa(@PathVariable Long postId, @RequestBody Long memberId) {
-        PostCombinedResponse postById = postFacadeService.getPostById(postId, memberId);
-        return ResponseData.toResponseEntity(ResponseCode.GET_POST_SUCCESS, postById);
+    public ResponseEntity<ResponseData> updatePosts(@PathVariable Long postId, @RequestBody PostUpdateCombinedRequest request) {
+        postFacadeService.updatePosts(request, postId);
+        return ResponseData.toResponseEntity(ResponseCode.UPDATE_POST_SUCCESS);
+
     }
 
 

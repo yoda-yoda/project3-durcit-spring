@@ -15,11 +15,13 @@ import java.util.List;
 @Getter
 @Table(name = "posts")
 public class Post {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter
     private Long id;
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @Setter
     private Member member;
