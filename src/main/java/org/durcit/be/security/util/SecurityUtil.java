@@ -3,17 +3,34 @@ package org.durcit.be.security.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.durcit.be.security.domian.MemberDetails;
+import org.durcit.be.system.exception.auth.NoAuthenticationInSecurityContextException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import static org.durcit.be.system.exception.ExceptionMessage.NO_AUTHENTICATION_IN_SECURITY_CONTEXT_ERROR;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecurityUtil {
     public static Long getCurrentMemberId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.getName() == null) {
-            throw new RuntimeException("Security Context에 인증 정보가 없습니다.");
+        if (authentication == null || authentication.getPrincipal() == "anonymousUser") {
+            return null;
         }
-        return Long.parseLong(authentication.getName());
+        return ((MemberDetails) authentication.getPrincipal()).getId();
+    }
+
+    public static String getCurrentMemberIdOrNull() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication == null ? null : authentication.getName();
+    }
+
+    public static String getCurrentMemberName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getName() == null) {
+            throw new NoAuthenticationInSecurityContextException(NO_AUTHENTICATION_IN_SECURITY_CONTEXT_ERROR);
+        }
+        return authentication.getName();
     }
 }

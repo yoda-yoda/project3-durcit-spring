@@ -2,8 +2,10 @@ package org.durcit.be.security.domian;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.durcit.be.follow.domain.TagFollow;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
@@ -32,18 +34,43 @@ public class Member {
     @Setter
     private boolean isVerified;
 
-    private LocalDateTime signedAt = LocalDateTime.now();
+    @Setter
+    private boolean isBlocked;
+
+    @Setter
+    @Column(columnDefinition = "TEXT")
+    private String profileImage;
+
+    private LocalDateTime signedAt;
 
     @Setter
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "member")
+    private List<TagFollow> tagFollowList;
+
+
     @Builder
-    public Member(String username, String provider, String email, String nickname, String password, boolean isVerified) {
+    public Member(Long id, String username, String provider, String email, String nickname, String password, boolean isVerified, String profileImage) {
+        this.id = id;
         this.username = username;
         this.provider = provider;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.isVerified = isVerified;
+        this.profileImage = profileImage;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.signedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.isBlocked = false;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
